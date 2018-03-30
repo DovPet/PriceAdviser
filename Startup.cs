@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PriceAdvisor.Persistence;
+using Hangfire;
 
 namespace PriceAdvisor
 {
@@ -28,6 +30,9 @@ namespace PriceAdvisor
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+             //GlobalConfiguration.Configuration.UseSqlServerStorage("");
+            services.AddHangfire(configuration => { configuration.UseSqlServerStorage(Configuration.GetConnectionString("Default"));
+                });
             services.AddDbContext<PriceAdvisorDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
 
             services.AddMvc();
@@ -36,8 +41,12 @@ namespace PriceAdvisor
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+             GlobalConfiguration.Configuration.UseSqlServerStorage(Configuration.GetConnectionString("Default"));
+             app.UseHangfireServer();
+            app.UseHangfireDashboard();
             if (env.IsDevelopment())
             {
+               
                 app.UseDeveloperExceptionPage();
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
                 {
@@ -50,7 +59,8 @@ namespace PriceAdvisor
             }
 
             app.UseStaticFiles();
-
+               
+                
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -61,6 +71,7 @@ namespace PriceAdvisor
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
+           
         }
     }
 }

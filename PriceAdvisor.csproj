@@ -16,12 +16,22 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="1.2.0" />
+    <PackageReference Include="HangFire.AspNetCore" Version="1.6.17" />
+    <PackageReference Include="HangFire.SqlServer" Version="1.6.17" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Owin" Version="4.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="1.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="1.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="1.1.0" />
+    <PackageReference Include="HtmlAgilityPack.NetCore" Version="1.5.0.1" />
+    <PackageReference Include="Selenium.Chrome.WebDriver" Version="2.30.0" />
+    <PackageReference Include="Selenium.Firefox.WebDriver" Version="0.17.0" />
+    <PackageReference Include="Selenium.Support" Version="3.4.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="3.4.0" />
+    <PackageReference Include="Selenium.WebDriver.MicrosoftDriver" Version="15.15063.0" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
