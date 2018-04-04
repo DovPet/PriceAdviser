@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-//using PriceAdvisor.Models;
+using PriceAdvisor.Core.Models;
 
 namespace PriceAdvisor.Persistence
 {
@@ -9,6 +9,6 @@ namespace PriceAdvisor.Persistence
           : base(options)
         {
         }
-       // public DbSet<Make> Makes { get; set; }
+        public DbSet<Data> Datas { get; set; }
     }
 }
