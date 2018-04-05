@@ -1,14 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using HtmlAgilityPack;
+using PriceAdvisor.Core;
 using PriceAdvisor.Core.Models;
+using PriceAdvisor.Persistence;
 
 namespace PriceAdvisor.ScraperService
 {
     public class Skytech
     {
-         public static void SkytechAsync(int nuo, int iki)
+        private readonly IUnitOfWork unitOfWork;
+        private readonly PriceAdvisorDbContext context;
+        public Skytech(IUnitOfWork unitOfWork, PriceAdvisorDbContext context)
+        {          
+            this.unitOfWork = unitOfWork;
+            this.context = context;
+        }
+        public void SkytechAsync(int nuo, int iki)
         {
             HtmlWeb web = new HtmlWeb();
             //1656
@@ -43,7 +53,7 @@ namespace PriceAdvisor.ScraperService
             }
 
         }
-        public static async void gautiDuomenisIsSkytech(HtmlDocument page)
+        public async void gautiDuomenisIsSkytech(HtmlDocument page)
         {
 
             var pricesNodes = page.DocumentNode.SelectNodes("//tr[contains(@class,'productListing')]//td[@class='name']//parent::tr//strong");
@@ -58,11 +68,15 @@ namespace PriceAdvisor.ScraperService
             {
 
                 {
+                    var data = new Data { Code = set.Code, Price = set.Price};
+                    context.Datas.Add(data);
+                    await unitOfWork.CompleteAsync();
                     var line = String.Format("{0,-40} {1}", set.Code, set.Price);
 
                     Console.WriteLine(line);
                 }
             }
+           
         }
 
 

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PriceAdvisor.Persistence;
 using Hangfire;
+using AutoMapper;
 
 namespace PriceAdvisor
 {
@@ -30,7 +31,8 @@ namespace PriceAdvisor
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-             //GlobalConfiguration.Configuration.UseSqlServerStorage("");
+
+            services.AddAutoMapper();
             services.AddHangfire(configuration => { configuration.UseSqlServerStorage(Configuration.GetConnectionString("Default"));
                 });
             services.AddDbContext<PriceAdvisorDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));

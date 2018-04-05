@@ -9,7 +9,8 @@ using Hangfire;
 using HtmlAgilityPack;
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
- 
+using PriceAdvisor.ScraperService;
+
 namespace PriceAdvisor.Controllers
 {
     
@@ -20,7 +21,17 @@ namespace PriceAdvisor.Controllers
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
-
+        int[] nuoList = new int[9] { 1, 340, 510, 680, 850,1020, 1190, 1360, 1530 };
+        int[] ikiList = new int[9] { 170, 510, 680, 850, 1020, 1190, 1360, 1530, 1656};
+        var inst = Skytech.SkytechAsync;
+        [HttpPost("[action]")]
+        public async void WriteData()
+        {
+             //for (int i = 0; i < 9; i++)
+            //{
+            BackgroundJob.Enqueue(async () =>await Skytech.SkytechAsync(nuoList[0], ikiList[0]));
+           // }
+        }
         [HttpGet("[action]")]
         public IEnumerable<WeatherForecast> WeatherForecasts()
         {
