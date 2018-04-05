@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PriceAdvisor.Persistence;
 using Hangfire;
 using AutoMapper;
+using PriceAdvisor.Core;
 
 namespace PriceAdvisor
 {
@@ -36,7 +37,7 @@ namespace PriceAdvisor
             services.AddHangfire(configuration => { configuration.UseSqlServerStorage(Configuration.GetConnectionString("Default"));
                 });
             services.AddDbContext<PriceAdvisorDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
-
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddMvc();
         }
 

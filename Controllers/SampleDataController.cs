@@ -10,6 +10,8 @@ using HtmlAgilityPack;
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
 using PriceAdvisor.ScraperService;
+using PriceAdvisor.Core;
+using PriceAdvisor.Persistence;
 
 namespace PriceAdvisor.Controllers
 {
@@ -17,33 +19,37 @@ namespace PriceAdvisor.Controllers
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
+        private static readonly IUnitOfWork unitOfWork;
+        private static readonly PriceAdvisorDbContext context;
+
         private static string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
         int[] nuoList = new int[9] { 1, 340, 510, 680, 850,1020, 1190, 1360, 1530 };
         int[] ikiList = new int[9] { 170, 510, 680, 850, 1020, 1190, 1360, 1530, 1656};
-        var inst = Skytech.SkytechAsync;
+        Skytech inst = new Skytech(unitOfWork,context);
         [HttpPost("[action]")]
-        public async void WriteData()
+        public void WriteData()
         {
              //for (int i = 0; i < 9; i++)
             //{
-            BackgroundJob.Enqueue(async () =>await Skytech.SkytechAsync(nuoList[0], ikiList[0]));
+           
            // }
         }
         [HttpGet("[action]")]
         public IEnumerable<WeatherForecast> WeatherForecasts()
         {
            
-            int[] nuoList = new int[9] { 1, 100, 200, 300, 400,500, 600, 700, 800 };
-            int[] ikiList = new int[9] { 100, 200, 300, 400, 500, 600, 700, 800, 900};
+             int[] nuoList = new int[9] { 1, 340, 510, 680, 850,1020, 1190, 1360, 1530 };
+             int[] ikiList = new int[9] { 170, 510, 680, 850, 1020, 1190, 1360, 1530, 1656};
             
             for (int i = 0; i < 9; i++)
             {
             BackgroundJob.Enqueue(() =>Testing(nuoList[i], ikiList[i]));
+            BackgroundJob.Enqueue(() => inst.SkytechAsync(nuoList[i], ikiList[i]));
             }
-
+            
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {

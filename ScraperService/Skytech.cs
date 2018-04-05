@@ -18,7 +18,7 @@ namespace PriceAdvisor.ScraperService
             this.unitOfWork = unitOfWork;
             this.context = context;
         }
-        public void SkytechAsync(int nuo, int iki)
+        public async Task SkytechAsync(int nuo, int iki)
         {
             HtmlWeb web = new HtmlWeb();
             //1656
@@ -36,7 +36,7 @@ namespace PriceAdvisor.ScraperService
                 {
                     if (page.DocumentNode.SelectNodes("//td[@class='pagenav']//div[@class='page']") == null)
                     {
-                        gautiDuomenisIsSkytech(page);
+                       await gautiDuomenisIsSkytech(page);
                     }
                     else
                     {
@@ -45,15 +45,13 @@ namespace PriceAdvisor.ScraperService
                             uri = "http://www.skytech.lt/bevielio-rysio-antenos-priedai-antenos-c-" + i + ".html?pagesize=500&page=" + j + "&pav=0";
                             Console.WriteLine(uri);
                             page = web.Load(uri);
-                            gautiDuomenisIsSkytech(page);
+                            await gautiDuomenisIsSkytech(page);
                         }
                     }
                 }
-
             }
-
         }
-        public async void gautiDuomenisIsSkytech(HtmlDocument page)
+        public async Task gautiDuomenisIsSkytech(HtmlDocument page)
         {
 
             var pricesNodes = page.DocumentNode.SelectNodes("//tr[contains(@class,'productListing')]//td[@class='name']//parent::tr//strong");
@@ -70,13 +68,13 @@ namespace PriceAdvisor.ScraperService
                 {
                     var data = new Data { Code = set.Code, Price = set.Price};
                     context.Datas.Add(data);
-                    await unitOfWork.CompleteAsync();
+                    //await unitOfWork.CompleteAsync();
                     var line = String.Format("{0,-40} {1}", set.Code, set.Price);
 
                     Console.WriteLine(line);
                 }
             }
-           
+            await unitOfWork.CompleteAsync();
         }
 
 
