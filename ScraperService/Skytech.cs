@@ -6,6 +6,7 @@ using HtmlAgilityPack;
 using PriceAdvisor.Core;
 using PriceAdvisor.Core.Models;
 using PriceAdvisor.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace PriceAdvisor.ScraperService
 {
@@ -67,7 +68,8 @@ namespace PriceAdvisor.ScraperService
 
                 {
                     var data = new Data { Code = set.Code, Price = set.Price};
-                    context.Datas.Add(data);
+                    var productUpdate = await context.Datas.FirstOrDefaultAsync(s => s.Code == set.Code );
+                    productUpdate.Price = set.Price;
                     //await unitOfWork.CompleteAsync();
                     var line = String.Format("{0,-40} {1}", set.Code, set.Price);
 

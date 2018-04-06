@@ -46,7 +46,7 @@ namespace PriceAdvisor.Controllers
             
             for (int i = 0; i < 9; i++)
             {
-            BackgroundJob.Enqueue(() =>Testing(nuoList[i], ikiList[i]));
+            //BackgroundJob.Enqueue(() =>Testing(nuoList[i], ikiList[i]));
             BackgroundJob.Enqueue(() => inst.SkytechAsync(nuoList[i], ikiList[i]));
             }
             
