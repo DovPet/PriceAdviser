@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace PriceAdvisor.Core.Models
 {
@@ -6,6 +7,6 @@ namespace PriceAdvisor.Core.Models
     {
         public int Id { get; set; }
         public bool Scrapable { get; set; }
-
+        public ICollection<EShop> EShops { get; set; }
     }
 }

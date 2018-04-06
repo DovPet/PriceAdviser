@@ -19,16 +19,23 @@ namespace PriceAdvisor.Controllers
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
-        private static readonly IUnitOfWork unitOfWork;
-        private static readonly PriceAdvisorDbContext context;
-
+        private readonly IUnitOfWork unitOfWork;
+        private readonly PriceAdvisorDbContext context;
+        private string EshopName = "Skytech";
+        Skytech inst;
+        public SampleDataController(IUnitOfWork unitOfWork,PriceAdvisorDbContext context)
+        {
+                this.context = context;
+                this.unitOfWork = unitOfWork;
+                Skytech inst = new Skytech(unitOfWork,context);
+        }
         private static string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
         int[] nuoList = new int[9] { 1, 340, 510, 680, 850,1020, 1190, 1360, 1530 };
         int[] ikiList = new int[9] { 170, 510, 680, 850, 1020, 1190, 1360, 1530, 1656};
-        Skytech inst = new Skytech(unitOfWork,context);
+        
         [HttpPost("[action]")]
         public void WriteData()
         {
@@ -40,7 +47,11 @@ namespace PriceAdvisor.Controllers
         [HttpGet("[action]")]
         public IEnumerable<WeatherForecast> WeatherForecasts()
         {
-           
+           var FindShop = context.Eshops.FirstOrDefault(shop=> shop.Name == EshopName);
+           if(FindShop.AdministrationId == 2)
+           {
+                Console.WriteLine("Nothing to do eshop {0} is not scrapable",EshopName);
+           }else{
              int[] nuoList = new int[9] { 1, 340, 510, 680, 850,1020, 1190, 1360, 1530 };
              int[] ikiList = new int[9] { 170, 510, 680, 850, 1020, 1190, 1360, 1530, 1656};
             
@@ -49,14 +60,16 @@ namespace PriceAdvisor.Controllers
             //BackgroundJob.Enqueue(() =>Testing(nuoList[i], ikiList[i]));
             BackgroundJob.Enqueue(() => inst.SkytechAsync(nuoList[i], ikiList[i]));
             }
-            
+             }
             var rng = new Random();
+            
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 DateFormatted = DateTime.Now.AddDays(index).ToString("d"),
                 TemperatureC = rng.Next(-20, 55),
                 Summary = Summaries[rng.Next(Summaries.Length)]
             });
+          
         }
         [HttpGet]
         public IEnumerable<string> Get()

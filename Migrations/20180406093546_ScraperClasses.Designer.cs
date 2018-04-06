@@ -11,9 +11,10 @@ using System;
 namespace PriceAdvisor.Migrations
 {
     [DbContext(typeof(PriceAdvisorDbContext))]
-    partial class PriceAdvisorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180406093546_ScraperClasses")]
+    partial class ScraperClasses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,7 +52,7 @@ namespace PriceAdvisor.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("AdministrationId");
+                    b.Property<int?>("AdministrationId");
 
                     b.Property<string>("Name");
 
@@ -67,13 +68,13 @@ namespace PriceAdvisor.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Code");
+
                     b.Property<int?>("EShopId");
 
+                    b.Property<string>("Name");
+
                     b.Property<int?>("ProductId");
-
-                    b.Property<DateTime>("UpdatedAt");
-
-                    b.Property<string>("Value");
 
                     b.HasKey("Id");
 
@@ -89,9 +90,9 @@ namespace PriceAdvisor.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Code");
+                    b.Property<double>("Price");
 
-                    b.Property<string>("Name");
+                    b.Property<DateTime>("UpdatedAt");
 
                     b.HasKey("Id");
 
@@ -102,8 +103,7 @@ namespace PriceAdvisor.Migrations
                 {
                     b.HasOne("PriceAdvisor.Core.Models.Administration", "Administration")
                         .WithMany("EShops")
-                        .HasForeignKey("AdministrationId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("AdministrationId");
                 });
 
             modelBuilder.Entity("PriceAdvisor.Core.Models.Price", b =>

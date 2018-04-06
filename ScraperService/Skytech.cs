@@ -14,13 +14,21 @@ namespace PriceAdvisor.ScraperService
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly PriceAdvisorDbContext context;
+        private string EshopName = "Skytech";
+        DateTime DateNow = DateTime.Now;
         public Skytech(IUnitOfWork unitOfWork, PriceAdvisorDbContext context)
         {          
             this.unitOfWork = unitOfWork;
             this.context = context;
         }
+         
         public async Task SkytechAsync(int nuo, int iki)
         {
+           var FindShop = context.Eshops.FirstOrDefault(shop=> shop.Name == EshopName);
+           if(FindShop.Administration.Id == 2)
+           {
+                Console.WriteLine("Nothing to do eshop {0} is not scrapable",EshopName);
+           }else{
             HtmlWeb web = new HtmlWeb();
             //1656
             for (int i = nuo; i < iki; i++)
@@ -51,10 +59,11 @@ namespace PriceAdvisor.ScraperService
                     }
                 }
             }
+           }
         }
         public async Task gautiDuomenisIsSkytech(HtmlDocument page)
         {
-
+            var FindEShop = context.Eshops.FirstOrDefault(shop=> shop.Name == EshopName);
             var pricesNodes = page.DocumentNode.SelectNodes("//tr[contains(@class,'productListing')]//td[@class='name']//parent::tr//strong");
             var codesNodes = page.DocumentNode.SelectNodes("//tr[contains(@class,'productListing')]//td[@class='model ']//div");
 
@@ -63,14 +72,17 @@ namespace PriceAdvisor.ScraperService
 
             List<Data> sets = codes
                 .Zip(prices, (code, price) => new Data() { Code = code, Price = price }).ToList();
+
             foreach (var set in sets)
             {
 
                 {
-                    var data = new Data { Code = set.Code, Price = set.Price};
-                    var productUpdate = await context.Datas.FirstOrDefaultAsync(s => s.Code == set.Code );
-                    productUpdate.Price = set.Price;
-                    //await unitOfWork.CompleteAsync();
+                    var Code = new Product { Code = set.Code, Name = ""};
+                    var FindProduct = context.Products.FirstOrDefault(product=> product.Code == set.Code);
+                    var Price = new Price {Value = set.Price, UpdatedAt = DateNow, EshopId = FindEShop.Id, ProductId = FindProduct.Id};
+                    //var productUpdate = await context.Datas.FirstOrDefaultAsync(s => s.Code == set.Code );
+                   // productUpdate.Price = set.Price;
+                    await unitOfWork.CompleteAsync();
                     var line = String.Format("{0,-40} {1}", set.Code, set.Price);
 
                     Console.WriteLine(line);

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace PriceAdvisor.Core.Models
 {
@@ -6,5 +7,8 @@ namespace PriceAdvisor.Core.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public ICollection<Price> Prices { get; set; }
+        public int AdministrationId { get; set; }
+        public Administration Administration {get; set;}
     }
 }
