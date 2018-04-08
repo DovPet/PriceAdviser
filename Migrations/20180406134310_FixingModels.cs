@@ -18,7 +18,7 @@ namespace PriceAdvisor.Migrations
 
             migrationBuilder.DropColumn(
                 name: "UpdatedAt",
-                table: "Prices");
+                table: "Products");
 
             migrationBuilder.DropColumn(
                 name: "Code",

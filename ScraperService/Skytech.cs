@@ -16,19 +16,16 @@ namespace PriceAdvisor.ScraperService
         private readonly PriceAdvisorDbContext context;
         private string EshopName = "Skytech";
         DateTime DateNow = DateTime.Now;
+        
         public Skytech(IUnitOfWork unitOfWork, PriceAdvisorDbContext context)
         {          
             this.unitOfWork = unitOfWork;
             this.context = context;
         }
          
-        public async Task SkytechAsync(int nuo, int iki)
+        public async Task PrepareSkytech(int nuo, int iki)
         {
-           var FindShop = context.Eshops.FirstOrDefault(shop=> shop.Name == EshopName);
-           if(FindShop.Administration.Id == 2)
-           {
-                Console.WriteLine("Nothing to do eshop {0} is not scrapable",EshopName);
-           }else{
+                      
             HtmlWeb web = new HtmlWeb();
             //1656
             for (int i = nuo; i < iki; i++)
@@ -58,7 +55,7 @@ namespace PriceAdvisor.ScraperService
                         }
                     }
                 }
-            }
+            
            }
         }
         public async Task gautiDuomenisIsSkytech(HtmlDocument page)
@@ -75,22 +72,29 @@ namespace PriceAdvisor.ScraperService
 
             foreach (var set in sets)
             {
+                    var FindProduct = await context.Products.FirstOrDefaultAsync(product=> product.Code == set.Code);
+                    if(FindProduct==null)
+                    {
 
-                {
-                    var Code = new Product { Code = set.Code, Name = ""};
-                    var FindProduct = context.Products.FirstOrDefault(product=> product.Code == set.Code);
-                    var Price = new Price {Value = set.Price, UpdatedAt = DateNow, EshopId = FindEShop.Id, ProductId = FindProduct.Id};
-                    //var productUpdate = await context.Datas.FirstOrDefaultAsync(s => s.Code == set.Code );
-                   // productUpdate.Price = set.Price;
-                    await unitOfWork.CompleteAsync();
+                    }else{
+                        var FindPriceExists = await context.Prices.FirstOrDefaultAsync(price=> price.ProductId == FindProduct.Id);
+                        if(FindPriceExists != null)
+                        {
+                            FindPriceExists.Value = set.Price;
+                            FindPriceExists.UpdatedAt = DateNow.AddTicks( - (DateNow.Ticks % TimeSpan.TicksPerSecond));
+                        }else{
+                            var Price = new Price {Value = set.Price, UpdatedAt = DateNow, EshopId = FindEShop.Id, ProductId = FindProduct.Id};
+                   // var productUpdate = await context.Datas.FirstOrDefaultAsync(s => s.Code == set.Code );
+                    // productUpdate.Price = set.Price;
+                            context.Prices.Add(Price);
+                        }
+                    //await unitOfWork.CompleteAsync();
                     var line = String.Format("{0,-40} {1}", set.Code, set.Price);
-
-                    Console.WriteLine(line);
-                }
+                    Console.WriteLine(line); 
             }
             await unitOfWork.CompleteAsync();
         }
 
-
+        }
     }
 }
