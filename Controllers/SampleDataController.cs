@@ -67,28 +67,51 @@ namespace PriceAdvisor.Controllers
              }else{
                 
                 option.AddArgument("--headless");     
-                //option.AddArgument("--disable-gpu"); 
-                option.AddArgument("--blink-settings=imagesEnabled=false ");     
+                option.AddArgument("--disable-gpu"); 
+                option.AddArgument("--hide-scrollbars"); 
+                option.AddArgument("--no-sandbox");      
+                 option.AddArgument("--no-startup-window"); 
+                 option.AddArgument("--disable-extensions"); 
+                 option.AddArgument("--disable-infobars");
+                 option.AddArgument("--ignore-certificate-errors"); 
                  
                 //IWebDriver driver = new ChromeDriver(@"F:\Duomenys\Bakalauro darbas\PriceAdvisor",option);
                 
                 //00:24:47.9380459
                 //sw.Start();
                 List<List<int>> CategoryList = new List<List<int>>();
-                CategoryList.Add( new List<int>{390});
-                CategoryList.Add( new List<int>{438});
+                CategoryList.Add( new List<int>{391, 392});
+                CategoryList.Add( new List<int>{486, 485});
+                CategoryList.Add( new List<int>{401});
+                CategoryList.Add( new List<int>{489, 402});
+                CategoryList.Add( new List<int>{550, 420});
+                CategoryList.Add( new List<int>{393, 394});
+                CategoryList.Add( new List<int>{577, 663});
+                CategoryList.Add( new List<int>{612, 484});
+                CategoryList.Add( new List<int>{483, 600});
+                CategoryList.Add( new List<int>{403, 660});
+                CategoryList.Add( new List<int>{419, 739});
+                CategoryList.Add( new List<int>{435});
+                CategoryList.Add( new List<int>{438 });
+                CategoryList.Add( new List<int>{476, 570});
+                CategoryList.Add( new List<int>{442});
+                CategoryList.Add( new List<int>{510 });
+                CategoryList.Add( new List<int>{406});
+                CategoryList.Add( new List<int>{638});
                 CategoryList.Add( new List<int>{557});
-                CategoryList.Add( new List<int>{489});
-                CategoryList.Add( new List<int>{550});
-                List<int> kategorijuID = new List<int>() { 390, 406, 435, 438, 638, 442, 557, 476, 482, 489, 652, 510, 550, 570, 583 };
-                Thread[] threads = new Thread[5];
+                CategoryList.Add( new List<int>{652});
+                //15:38.0778014
+                //List<int> kategorijuID = new List<int>() { 391,392 ,486 ,485 ,557,401,489,402,550,520,393,394,577,663,612,484,483,600,403,660,419,739,
+               // 406,435,438,638,476,570,442,562,510 };
+                Thread[] threads = new Thread[CategoryList.Count];
                 var sw = new Stopwatch();
                 sw.Start();
                  //IWebDriver driver = new RemoteWebDriver(DesiredCapabilities.HtmlUnitWithJavaScript());
                  
-                Parallel.For(0, 5, i =>
+                Parallel.For(0, CategoryList.Count, i =>
             {
-                IWebDriver driver = new ChromeDriver(@"C:\selenium");
+                //IWebDriver driver = new ChromeDriver(@"C:\selenium");
+                IWebDriver driver = new ChromeDriver(@"F:\Duomenys\Bakalauro darbas\PriceAdvisor",option);
                 HtmlDocument doc = new HtmlDocument();
                
                 //IWebDriver driver = new RemoteWebDriver(DesiredCapabilities.HtmlUnit());
@@ -96,7 +119,7 @@ namespace PriceAdvisor.Controllers
                 driver.Manage().Window.Maximize();
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(0);
                 IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
-                Thread pirma = new Thread(async() =>await kilobaitasInstance.PrepareKilobaitas(driver, doc,kategorijuID[i]));
+                Thread pirma = new Thread(async() =>await kilobaitasInstance.PrepareKilobaitas(driver, doc,CategoryList[i]));
                 threads[i] = pirma;
                 threads[i].Start();
                 pirma.Join();

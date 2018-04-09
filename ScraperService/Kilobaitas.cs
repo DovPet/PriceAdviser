@@ -23,21 +23,21 @@ namespace PriceAdvisor.ScraperService
             this.unitOfWork = unitOfWork;
             this.context = context;
         }
-        public async Task PrepareKilobaitas(IWebDriver driver, HtmlDocument doc,int kategorijuID)
+        public async Task PrepareKilobaitas(IWebDriver driver, HtmlDocument doc,List<int> kategorijuID)
         {
           //  kategorijuID =
         //        new List<int>() { 390, 406, 435, 438, 638, 442, 557, 476, 482, 489, 652, 510, 550, 570, 583 };
             driver.Navigate()
                 .GoToUrl("https://www.kilobaitas.lt/Kompiuteriai/Plansetiniai_(Tablet)/CatalogStore.aspx?CatID=PL_0");
             //390-781
-            for (int kategorijosNr = 0; kategorijosNr < 1; kategorijosNr++)
-            {
+            for (int kategorijosNr = 0; kategorijosNr < kategorijuID.Count; kategorijosNr++)
+           {
                 driver.Navigate()
                     .GoToUrl(
                         "https://www.kilobaitas.lt/Kompiuteriai/Plansetiniai_(Tablet)/CatalogStore.aspx?CatID=PL_" +
-                        kategorijuID + "");
+                        kategorijuID[kategorijosNr] + "");
                         Console.WriteLine("https://www.kilobaitas.lt/Kompiuteriai/Plansetiniai_(Tablet)/CatalogStore.aspx?CatID=PL_" +
-                        kategorijuID);
+                        kategorijuID[kategorijosNr]);
                 if (driver.FindElements(By.XPath("//img[@src='/Images/design/notify_information.gif']")).Count > 0 ||
                         driver.FindElements(By.XPath("//td[@class='hdMain']//a[contains(text(),'Buitinė technika')]")).Count > 0)
                 {
@@ -55,12 +55,15 @@ namespace PriceAdvisor.ScraperService
                     }
                     await gautiDuomenisIsKilobaito(driver, doc);
                 }
+                Console.WriteLine("=========Me Doneeeeeeeee=========="+kategorijuID[kategorijosNr]+"===========================");
             }
+            
             driver.Close();
         }
 
         public async Task gautiDuomenisIsKilobaito(IWebDriver driver, HtmlDocument doc)
         {
+            int psl = 1;
             IWebElement ie;
             IWebElement next;
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
@@ -117,8 +120,10 @@ namespace PriceAdvisor.ScraperService
                 next = driver.FindElement(By.XPath("(//input[contains(@onmouseover,'NextOverBottom')])[1]"));
                 js.ExecuteScript("arguments[0].click();", next);
                 ie = driver.FindElement(By.XPath("//html"));
+                psl++;
+                 Console.WriteLine("========================="+psl+"===========================");
             }
-        await unitOfWork.CompleteAsync();
+        //await unitOfWork.CompleteAsync();
       }
     }
 }
