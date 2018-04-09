@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 using PriceAdvisor.ScraperService;
 using PriceAdvisor.Core;
 using PriceAdvisor.Persistence;
+using System.Diagnostics;
+using OpenQA.Selenium.Remote;
 
 namespace PriceAdvisor.Controllers
 {
@@ -27,8 +29,8 @@ namespace PriceAdvisor.Controllers
         private string Kilobaitas = "Kilobaitas";
         Skytech skytechInstance;
         Kilobaitas kilobaitasInstance;
-        static ChromeOptions option = new ChromeOptions();
-        static HtmlDocument doc = new HtmlDocument();
+        ChromeOptions option = new ChromeOptions();
+        HtmlDocument doc = new HtmlDocument();
         public SampleDataController(IUnitOfWork unitOfWork,PriceAdvisorDbContext context)
         {
                 this.context = context;
@@ -63,26 +65,50 @@ namespace PriceAdvisor.Controllers
              {
                  Console.WriteLine("Nothing to do eshop '{0}' is not scrapable",Kilobaitas);
              }else{
-                option.AddArgument("--headless");
+                
+                option.AddArgument("--headless");     
+                //option.AddArgument("--disable-gpu"); 
+                option.AddArgument("--blink-settings=imagesEnabled=false ");     
                  
-                IWebDriver driver = new ChromeDriver(@"F:\Duomenys\Bakalauro darbas\PriceAdvisor",option);
-                //IWebDriver driver = new ChromeDriver(@"C:\selenium");
-                driver.Manage().Window.Maximize();
-                IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+                //IWebDriver driver = new ChromeDriver(@"F:\Duomenys\Bakalauro darbas\PriceAdvisor",option);
+                
                 //00:24:47.9380459
                 //sw.Start();
                 List<List<int>> CategoryList = new List<List<int>>();
-                CategoryList.Add( new List<int>{390, 406, 435});
-                CategoryList.Add( new List<int>{438, 638, 442});
-                CategoryList.Add( new List<int>{557, 476, 482});
-                CategoryList.Add( new List<int>{489, 652, 510});
-                CategoryList.Add( new List<int>{550, 570, 583});
-                //new List<int>() { 390, 406, 435, 438, 638, 442, 557, 476, 482, 489, 652, 510, 550, 570, 583 };
-                for (int i = 0; i < CategoryList.Count; i++)
-                {
-                    //BackgroundJob.Enqueue(() => kilobaitasInstance.PrepareKilobaitas(driver, doc,CategoryList[0]));
-                     kilobaitasInstance.PrepareKilobaitas(driver, doc,CategoryList[0]);
-                }
+                CategoryList.Add( new List<int>{390});
+                CategoryList.Add( new List<int>{438});
+                CategoryList.Add( new List<int>{557});
+                CategoryList.Add( new List<int>{489});
+                CategoryList.Add( new List<int>{550});
+                List<int> kategorijuID = new List<int>() { 390, 406, 435, 438, 638, 442, 557, 476, 482, 489, 652, 510, 550, 570, 583 };
+                Thread[] threads = new Thread[5];
+                var sw = new Stopwatch();
+                sw.Start();
+                 //IWebDriver driver = new RemoteWebDriver(DesiredCapabilities.HtmlUnitWithJavaScript());
+                 
+                Parallel.For(0, 5, i =>
+            {
+                IWebDriver driver = new ChromeDriver(@"C:\selenium");
+                HtmlDocument doc = new HtmlDocument();
+               
+                //IWebDriver driver = new RemoteWebDriver(DesiredCapabilities.HtmlUnit());
+                
+                driver.Manage().Window.Maximize();
+                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(0);
+                IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+                Thread pirma = new Thread(async() =>await kilobaitasInstance.PrepareKilobaitas(driver, doc,kategorijuID[i]));
+                threads[i] = pirma;
+                threads[i].Start();
+                pirma.Join();
+                //Thread.Sleep(1000);
+            });
+             sw.Stop();
+             Console.WriteLine(sw.Elapsed);
+                //for (int i = 0; i < CategoryList.Count; i++)
+               // {
+                   // BackgroundJob.Enqueue(() => kilobaitasInstance.PrepareKilobaitas(driver, doc,CategoryList[0]));
+                //     kilobaitasInstance.PrepareKilobaitas(driver, doc,CategoryList[i]);
+              //  }
                 //sw.Stop();
                 //Console.WriteLine(sw.Elapsed);
              }

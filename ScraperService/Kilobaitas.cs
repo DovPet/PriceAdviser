@@ -23,19 +23,21 @@ namespace PriceAdvisor.ScraperService
             this.unitOfWork = unitOfWork;
             this.context = context;
         }
-        public async Task PrepareKilobaitas(IWebDriver driver, HtmlDocument doc,List<int> kategorijuID)
+        public async Task PrepareKilobaitas(IWebDriver driver, HtmlDocument doc,int kategorijuID)
         {
-            kategorijuID =
-                new List<int>() { 390, 406, 435, 438, 638, 442, 557, 476, 482, 489, 652, 510, 550, 570, 583 };
+          //  kategorijuID =
+        //        new List<int>() { 390, 406, 435, 438, 638, 442, 557, 476, 482, 489, 652, 510, 550, 570, 583 };
             driver.Navigate()
                 .GoToUrl("https://www.kilobaitas.lt/Kompiuteriai/Plansetiniai_(Tablet)/CatalogStore.aspx?CatID=PL_0");
             //390-781
-            for (int kategorijosNr = 0; kategorijosNr < kategorijuID.Count; kategorijosNr++)
+            for (int kategorijosNr = 0; kategorijosNr < 1; kategorijosNr++)
             {
                 driver.Navigate()
                     .GoToUrl(
                         "https://www.kilobaitas.lt/Kompiuteriai/Plansetiniai_(Tablet)/CatalogStore.aspx?CatID=PL_" +
-                        kategorijuID[kategorijosNr] + "");
+                        kategorijuID + "");
+                        Console.WriteLine("https://www.kilobaitas.lt/Kompiuteriai/Plansetiniai_(Tablet)/CatalogStore.aspx?CatID=PL_" +
+                        kategorijuID);
                 if (driver.FindElements(By.XPath("//img[@src='/Images/design/notify_information.gif']")).Count > 0 ||
                         driver.FindElements(By.XPath("//td[@class='hdMain']//a[contains(text(),'Buitinė technika')]")).Count > 0)
                 {
@@ -65,7 +67,7 @@ namespace PriceAdvisor.ScraperService
             ie = driver.FindElement(By.XPath("//html"));
             string innerHtml = ie.GetAttribute("innerHTML");
             doc.LoadHtml(innerHtml);
-            var FindEShop = context.Eshops.FirstOrDefault(shop=> shop.Name == EshopName);
+            //var FindEShop = context.Eshops.FirstOrDefault(shop=> shop.Name == EshopName);
             var codesNodes =
                 doc.DocumentNode.SelectNodes(
                     "//td[@class='mainContent']//div[@class='itemNormal']//div[@class='itemCode']");
@@ -91,7 +93,7 @@ namespace PriceAdvisor.ScraperService
 
             foreach (var set in sets)
             {
-            var FindProduct = await context.Products.FirstOrDefaultAsync(product=> product.Code == set.Code);
+            /*var FindProduct = await context.Products.FirstOrDefaultAsync(product=> product.Code == set.Code);
                     if(FindProduct==null)
                     {
 
@@ -105,16 +107,18 @@ namespace PriceAdvisor.ScraperService
                             var Price = new Price {Value = set.Price, UpdatedAt = DateNow, EshopId = FindEShop.Id, ProductId = FindProduct.Id};
                             context.Prices.Add(Price);
                         }                  
-                    var line = String.Format("{0,-40} {1}", set.Code, set.Price);
-                    Console.WriteLine(line); 
-            }
-            if (driver.FindElements(By.XPath("(//input[contains(@onmouseover,'NextOverBottom')])[1]")).Count != 0)
+                     
+            }*/
+            var line = String.Format("{0,-40} {1}", set.Code, set.Price);
+            Console.WriteLine(line);
+        }
+         if (driver.FindElements(By.XPath("(//input[contains(@onmouseover,'NextOverBottom')])[1]")).Count != 0)
             {
                 next = driver.FindElement(By.XPath("(//input[contains(@onmouseover,'NextOverBottom')])[1]"));
                 js.ExecuteScript("arguments[0].click();", next);
                 ie = driver.FindElement(By.XPath("//html"));
             }
-        }
+        await unitOfWork.CompleteAsync();
       }
     }
 }
