@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
@@ -17,34 +18,39 @@ namespace PriceAdvisor.ScraperService
         private readonly PriceAdvisorDbContext context;
         private string EshopName = "Kilobaitas";
         DateTime DateNow = DateTime.Now;
-        
+        private Stopwatch sw = new Stopwatch();
         public Kilobaitas(IUnitOfWork unitOfWork, PriceAdvisorDbContext context)
         {          
             this.unitOfWork = unitOfWork;
             this.context = context;
+            sw.Start();
         }
         public async Task PrepareKilobaitas(IWebDriver driver, HtmlDocument doc,List<int> kategorijuID)
         {
+            
           //  kategorijuID =
         //        new List<int>() { 390, 406, 435, 438, 638, 442, 557, 476, 482, 489, 652, 510, 550, 570, 583 };
-            driver.Navigate()
-                .GoToUrl("https://www.kilobaitas.lt/Kompiuteriai/Plansetiniai_(Tablet)/CatalogStore.aspx?CatID=PL_0");
+            //driver.Navigate()
+                //.GoToUrl("http://www.kilobaitas.lt/Kompiuteriai/Plansetiniai_(Tablet)/CatalogStore.aspx?CatID=PL_"+
+                     //   kategorijuID[0] + "");
             //390-781
+            await Task.Delay(500);
             for (int kategorijosNr = 0; kategorijosNr < kategorijuID.Count; kategorijosNr++)
            {
                 driver.Navigate()
                     .GoToUrl(
-                        "https://www.kilobaitas.lt/Kompiuteriai/Plansetiniai_(Tablet)/CatalogStore.aspx?CatID=PL_" +
+                        "http://www.kilobaitas.lt/Kompiuteriai/Plansetiniai_(Tablet)/CatalogStore.aspx?CatID=PL_" +
                         kategorijuID[kategorijosNr] + "");
-                        Console.WriteLine("https://www.kilobaitas.lt/Kompiuteriai/Plansetiniai_(Tablet)/CatalogStore.aspx?CatID=PL_" +
+                        Console.WriteLine("http://www.kilobaitas.lt/Kompiuteriai/Plansetiniai_(Tablet)/CatalogStore.aspx?CatID=PL_" +
                         kategorijuID[kategorijosNr]);
                 if (driver.FindElements(By.XPath("//img[@src='/Images/design/notify_information.gif']")).Count > 0 ||
                         driver.FindElements(By.XPath("//td[@class='hdMain']//a[contains(text(),'Buitinė technika')]")).Count > 0)
                 {
+                    //do nothing () got to another category
                 }
                 else
                 {
-                    driver.FindElement(By.XPath("//select[@class='simpleSelect']")).Click();
+                   
                     driver.FindElement(By.XPath("//select[@class='simpleSelect']//option[@value='90']")).Click();
 
                     while (driver.FindElements(By.XPath("(//input[contains(@onmouseover,'NextOverBottom')])[1]"))
@@ -55,9 +61,9 @@ namespace PriceAdvisor.ScraperService
                     }
                     await gautiDuomenisIsKilobaito(driver, doc);
                 }
-                Console.WriteLine("=========Me Doneeeeeeeee=========="+kategorijuID[kategorijosNr]+"===========================");
+                Console.WriteLine("=========Me Doneeeeeeee=========="+kategorijuID[kategorijosNr]+"===========================");
             }
-            
+            Console.WriteLine(sw.Elapsed);
             driver.Close();
         }
 
@@ -84,6 +90,7 @@ namespace PriceAdvisor.ScraperService
                     node.Remove();
                 }
             }
+            
             var codes = codesNodes.Select(node =>
                 node.InnerText.Replace("kodas", "").Replace(" ", "").Replace(":&nbsp;", "").Replace("\n", "")
                     .Replace("\t", "").Replace("\r", ""));
