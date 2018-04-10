@@ -96,7 +96,7 @@ namespace PriceAdvisor.ScraperService
                     .Replace("\t", "").Replace("\r", ""));
             var prices = pricesNodes.Select(node =>
                 node.InnerText.Replace(" ", "").Replace("&nbsp;€", "").Replace("\n", "").Replace("\t", "")
-                    .Replace("\r", ""));
+                    .Replace("\r", "").Replace(",", "."));
 
             List<Data> sets =
                 codes.Zip(prices, (code, price) => new Data() { Code = code, Price = price }).ToList();

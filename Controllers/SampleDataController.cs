@@ -27,8 +27,12 @@ namespace PriceAdvisor.Controllers
         private readonly PriceAdvisorDbContext context;
         private string Skytech = "Skytech";
         private string Kilobaitas = "Kilobaitas";
+        private string Fortakas = "Fortakas";
+        private string TopoCentras = "TopoCentras";
         Skytech skytechInstance;
         Kilobaitas kilobaitasInstance;
+        Fortakas fortakasInstance;
+        TopoCentras topocentrasInstance;
         ChromeOptions option = new ChromeOptions();
         HtmlDocument doc = new HtmlDocument();
         
@@ -38,6 +42,9 @@ namespace PriceAdvisor.Controllers
                 this.unitOfWork = unitOfWork;
                 skytechInstance = new Skytech(unitOfWork,context);
                 kilobaitasInstance = new Kilobaitas(unitOfWork,context);
+                fortakasInstance = new Fortakas(unitOfWork,context);
+                topocentrasInstance = new TopoCentras(unitOfWork,context);
+                
         }
         private static string[] Summaries = new[]
         {
@@ -51,6 +58,8 @@ namespace PriceAdvisor.Controllers
                 
            var NeedSkytech = context.Eshops.FirstOrDefault(shop=> shop.Name == Skytech);
            var NeedKilobaitas = context.Eshops.FirstOrDefault(shop=> shop.Name == Kilobaitas);
+           var NeedFortakas = context.Eshops.FirstOrDefault(shop=> shop.Name == Fortakas);
+           var NeedTopoCentras = context.Eshops.FirstOrDefault(shop=> shop.Name == TopoCentras);
            //need to set to 1 if you want to get data
            if(NeedSkytech.AdministrationId == 2)
            {
@@ -64,7 +73,7 @@ namespace PriceAdvisor.Controllers
                     BackgroundJob.Enqueue(() => skytechInstance.PrepareSkytech(nuoList[i], ikiList[i]));
                 }
              }
-             if(NeedKilobaitas.AdministrationId == 1)
+             if(NeedKilobaitas.AdministrationId == 2)
              {
                  Console.WriteLine("Nothing to do eshop '{0}' is not scrapable",Kilobaitas);
              }else{
@@ -147,8 +156,8 @@ namespace PriceAdvisor.Controllers
                  sw.Start();
                 Parallel.For(0, CategoryList.Count, i =>
             {
-                IWebDriver driver = new ChromeDriver(@"C:\selenium",option);
-                //IWebDriver driver = new ChromeDriver(@"F:\Duomenys\Bakalauro darbas\PriceAdvisor",option);
+                //IWebDriver driver = new ChromeDriver(@"C:\selenium",option);
+                IWebDriver driver = new ChromeDriver(@"F:\Duomenys\Bakalauro darbas\PriceAdvisor",option);
                 HtmlDocument doc = new HtmlDocument();
                
                 //IWebDriver driver = new RemoteWebDriver(DesiredCapabilities.HtmlUnit());
@@ -170,6 +179,20 @@ namespace PriceAdvisor.Controllers
               //  }
                 //sw.Stop();
                 //Console.WriteLine(sw.Elapsed);
+             }
+             if(NeedFortakas.AdministrationId == 1){
+                Console.WriteLine("Nothing to do eshop '{0}' is not scrapable",Fortakas);
+             }else{
+                 
+                int[] nuoList = new int[9] { 1, 340, 510, 680, 850, 1020, 1190, 1360, 1530};
+                int[] ikiList = new int[9] { 170, 510, 680, 850, 1020, 1190, 1360, 1530, 1656};
+                List<string> categories = System.IO.File.ReadAllLines(@"F:\Duomenys\Bakalauro darbas\PriceAdvisor\Links\TopoCentrasLinks.txt").ToList();
+                fortakasInstance.PrepareFortakas(categories,18,categories.Count);
+                for (int i = 0; i < 9; i++)
+                {
+                    
+                    //BackgroundJob.Enqueue(() => skytechInstance.PrepareFortakas(nuoList[i], ikiList[i]));
+                }
              }
              sw.Stop();
              Console.WriteLine("===============TIIIIIIIIME HERE=========="+sw.Elapsed);
