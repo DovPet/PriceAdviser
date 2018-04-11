@@ -184,14 +184,13 @@ namespace PriceAdvisor.Controllers
                 Console.WriteLine("Nothing to do eshop '{0}' is not scrapable",Fortakas);
              }else{
                  
-                int[] nuoList = new int[9] { 1, 340, 510, 680, 850, 1020, 1190, 1360, 1530};
-                int[] ikiList = new int[9] { 170, 510, 680, 850, 1020, 1190, 1360, 1530, 1656};
-                List<string> categories = System.IO.File.ReadAllLines(@"F:\Duomenys\Bakalauro darbas\PriceAdvisor\Links\TopoCentrasLinks.txt").ToList();
-                fortakasInstance.PrepareFortakas(categories,18,categories.Count);
-                for (int i = 0; i < 9; i++)
+                int[] nuoList = new int[10] { 0, 24, 48, 72, 96, 120, 144, 168, 192, 216};
+                int[] ikiList = new int[10] { 24, 48, 72, 96, 120, 144, 168, 192, 216, 234};
+                List<string> categories = System.IO.File.ReadAllLines(@"C:\Users\Dovydas.Petrutis\Documents\PriceAdvisor\Links\TopoCentrasLinks.txt").ToList();
+                //fortakasInstance.PrepareFortakas(categories,0,categories.Count);
+                for (int i = 0; i < nuoList.Count(); i++)
                 {
-                    
-                    //BackgroundJob.Enqueue(() => skytechInstance.PrepareFortakas(nuoList[i], ikiList[i]));
+                BackgroundJob.Enqueue(() => fortakasInstance.PrepareFortakas(categories,nuoList[i], ikiList[i]));
                 }
              }
              sw.Stop();

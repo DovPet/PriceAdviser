@@ -40,19 +40,25 @@ namespace PriceAdvisor.ScraperService
                await GetDataFromFortakas(page);          
                 while (page.DocumentNode.SelectNodes("(//a[@class='product-next'])[1]") != null)
                 {
+                  
                     pageNumber++;
                     url = category[i]+"?n=100&p="+pageNumber;
                     page = web.Load(url);
                     Console.WriteLine(url);
-                    await GetDataFromFortakas(page);
-                }
+                      if(page.DocumentNode.SelectNodes("//div[@class='no_prods_found clear']") == null)
+                    {
+                        await GetDataFromFortakas(page);
+                    }
+                   
+                    }
+                
                
             }
         }
 
         public async Task GetDataFromFortakas(HtmlDocument page)
         { 
-            var pricesNodes = page.DocumentNode.SelectNodes("//tr[contains(@class,'ajax_block_product')]//td[@class='ekaina']");
+            var pricesNodes = page.DocumentNode.SelectNodes("//tr[contains(@class,'ajax_block_product')]//td[@class='ekaina']//strong");
             var codesNodes = page.DocumentNode.SelectNodes("//tr[contains(@class,'ajax_block_product')]//td[@class='kodas']");
 
             var codes = codesNodes.Select(node => node.FirstChild.InnerText.Replace(" ", "").Replace("\n", "").Replace("\t", "").Replace("\r", "")/*.Replace("MODELIS:", "")*/);
@@ -60,8 +66,6 @@ namespace PriceAdvisor.ScraperService
 
             List<Data> sets = codes
                 .Zip(prices, (code, price) => new Data() { Code = code, Price = price }).ToList();
-
-            //tr[contains(@class,'ajax_block_product')]//td[@class='ekaina']//strong
             foreach(var set in sets)
             {
             var line = String.Format("{0,-40} {1}", set.Code, set.Price);
