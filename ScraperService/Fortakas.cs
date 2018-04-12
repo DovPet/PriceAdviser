@@ -26,8 +26,7 @@ namespace PriceAdvisor.ScraperService
             this.context = context;
         }
         public async Task PrepareFortakas(List<string> category,int nuo, int iki)
-        { 
-            
+        {  
             HtmlWeb web = new HtmlWeb();
             
 
@@ -50,9 +49,7 @@ namespace PriceAdvisor.ScraperService
                         await GetDataFromFortakas(page);
                     }
                    
-                    }
-                
-               
+                }
             }
         }
 
@@ -61,7 +58,7 @@ namespace PriceAdvisor.ScraperService
             var pricesNodes = page.DocumentNode.SelectNodes("//tr[contains(@class,'ajax_block_product')]//td[@class='ekaina']//strong");
             var codesNodes = page.DocumentNode.SelectNodes("//tr[contains(@class,'ajax_block_product')]//td[@class='kodas']");
 
-            var codes = codesNodes.Select(node => node.FirstChild.InnerText.Replace(" ", "").Replace("\n", "").Replace("\t", "").Replace("\r", "")/*.Replace("MODELIS:", "")*/);
+            var codes = codesNodes.Select(node => node.FirstChild.InnerText.Replace(" ", "").Replace("\n", "").Replace("\t", "").Replace("\r", ""));
             var prices = pricesNodes.Select(node => node.InnerText.Replace("€", "").Replace(" ", "").Replace(",", "."));
 
             List<Data> sets = codes

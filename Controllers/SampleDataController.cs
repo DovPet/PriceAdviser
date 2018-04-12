@@ -185,15 +185,15 @@ namespace PriceAdvisor.Controllers
              }else{                 
                 int[] nuoList = new int[10] { 0, 24, 48, 72, 96, 120, 144, 168, 192, 216};
                 int[] ikiList = new int[10] { 24, 48, 72, 96, 120, 144, 168, 192, 216, 234};
-                List<string> categories = System.IO.File.ReadAllLines(@"F:\Duomenys\Bakalauro darbas\PriceAdvisor\Links\FortakasLinks.txt").ToList();
+                List<string> fortakasCategories = System.IO.File.ReadAllLines(@"F:\Duomenys\Bakalauro darbas\PriceAdvisor\Links\FortakasLinks.txt").ToList();
                 //fortakasInstance.PrepareFortakas(categories,0,categories.Count);
                 for (int i = 0; i < nuoList.Count(); i++)
                 {
-                BackgroundJob.Enqueue(() => fortakasInstance.PrepareFortakas(categories,nuoList[i], ikiList[i]));
+                BackgroundJob.Enqueue(() => fortakasInstance.PrepareFortakas(fortakasCategories,nuoList[i], ikiList[i]));
                 }
              }
-
-         //   topocentrasInstance.GetLinksFromTopoCentras();
+            List<string> topoCentrasCategories = System.IO.File.ReadAllLines(@"C:\Users\Dovydas.Petrutis\Documents\PriceAdvisor\Links\TopoCentrasLinks.txt").ToList();
+            topocentrasInstance.PrepareTopoCentras(topoCentrasCategories,0,5);
              sw.Stop();
              Console.WriteLine("===============TIIIIIIIIME HERE=========="+sw.Elapsed);
             var rng = new Random();
