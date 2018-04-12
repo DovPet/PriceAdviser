@@ -75,7 +75,7 @@ namespace PriceAdvisor.ScraperService
 
         public async Task GetLinksFromFortakas()
         {
-            StreamWriter file = new StreamWriter(@"F:\Duomenys\Bakalauro darbas\PriceAdvisor\Links\TopoCentrasLinks.txt");
+            StreamWriter file = new StreamWriter(@"F:\Duomenys\Bakalauro darbas\PriceAdvisor\Links\FortakasLinks.txt");
             HtmlWeb web = new HtmlWeb();
             var url = "https://fortakas.lt/medis";
             var page = web.Load(url);

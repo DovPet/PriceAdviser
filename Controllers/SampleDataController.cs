@@ -171,7 +171,7 @@ namespace PriceAdvisor.Controllers
                 pirma.Join();
                 //Thread.Sleep(200);
             });
-
+                
                 //for (int i = 0; i < CategoryList.Count; i++)
                // {
                    // BackgroundJob.Enqueue(() => kilobaitasInstance.PrepareKilobaitas(driver, doc,CategoryList[0]));
@@ -180,19 +180,20 @@ namespace PriceAdvisor.Controllers
                 //sw.Stop();
                 //Console.WriteLine(sw.Elapsed);
              }
-             if(NeedFortakas.AdministrationId == 1){
+             if(NeedFortakas.AdministrationId == 2){
                 Console.WriteLine("Nothing to do eshop '{0}' is not scrapable",Fortakas);
-             }else{
-                 
+             }else{                 
                 int[] nuoList = new int[10] { 0, 24, 48, 72, 96, 120, 144, 168, 192, 216};
                 int[] ikiList = new int[10] { 24, 48, 72, 96, 120, 144, 168, 192, 216, 234};
-                List<string> categories = System.IO.File.ReadAllLines(@"C:\Users\Dovydas.Petrutis\Documents\PriceAdvisor\Links\TopoCentrasLinks.txt").ToList();
+                List<string> categories = System.IO.File.ReadAllLines(@"F:\Duomenys\Bakalauro darbas\PriceAdvisor\Links\FortakasLinks.txt").ToList();
                 //fortakasInstance.PrepareFortakas(categories,0,categories.Count);
                 for (int i = 0; i < nuoList.Count(); i++)
                 {
                 BackgroundJob.Enqueue(() => fortakasInstance.PrepareFortakas(categories,nuoList[i], ikiList[i]));
                 }
              }
+
+         //   topocentrasInstance.GetLinksFromTopoCentras();
              sw.Stop();
              Console.WriteLine("===============TIIIIIIIIME HERE=========="+sw.Elapsed);
             var rng = new Random();
