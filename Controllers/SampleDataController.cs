@@ -62,21 +62,21 @@ namespace PriceAdvisor.Controllers
            var NeedTopoCentras = context.Eshops.FirstOrDefault(shop=> shop.Name == TopoCentras);
            //need to set to 1 if you want to get data
            if(NeedSkytech.AdministrationId == 2)
-           {
+            {
                 Console.WriteLine("Nothing to do eshop '{0}' is not scrapable",Skytech);
-           }else{
+                }else{
                 int[] nuoList = new int[9] { 1, 340, 510, 680, 850,1020, 1190, 1360, 1530 };
                 int[] ikiList = new int[9] { 170, 510, 680, 850, 1020, 1190, 1360, 1530, 1656};
              
-                for (int i = 0; i < 9; i++)
-                {
-                    BackgroundJob.Enqueue(() => skytechInstance.PrepareSkytech(nuoList[i], ikiList[i]));
+                    for (int i = 0; i < 9; i++)
+                    {
+                     BackgroundJob.Enqueue(() => skytechInstance.PrepareSkytech(nuoList[i], ikiList[i]));
+                    }
                 }
-             }
-             if(NeedKilobaitas.AdministrationId == 2)
-             {
+           if(NeedKilobaitas.AdministrationId == 2)
+            {
                  Console.WriteLine("Nothing to do eshop '{0}' is not scrapable",Kilobaitas);
-             }else{
+                }else{
                 
                 option.AddArgument("--headless");
                 option.AddArgument("--start-maximized");
@@ -192,8 +192,9 @@ namespace PriceAdvisor.Controllers
                 BackgroundJob.Enqueue(() => fortakasInstance.PrepareFortakas(fortakasCategories,nuoList[i], ikiList[i]));
                 }
              }
-            List<string> topoCentrasCategories = System.IO.File.ReadAllLines(@"C:\Users\Dovydas.Petrutis\Documents\PriceAdvisor\Links\TopoCentrasLinks.txt").ToList();
-            topocentrasInstance.PrepareTopoCentras(topoCentrasCategories,0,5);
+                List<string> topoCentrasCategories = System.IO.File.ReadAllLines(@"F:\Duomenys\Bakalauro darbas\PriceAdvisor\Links\TopoCentrasLinks.txt").ToList();
+                topocentrasInstance.PrepareTopoCentras(topoCentrasCategories,0,5);
+
              sw.Stop();
              Console.WriteLine("===============TIIIIIIIIME HERE=========="+sw.Elapsed);
             var rng = new Random();

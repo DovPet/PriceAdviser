@@ -30,11 +30,10 @@ namespace PriceAdvisor.ScraperService
         { 
             HtmlWeb web = new HtmlWeb();
             
-
             for (int i = nuo; i < iki; i++)
             {
                int pageNumber = 1;
-               var url = category[i]+"?n=80&p="+pageNumber;
+               var url = category[i]+"?limit=80&p="+pageNumber;
                var page = web.Load(url);
                Console.WriteLine(url);    
                await GetDataFromTopoCentras(page);          
@@ -52,12 +51,22 @@ namespace PriceAdvisor.ScraperService
 
          public async Task GetDataFromTopoCentras(HtmlDocument page)
         { 
-            var pricesNodes = page.DocumentNode.SelectNodes("//div[@class='additional-info']//a[@class='title']");
-            var codesNodes = page.DocumentNode.SelectNodes("//tr[contains(@class,'ajax_block_product')]//td[@class='kodas']");
+            var pricesNodes = page.DocumentNode.SelectNodes("//div[@class='additional-info']//span[contains(@class,'price-wrapper')]");
+            var codesNodes = page.DocumentNode.SelectNodes("//div[@class='additional-info']//a[@class='title']");
+            //var prices;
+            var codes = codesNodes.Select(node => node.InnerText.Replace("\n", "").Replace("\t", "").Replace("\r", "").Replace("                         ",""));
+            var pricesHtml = pricesNodes.Select(node => node.InnerHtml).ToString();
 
-            var codes = codesNodes.Select(node => node.FirstChild.InnerText.Replace("\n", "").Replace("\t", "").Replace("\r", ""));
-            var prices = pricesNodes.Select(node => node.InnerText.Replace("€", "").Replace(" ", "").Replace(",", "."));
+            if(pricesHtml.Contains("//span[@class='final-price']"))
+            {
 
+            }else{
+
+            }
+
+           var prices = pricesNodes.Select(node => node.InnerText.Replace("€", "").Replace(" ", "").Replace(",", ".").Replace("Kaina:",""));
+            prices = pricesNodes.Select(node => node.InnerText.Replace("€", "").Replace(" ", "").Replace(",", ".").Replace("Kaina:",""));
+            
             List<Data> sets = codes
                 .Zip(prices, (code, price) => new Data() { Code = code, Price = price }).ToList();
             foreach(var set in sets)

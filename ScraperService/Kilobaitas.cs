@@ -27,12 +27,6 @@ namespace PriceAdvisor.ScraperService
         }
         public async Task PrepareKilobaitas(IWebDriver driver, HtmlDocument doc,List<int> kategorijuID)
         {
-            
-          //  kategorijuID =
-        //        new List<int>() { 390, 406, 435, 438, 638, 442, 557, 476, 482, 489, 652, 510, 550, 570, 583 };
-            //driver.Navigate()
-                //.GoToUrl("http://www.kilobaitas.lt/Kompiuteriai/Plansetiniai_(Tablet)/CatalogStore.aspx?CatID=PL_"+
-                     //   kategorijuID[0] + "");
             //390-781
             await Task.Delay(500);
             for (int kategorijosNr = 0; kategorijosNr < kategorijuID.Count; kategorijosNr++)

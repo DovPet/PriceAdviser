@@ -28,7 +28,6 @@ namespace PriceAdvisor.ScraperService
         public async Task PrepareFortakas(List<string> category,int nuo, int iki)
         {  
             HtmlWeb web = new HtmlWeb();
-            
 
             for (int i = nuo; i < iki; i++)
             {
