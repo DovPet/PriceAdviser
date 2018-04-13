@@ -192,8 +192,8 @@ namespace PriceAdvisor.Controllers
                 BackgroundJob.Enqueue(() => fortakasInstance.PrepareFortakas(fortakasCategories,nuoList[i], ikiList[i]));
                 }
              }
-                List<string> topoCentrasCategories = System.IO.File.ReadAllLines(@"F:\Duomenys\Bakalauro darbas\PriceAdvisor\Links\TopoCentrasLinks.txt").ToList();
-                topocentrasInstance.PrepareTopoCentras(topoCentrasCategories,0,5);
+                List<string> topoCentrasCategories = System.IO.File.ReadAllLines(@"C:\Users\Dovydas.Petrutis\Documents\PriceAdvisor\Links\TopoCentrasLinks.txt").ToList();
+                topocentrasInstance.PrepareTopoCentras(topoCentrasCategories,0,4);
 
              sw.Stop();
              Console.WriteLine("===============TIIIIIIIIME HERE=========="+sw.Elapsed);

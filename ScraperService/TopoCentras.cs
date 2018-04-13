@@ -51,22 +51,30 @@ namespace PriceAdvisor.ScraperService
 
          public async Task GetDataFromTopoCentras(HtmlDocument page)
         { 
+            StreamWriter file = new StreamWriter(@"C:\Users\Dovydas.Petrutis\Documents\PriceAdvisor\Links\html.txt");
             var pricesNodes = page.DocumentNode.SelectNodes("//div[@class='additional-info']//span[contains(@class,'price-wrapper')]");
             var codesNodes = page.DocumentNode.SelectNodes("//div[@class='additional-info']//a[@class='title']");
-            //var prices;
-            var codes = codesNodes.Select(node => node.InnerText.Replace("\n", "").Replace("\t", "").Replace("\r", "").Replace("                         ",""));
-            var pricesHtml = pricesNodes.Select(node => node.InnerHtml).ToString();
-
-            if(pricesHtml.Contains("//span[@class='final-price']"))
-            {
-
-            }else{
-
-            }
-
-           var prices = pricesNodes.Select(node => node.InnerText.Replace("€", "").Replace(" ", "").Replace(",", ".").Replace("Kaina:",""));
-            prices = pricesNodes.Select(node => node.InnerText.Replace("€", "").Replace(" ", "").Replace(",", ".").Replace("Kaina:",""));
             
+            var prices = pricesNodes.Select(node => node.InnerText);
+            var codes = codesNodes.Select(node => node.InnerText.Replace("\n", "").Replace("\t", "").Replace("\r", "").Replace("                         ",""));
+            var pricesHtml = pricesNodes.Select(node => node.InnerHtml);
+            foreach (var item in pricesHtml)
+            {
+                //await file.WriteLineAsync(item.ToString());
+                //Console.WriteLine(item.ToString());
+            
+                //await file.FlushAsync();
+            pricesNodes = page.DocumentNode.SelectNodes("//div[@class='additional-info']//span[contains(@class,'price-wrapper')]//span[@class='final-price']");
+            pricesNodes = page.DocumentNode.SelectNodes("//div[@class='additional-info']//span[contains(@class,'price-wrapper')]//span[@class='price']");    
+                if (item.Contains("/m"))
+                {
+                    
+                    prices = pricesNodes.Select(node => node.InnerText.Replace(" ", ""));
+                }else{
+                    
+                    prices = pricesNodes.Select(node => node.InnerText.Replace(" ", ""));
+                }
+            }
             List<Data> sets = codes
                 .Zip(prices, (code, price) => new Data() { Code = code, Price = price }).ToList();
             foreach(var set in sets)
@@ -74,6 +82,7 @@ namespace PriceAdvisor.ScraperService
             var line = String.Format("{0,-40} {1}", set.Code, set.Price);
             Console.WriteLine(line);
             }
+
         }
 
         public async Task GetLinksFromTopoCentras()
