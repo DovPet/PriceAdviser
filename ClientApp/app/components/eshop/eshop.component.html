@@ -1,0 +1,20 @@
+<h2>Parduotuvių valdymas</h2>
+<form #f="ngForm" (ngSubmit)="submit()" validate>
+        <table class="table">
+                <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Surname</th>
+                          <th>Email</th>
+
+                        </tr>
+                    </thead>
+        <tbody>
+        <tr *ngFor="let v of eshops" >
+                <td>{{ v.name }}</td>
+                <td >{{ v.administrationId }}</td>
+                <td >{{ v.percents }}</td>
+         </tbody>      
+        </table> 
+    <button class="btn btn-primary">Save</button>
+</form>

@@ -124,16 +124,35 @@ namespace PriceAdvisor.ScraperService
                index++;
            }
             product = product.Remove(0,index);
-            var parts = product.Split(new[] { ' ','-','/' });
+            var parts = product.Split(new[] { ' ','-','/','+' });
             List<Product> searchingProd = new List<Product>();
-            var query = $"SELECT * FROM [PriceAdvisor].[dbo].[Products] WHERE [Name] LIKE '%"+parts[0]+"%' AND [Name] LIKE '%"+parts[parts.Count()-1]+"%' ";
-            for (int i = parts.Count()-2; i > 1; i--)
+            var queryName = $"SELECT * FROM [PriceAdvisor].[dbo].[Products] WHERE [Name] LIKE '%"+parts[0]+"%' AND [Name] LIKE '%"+parts[parts.Count()-1].Replace("Dos","")+"%' ";
+            
+            for (int i = parts.Count()-2; i > 0; i--)
             {
-                query = query+"AND [Name] LIKE '%"+parts[i].Replace("GB","").Replace("+","")+"%' ";
-                searchingProd = context.Products.FromSql(query).ToList();
-                if(searchingProd.Count()==1)
-                break;
+                /*if(!parts[i].ToLower().Contains("juod") || !parts[i].ToLower().Equals("su") ||!parts[i].ToLower().Equals("mikrofonu")
+                    || !parts[i].ToLower().Equals("belaidės") ||!parts[i].ToLower().Contains("balt")|| !parts[i].ToLower().Contains("raudo") ||!parts[i].ToLower().Contains("mėlyn")
+                    || !parts[i].ToLower().Equals("bevielės") ||!parts[i].ToLower().Equals("mikrofonu")||!parts[i].ToLower().Contains("žali") ||!parts[i].ToLower().Contains("sidabr"))
+                {*/
+                queryName = queryName+"AND [Name] LIKE '%"+parts[i].Replace("GB","").Replace("Ti","")
+                                        .Replace("TB","").Replace("GTX","").Replace("+","").Replace("SSD","")+"%' ";
+                
+               // }
             }
+            if(parts.Count()<4){
+            for (int i = 1; i < parts.Count(); i++)
+            {
+               var queryCode = $"SELECT * FROM [PriceAdvisor].[dbo].[Products] WHERE [Code] LIKE '%"+parts[i]+"%'";
+               searchingProd = context.Products.FromSql(queryCode).ToList(); 
+               if(searchingProd.Count()==1) 
+                    break;
+            }
+            }
+            if(searchingProd.Count()==1)
+            {}else{
+            searchingProd = context.Products.FromSql(queryName).ToList();
+                }//if(searchingProd.Count()==1)
+                //break;
             if(searchingProd.Count()>0)
             Console.WriteLine(searchingProd[0].Code);
             /*List<Product> FindProduct = new List<Product>();

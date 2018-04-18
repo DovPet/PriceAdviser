@@ -189,7 +189,7 @@ namespace PriceAdvisor.Controllers
               
               
                 List<string> topoCentrasCategories = System.IO.File.ReadAllLines(Environment.CurrentDirectory+@"\Links\TopoCentrasLinks.txt").ToList();
-                topocentrasInstance.PrepareTopoCentras(topoCentrasCategories,0,topoCentrasCategories.Count);
+                topocentrasInstance.PrepareTopoCentras(topoCentrasCategories,9,10);
               
               //ateaInstance.LoadPricesFromExcel();
              sw.Stop();

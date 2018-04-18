@@ -36,8 +36,11 @@ namespace PriceAdvisor
             services.AddAutoMapper();
             services.AddHangfire(configuration => { configuration.UseSqlServerStorage(Configuration.GetConnectionString("Default"));
                 });
+            services.AddAutoMapper();
             services.AddDbContext<PriceAdvisorDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IAdministrationRepository, AdministrationRepository>();
+            services.AddScoped<IEshopRepository, EshopRepository>();
             services.AddMvc();
         }
 

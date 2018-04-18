@@ -22,6 +22,13 @@
                         <span class='glyphicon glyphicon-education'></span> Counter
                     </a>
                 </li>
+
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/eshop']">
+                        <span class='glyphicon glyphicon-off'></span> Admin
+                    </a>
+                </li>
+
                 <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/fetch-data']">
                         <span class='glyphicon glyphicon-th-list'></span> Fetch data

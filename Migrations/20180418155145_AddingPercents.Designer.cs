@@ -11,9 +11,10 @@ using System;
 namespace PriceAdvisor.Migrations
 {
     [DbContext(typeof(PriceAdvisorDbContext))]
-    partial class PriceAdvisorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180418155145_AddingPercents")]
+    partial class AddingPercents
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,6 +25,8 @@ namespace PriceAdvisor.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Percents");
 
                     b.Property<bool>("Scrapable");
 
@@ -54,8 +57,6 @@ namespace PriceAdvisor.Migrations
                     b.Property<int>("AdministrationId");
 
                     b.Property<string>("Name");
-
-                    b.Property<int>("Percents");
 
                     b.HasKey("Id");
 
