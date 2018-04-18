@@ -33,6 +33,8 @@ namespace PriceAdvisor.Controllers
         Kilobaitas kilobaitasInstance;
         Fortakas fortakasInstance;
         TopoCentras topocentrasInstance;
+        Atea ateaInstance;
+
         ChromeOptions option = new ChromeOptions();
         HtmlDocument doc = new HtmlDocument();
         
@@ -44,7 +46,7 @@ namespace PriceAdvisor.Controllers
                 kilobaitasInstance = new Kilobaitas(unitOfWork,context);
                 fortakasInstance = new Fortakas(unitOfWork,context);
                 topocentrasInstance = new TopoCentras(unitOfWork,context);
-                
+                ateaInstance = new Atea(unitOfWork,context);
         }
         private static string[] Summaries = new[]
         {
@@ -65,10 +67,10 @@ namespace PriceAdvisor.Controllers
             {
                 Console.WriteLine("Nothing to do eshop '{0}' is not scrapable",Skytech);
                 }else{
-                int[] nuoList = new int[9] { 1, 340, 510, 680, 850,1020, 1190, 1360, 1530 };
-                int[] ikiList = new int[9] { 170, 510, 680, 850, 1020, 1190, 1360, 1530, 1656};
+                int[] nuoList = new int[10] { 1, 170,340, 510, 680, 850,1020, 1190, 1360, 1530 };
+                int[] ikiList = new int[10] { 170, 340,510, 680, 850, 1020, 1190, 1360, 1530, 1656};
              
-                    for (int i = 0; i < 9; i++)
+                    for (int i = 0; i < 1; i++)
                     {
                      BackgroundJob.Enqueue(() => skytechInstance.PrepareSkytech(nuoList[i], ikiList[i]));
                     }
@@ -79,15 +81,14 @@ namespace PriceAdvisor.Controllers
                 }else{
                 
                 option.AddArgument("--headless");
-                option.AddArgument("--start-maximized");
-                    
-                /*option.AddArgument("--disable-gpu"); 
+                option.AddArgument("--start-maximized");         
+                option.AddArgument("--disable-gpu"); 
                 option.AddArgument("--hide-scrollbars"); 
                 option.AddArgument("--no-sandbox");      
-                 option.AddArgument("--no-startup-window"); 
-                 option.AddArgument("--disable-extensions"); 
-                 option.AddArgument("--disable-infobars");
-                 option.AddArgument("--ignore-certificate-errors"); */
+                option.AddArgument("--no-startup-window"); 
+                option.AddArgument("--disable-extensions"); 
+                option.AddArgument("--disable-infobars");
+                option.AddArgument("--ignore-certificate-errors");
                  
                 //IWebDriver driver = new ChromeDriver(@"F:\Duomenys\Bakalauro darbas\PriceAdvisor",option);
                 
@@ -157,7 +158,7 @@ namespace PriceAdvisor.Controllers
                 Parallel.For(0, CategoryList.Count, i =>
             {
                 //IWebDriver driver = new ChromeDriver(@"C:\selenium",option);
-                IWebDriver driver = new ChromeDriver(@"F:\Duomenys\Bakalauro darbas\PriceAdvisor",option);
+                IWebDriver driver = new ChromeDriver(Environment.CurrentDirectory,option);
                 HtmlDocument doc = new HtmlDocument();
                
                 //IWebDriver driver = new RemoteWebDriver(DesiredCapabilities.HtmlUnit());
@@ -165,36 +166,32 @@ namespace PriceAdvisor.Controllers
                // driver.Manage().Window.Maximize();
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(0);
                 IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
-                Thread pirma = new Thread(async() =>await kilobaitasInstance.PrepareKilobaitas(driver, doc,CategoryList[i]));
+                Thread pirma = new Thread(async()=>await kilobaitasInstance.PrepareKilobaitas(driver, doc,CategoryList[i]));
                 threads[i] = pirma;
                 threads[i].Start();
                 pirma.Join();
                 //Thread.Sleep(200);
             });
                 
-                //for (int i = 0; i < CategoryList.Count; i++)
-               // {
-                   // BackgroundJob.Enqueue(() => kilobaitasInstance.PrepareKilobaitas(driver, doc,CategoryList[0]));
-                //     kilobaitasInstance.PrepareKilobaitas(driver, doc,CategoryList[i]);
-              //  }
-                //sw.Stop();
-                //Console.WriteLine(sw.Elapsed);
              }
              if(NeedFortakas.AdministrationId == 2){
                 Console.WriteLine("Nothing to do eshop '{0}' is not scrapable",Fortakas);
              }else{                 
                 int[] nuoList = new int[10] { 0, 24, 48, 72, 96, 120, 144, 168, 192, 216};
-                int[] ikiList = new int[10] { 24, 48, 72, 96, 120, 144, 168, 192, 216, 234};
-                List<string> fortakasCategories = System.IO.File.ReadAllLines(@"F:\Duomenys\Bakalauro darbas\PriceAdvisor\Links\FortakasLinks.txt").ToList();
+                int[] ikiList = new int[10] { 1, 48, 72, 96, 120, 144, 168, 192, 216, 234};
+                List<string> fortakasCategories = System.IO.File.ReadAllLines(Environment.CurrentDirectory+@"\Links\FortakasLinks.txt").ToList();
                 //fortakasInstance.PrepareFortakas(categories,0,categories.Count);
-                for (int i = 0; i < nuoList.Count(); i++)
+                for (int i = 0; i < 1; i++)
                 {
                 BackgroundJob.Enqueue(() => fortakasInstance.PrepareFortakas(fortakasCategories,nuoList[i], ikiList[i]));
                 }
              }
-                List<string> topoCentrasCategories = System.IO.File.ReadAllLines(@"C:\Users\Dovydas.Petrutis\Documents\PriceAdvisor\Links\TopoCentrasLinks.txt").ToList();
-                topocentrasInstance.PrepareTopoCentras(topoCentrasCategories,0,4);
-
+              
+              
+                List<string> topoCentrasCategories = System.IO.File.ReadAllLines(Environment.CurrentDirectory+@"\Links\TopoCentrasLinks.txt").ToList();
+                topocentrasInstance.PrepareTopoCentras(topoCentrasCategories,0,topoCentrasCategories.Count);
+              
+              //ateaInstance.LoadPricesFromExcel();
              sw.Stop();
              Console.WriteLine("===============TIIIIIIIIME HERE=========="+sw.Elapsed);
             var rng = new Random();

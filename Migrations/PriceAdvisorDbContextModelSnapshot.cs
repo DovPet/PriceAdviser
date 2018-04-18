@@ -67,9 +67,9 @@ namespace PriceAdvisor.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("EShopId");
+                    b.Property<int>("EshopId");
 
-                    b.Property<int?>("ProductId");
+                    b.Property<int>("ProductId");
 
                     b.Property<DateTime>("UpdatedAt");
 
@@ -77,7 +77,7 @@ namespace PriceAdvisor.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EShopId");
+                    b.HasIndex("EshopId");
 
                     b.HasIndex("ProductId");
 
@@ -90,6 +90,8 @@ namespace PriceAdvisor.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Code");
+
+                    b.Property<bool>("Edited");
 
                     b.Property<string>("Name");
 
@@ -110,11 +112,13 @@ namespace PriceAdvisor.Migrations
                 {
                     b.HasOne("PriceAdvisor.Core.Models.EShop", "EShop")
                         .WithMany("Prices")
-                        .HasForeignKey("EShopId");
+                        .HasForeignKey("EshopId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("PriceAdvisor.Core.Models.Product", "Product")
                         .WithMany("Prices")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

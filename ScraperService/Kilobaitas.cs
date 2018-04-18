@@ -19,6 +19,7 @@ namespace PriceAdvisor.ScraperService
         private string EshopName = "Kilobaitas";
         DateTime DateNow = DateTime.Now;
         private Stopwatch sw = new Stopwatch();
+        
         public Kilobaitas(IUnitOfWork unitOfWork, PriceAdvisorDbContext context)
         {          
             this.unitOfWork = unitOfWork;
@@ -28,7 +29,7 @@ namespace PriceAdvisor.ScraperService
         public async Task PrepareKilobaitas(IWebDriver driver, HtmlDocument doc,List<int> kategorijuID)
         {
             //390-781
-            await Task.Delay(500);
+            //await Task.Delay(500);
             for (int kategorijosNr = 0; kategorijosNr < kategorijuID.Count; kategorijosNr++)
            {
                 driver.Navigate()
@@ -63,6 +64,12 @@ namespace PriceAdvisor.ScraperService
 
         public async Task gautiDuomenisIsKilobaito(IWebDriver driver, HtmlDocument doc)
         {
+            var optionsBuilder = new DbContextOptionsBuilder<PriceAdvisorDbContext>();
+            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=PriceAdvisor;Trusted_Connection=True;MultipleActiveResultSets=True;");
+            
+using(var db = new PriceAdvisorDbContext(optionsBuilder.Options))
+{
+            var FindEShop = db.Eshops.FirstOrDefault(shop=> shop.Name == EshopName);
             int psl = 1;
             IWebElement ie;
             IWebElement next;
@@ -70,7 +77,7 @@ namespace PriceAdvisor.ScraperService
             ie = driver.FindElement(By.XPath("//html"));
             string innerHtml = ie.GetAttribute("innerHTML");
             doc.LoadHtml(innerHtml);
-            //var FindEShop = context.Eshops.FirstOrDefault(shop=> shop.Name == EshopName);
+            
             var codesNodes =
                 doc.DocumentNode.SelectNodes(
                     "//td[@class='mainContent']//div[@class='itemNormal']//div[@class='itemCode']");
@@ -97,22 +104,22 @@ namespace PriceAdvisor.ScraperService
 
             foreach (var set in sets)
             {
-            /*var FindProduct = await context.Products.FirstOrDefaultAsync(product=> product.Code == set.Code);
+            var FindProduct = await db.Products.FirstOrDefaultAsync(product=> product.Code == set.Code);
                     if(FindProduct==null)
                     {
 
                     }else{
-                        var FindPriceExists = await context.Prices.FirstOrDefaultAsync(price=> price.ProductId == FindProduct.Id);
-                        if(FindPriceExists != null)
+                        var FindPriceExists = await db.Prices.FirstOrDefaultAsync(price=> price.ProductId == FindProduct.Id && price.EshopId == FindEShop.Id);
+                        if(FindPriceExists != null && FindPriceExists.EshopId==FindEShop.Id)
                         {
                             FindPriceExists.Value = set.Price;
                             FindPriceExists.UpdatedAt = DateNow.AddTicks( - (DateNow.Ticks % TimeSpan.TicksPerSecond));
                         }else{
                             var Price = new Price {Value = set.Price, UpdatedAt = DateNow, EshopId = FindEShop.Id, ProductId = FindProduct.Id};
-                            context.Prices.Add(Price);
+                            db.Prices.Add(Price);
                         }                  
                      
-            }*/
+            }
             var line = String.Format("{0,-40} {1}", set.Code, set.Price);
             Console.WriteLine(line);
         }
@@ -124,7 +131,9 @@ namespace PriceAdvisor.ScraperService
                 psl++;
                  Console.WriteLine("========================="+psl+"===========================");
             }
-        //await unitOfWork.CompleteAsync();
+            await db.SaveChangesAsync();
+        
       }
+    }
     }
 }

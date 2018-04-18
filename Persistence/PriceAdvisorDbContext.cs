@@ -14,6 +14,5 @@ namespace PriceAdvisor.Persistence
           : base(options)
         {
         }
-       
     }
 }

@@ -14,6 +14,7 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
+  <PackageReference Include="CsvHelper" Version="7.1.0" />
   <Reference Include="HtmlAgilityPack" Version="1.7.2" />
     <PackageReference Include="AutoMapper" Version="6.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="1.2.0" />

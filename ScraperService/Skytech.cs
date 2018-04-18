@@ -77,18 +77,15 @@ namespace PriceAdvisor.ScraperService
                     {
 
                     }else{
-                        var FindPriceExists = await context.Prices.FirstOrDefaultAsync(price=> price.ProductId == FindProduct.Id);
-                        if(FindPriceExists != null)
+                        var FindPriceExists = await context.Prices.FirstOrDefaultAsync(price=> price.ProductId == FindProduct.Id && price.EshopId == FindEShop.Id);
+                        if(FindPriceExists != null && FindPriceExists.EshopId==FindEShop.Id)
                         {
                             FindPriceExists.Value = set.Price;
                             FindPriceExists.UpdatedAt = DateNow.AddTicks( - (DateNow.Ticks % TimeSpan.TicksPerSecond));
                         }else{
-                            var Price = new Price {Value = set.Price, UpdatedAt = DateNow, EshopId = FindEShop.Id, ProductId = FindProduct.Id};
-                   // var productUpdate = await context.Datas.FirstOrDefaultAsync(s => s.Code == set.Code );
-                    // productUpdate.Price = set.Price;
+                            var Price = new Price {Value = set.Price, UpdatedAt = DateNow.AddTicks( - (DateNow.Ticks % TimeSpan.TicksPerSecond)), EshopId = FindEShop.Id, ProductId = FindProduct.Id};
                             context.Prices.Add(Price);
                         }
-                    //await unitOfWork.CompleteAsync();
                     var line = String.Format("{0,-40} {1}", set.Code, set.Price);
                     Console.WriteLine(line); 
             }

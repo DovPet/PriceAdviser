@@ -15,7 +15,7 @@ namespace PriceAdvisor.Persistence
 
         public async Task CompleteAsync()
         {
-        await context.SaveChangesAsync();
+         await context.SaveChangesAsync();
         }
   
     }

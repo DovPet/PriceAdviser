@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using Microsoft.EntityFrameworkCore;
 using OpenQA.Selenium;
 using PriceAdvisor.Core;
 using PriceAdvisor.Core.Models;
@@ -54,6 +55,7 @@ namespace PriceAdvisor.ScraperService
 
         public async Task GetDataFromFortakas(HtmlDocument page)
         { 
+            var FindEShop = context.Eshops.FirstOrDefault(shop=> shop.Name == EshopName);
             var pricesNodes = page.DocumentNode.SelectNodes("//tr[contains(@class,'ajax_block_product')]//td[@class='ekaina']//strong");
             var codesNodes = page.DocumentNode.SelectNodes("//tr[contains(@class,'ajax_block_product')]//td[@class='kodas']");
 
@@ -64,14 +66,31 @@ namespace PriceAdvisor.ScraperService
                 .Zip(prices, (code, price) => new Data() { Code = code, Price = price }).ToList();
             foreach(var set in sets)
             {
-            var line = String.Format("{0,-40} {1}", set.Code, set.Price);
-            Console.WriteLine(line);
+                    var FindProduct = await context.Products.FirstOrDefaultAsync(product=> product.Code == set.Code);
+                    if(FindProduct==null)
+                    {
+
+                    }else{
+                        var FindPriceExists = await context.Prices.FirstOrDefaultAsync(price=> price.ProductId == FindProduct.Id && price.EshopId == FindEShop.Id );
+                        if(FindPriceExists != null && FindPriceExists.EshopId==FindEShop.Id)
+                        {
+                            FindPriceExists.Value = set.Price;
+                            FindPriceExists.UpdatedAt = DateNow.AddTicks( - (DateNow.Ticks % TimeSpan.TicksPerSecond));
+                        }else{
+                            var Price = new Price {Value = set.Price, UpdatedAt = DateNow.AddTicks( - (DateNow.Ticks % TimeSpan.TicksPerSecond)), EshopId = FindEShop.Id, ProductId = FindProduct.Id};
+
+                            context.Prices.Add(Price);
+                        }
+                    var line = String.Format("{0,-40} {1}", set.Code, set.Price);
+                    Console.WriteLine(line); 
+            }
+            await unitOfWork.CompleteAsync();
             }
         }
 
         public async Task GetLinksFromFortakas()
         {
-            StreamWriter file = new StreamWriter(@"F:\Duomenys\Bakalauro darbas\PriceAdvisor\Links\FortakasLinks.txt");
+            StreamWriter file = new StreamWriter(Environment.CurrentDirectory+@"\Links\FortakasLinks.txt");
             HtmlWeb web = new HtmlWeb();
             var url = "https://fortakas.lt/medis";
             var page = web.Load(url);
