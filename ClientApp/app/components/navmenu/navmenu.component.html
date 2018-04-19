@@ -14,7 +14,7 @@
             <ul class='nav navbar-nav'>
                 <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/home']">
-                        <span class='glyphicon glyphicon-home'></span> Home
+                        <span class='glyphicon glyphicon-home'></span> Pagrindinis
                     </a>
                 </li>
                 <li [routerLinkActive]="['link-active']">
@@ -24,14 +24,20 @@
                 </li>
 
                 <li [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/eshop']">
-                        <span class='glyphicon glyphicon-off'></span> Admin
+                    <a [routerLink]="['/eshops']">
+                        <span class='glyphicon glyphicon-off'></span> Parduotuvės
+                    </a>
+                </li>
+
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/products']">
+                        <span class='glyphicon glyphicon-shopping-cart'></span> Produktai
                     </a>
                 </li>
 
                 <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/fetch-data']">
-                        <span class='glyphicon glyphicon-th-list'></span> Fetch data
+                        <span class='glyphicon glyphicon-th-list'></span> Gauti duomenis
                     </a>
                 </li>
             </ul>

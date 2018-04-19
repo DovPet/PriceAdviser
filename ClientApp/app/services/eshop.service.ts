@@ -6,11 +6,11 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class EshopService {
-  private readonly eshopEndpoint = '/api/Eshop';
+  private readonly eshopEndpoint = '/api/eshop';
 
   constructor(private http: Http) { }
   getScrapable(id) {
-    return this.http.get(this.eshopEndpoint + '/' + 1)
+    return this.http.get(this.eshopEndpoint + '/' + id)
       .map(res => res.json());
   }
   getScrapables() {

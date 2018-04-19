@@ -63,14 +63,14 @@ namespace PriceAdvisor.Controllers
            var NeedFortakas = context.Eshops.FirstOrDefault(shop=> shop.Name == Fortakas);
            var NeedTopoCentras = context.Eshops.FirstOrDefault(shop=> shop.Name == TopoCentras);
            //need to set to 1 if you want to get data
-           if(NeedSkytech.AdministrationId == 2)
+           if(NeedSkytech.AdministrationId == 1)
             {
                 Console.WriteLine("Nothing to do eshop '{0}' is not scrapable",Skytech);
                 }else{
                 int[] nuoList = new int[10] { 1, 170,340, 510, 680, 850,1020, 1190, 1360, 1530 };
                 int[] ikiList = new int[10] { 170, 340,510, 680, 850, 1020, 1190, 1360, 1530, 1656};
              
-                    for (int i = 0; i < 1; i++)
+                    for (int i = 0; i < 10; i++)
                     {
                      BackgroundJob.Enqueue(() => skytechInstance.PrepareSkytech(nuoList[i], ikiList[i]));
                     }
@@ -187,10 +187,12 @@ namespace PriceAdvisor.Controllers
                 }
              }
               
-              
+              if(NeedTopoCentras.AdministrationId == 2){
+                Console.WriteLine("Nothing to do eshop '{0}' is not scrapable",TopoCentras);
+             }else{
                 List<string> topoCentrasCategories = System.IO.File.ReadAllLines(Environment.CurrentDirectory+@"\Links\TopoCentrasLinks.txt").ToList();
                 topocentrasInstance.PrepareTopoCentras(topoCentrasCategories,9,10);
-              
+             }
               //ateaInstance.LoadPricesFromExcel();
              sw.Stop();
              Console.WriteLine("===============TIIIIIIIIME HERE=========="+sw.Elapsed);

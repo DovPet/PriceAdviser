@@ -9,12 +9,12 @@ import { ToastyService } from "ng2-toasty";
 import 'rxjs/add/Observable/forkJoin';
 
 @Component({
-    selector: 'app-eshop',
-    templateUrl: './eshop.component.html',
-    styleUrls: ['./eshop.component.css']
+    selector: 'app-eshop-form',
+    templateUrl: './eshop-form.component.html',
+    styleUrls: ['./eshop-form.component.css']
   })
 
-  export class EshopComponent implements OnInit {
+  export class EshopFormComponent implements OnInit {
    
     
     eshop: SaveEshop = {
@@ -41,7 +41,7 @@ import 'rxjs/add/Observable/forkJoin';
                 this.eshopService.getScrapable(this.eshop.id).subscribe(p=>{this.eshop = p;});
                 err => {
                   if (err.status == 404)
-                    this.router.navigate(['/home']);
+                    this.router.navigate(['/eshops']);
                 };
         }
        
@@ -59,12 +59,25 @@ import 'rxjs/add/Observable/forkJoin';
             result$.subscribe(eshop => {
               this.toastyService.success({
                 title: 'Success', 
+                msg: 'Duomenys išsaugoti sėkmingai.',
+                theme: 'bootstrap',
+                showClose: true,
+                timeout: 5000
+              });
+              this.router.navigate(['/eshops'])
+            });
+          }
+          submitPercents() {      
+            var result$ = this.eshopService.update(this.eshop); 
+            result$.subscribe(eshops => {
+              this.toastyService.success({
+                title: 'Success', 
                 msg: 'Data was sucessfully saved.',
                 theme: 'bootstrap',
                 showClose: true,
                 timeout: 5000
               });
-              this.router.navigate(['/eshop/', eshop.id])
+              this.router.navigate(['/eshops'])
             });
           }
 }

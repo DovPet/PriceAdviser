@@ -1,0 +1,34 @@
+<h2>Produktų sąrašas</h2>
+
+<table class="table">
+        <thead>
+                <tr>
+                  
+                  <th>Kodas</th>
+                  <th>Pavadinimas</th>
+                  <th>Atea</th>
+                  <th>Skytech</th>
+                  <th>Topo Centas</th>
+                  <th>Fortakas</th>
+                  <th>Kilobaitas</th>
+                  <th></th>
+                </tr>
+            </thead>
+    <tbody>
+    <tr *ngFor="let p of product" >
+      
+      <td>{{ p.code }}</td>
+      <td >{{ p.name }}</td> 
+    <ng-container *ngFor="let pr of p.prices">
+      <td *ngIf=" pr.eshopId==1" >{{ pr.value }}</td>
+      <td *ngIf=" pr.eshopId==2" >{{ pr.value }}  <span class='glyphicon glyphicon-arrow-up'></span></td>
+     
+      <td *ngIf=" pr.eshopId==3" >{{ pr.value }}</td>
+      <td *ngIf=" pr.eshopId==4" >{{ pr.value }}</td>
+      <td *ngIf=" pr.eshopId==5" >{{ pr.value }}</td>
+      </ng-container>
+    </tr>
+
+  </tbody>
+</table>
+

@@ -1,0 +1,26 @@
+<h2>Parduotuvių sąrašas</h2>
+
+
+<table class="table">
+        <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Pavadinimas</th>
+                  <th>Traukiami duomenys</th>                 
+                  <th>Veiksmas</th>
+                </tr>
+            </thead>
+    <tbody>
+    <tr *ngFor="let v of eshop">
+      <td>{{ v.id }}</td>
+      <td>{{ v.name }}</td>
+      <td *ngIf=" v.administrationId==1 " >Ne</td>
+      <td *ngIf=" v.administrationId==2 " >Taip</td>
+      <td>
+        <a  class="btn btn-primary" [routerLink]="['/eshop/edit/',v.id]">Redaguoti</a>
+      </td>
+      
+    </tr>
+  </tbody>
+</table>
+

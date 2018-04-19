@@ -1,0 +1,26 @@
+<h2>Parduotuvės "{{eshop.name}}" valdymas</h2>
+<p>
+    {{ eshop | json }}
+  </p>
+  
+  <form #f="ngForm" (ngSubmit)="submit()" validate>
+
+  
+        <div class="form-group">
+            <label for="state">Ar reikia gauti informaciją</label>
+            <select id="state" class="form-control" [(ngModel)]="eshop.administrationId" name="administrationId" required #state="ngModel">
+              <option value=""></option>
+              <option value="1">Nereikia</option>
+              <option value="2">Reikia</option>
+            </select>
+            <div class="alert alert-danger" *ngIf="state.touched && !state.valid">Reikia pasirinkti vieną iš variantų</div>
+          </div>
+      
+          <div class="form-group">
+            <label for="percents">Name</label>
+            <input id="percents" type="number" class="form-control" [(ngModel)]="eshop.percents" name="percents" required #name="ngModel">
+          </div>
+      <button class="btn btn-primary">Save</button>
+    
+    </form>
+    

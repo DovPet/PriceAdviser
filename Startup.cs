@@ -41,6 +41,7 @@ namespace PriceAdvisor
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAdministrationRepository, AdministrationRepository>();
             services.AddScoped<IEshopRepository, EshopRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
             services.AddMvc();
         }
 
