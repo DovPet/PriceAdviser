@@ -67,10 +67,10 @@ namespace PriceAdvisor.Controllers
             {
                 Console.WriteLine("Nothing to do eshop '{0}' is not scrapable",Skytech);
                 }else{
-                int[] nuoList = new int[10] { 1, 170,340, 510, 680, 850,1020, 1190, 1360, 1530 };
-                int[] ikiList = new int[10] { 170, 340,510, 680, 850, 1020, 1190, 1360, 1530, 1656};
+                int[] nuoList = new int[10] { 81, 170,340, 510, 680, 850,1020, 1190, 1360, 1530 };
+                int[] ikiList = new int[10] { 82, 340,510, 680, 850, 1020, 1190, 1360, 1530, 1656};
              
-                    for (int i = 0; i < 10; i++)
+                    for (int i = 0; i < 1; i++)
                     {
                      BackgroundJob.Enqueue(() => skytechInstance.PrepareSkytech(nuoList[i], ikiList[i]));
                     }

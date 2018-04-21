@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using PriceAdvisor.Core.Models;
 
 namespace PriceAdvisor.Controllers.Resources
@@ -9,5 +11,7 @@ namespace PriceAdvisor.Controllers.Resources
         public string Value { get; set; }
         public DateTime UpdatedAt { get; set; }
         public int EshopId { get; set; }
+        public int Percents { get; set; }
+
     }
 }

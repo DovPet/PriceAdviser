@@ -18,13 +18,13 @@ namespace PriceAdvisor.Mapping
             CreateMap<Product, ProductResource>()
             .ForMember(vr => vr.Prices, opt => opt.MapFrom(v => v.Prices
             .Select(vf => new PriceResource { Id = vf.Id, Value = vf.Value, UpdatedAt = vf.UpdatedAt,
-             EshopId = vf.EshopId })));
+             EshopId = vf.EshopId, Percents = vf.EShop.Percents})));
             //.ForMember(vr => vr.Prices, opt => opt.MapFrom(v => v.Prices.Select(vf => vf.Id)));
 
             CreateMap<ProductResource, Product>()
             .ForMember(v => v.Prices, opt => opt.Ignore());
 
-            CreateMap<Price, PriceResource>();
+            CreateMap<Price, PriceResource>().ForMember(vr => vr.Percents, opt => opt.MapFrom(v => v.EShop.Percents));
             CreateMap<PriceResource, Price>();
         }
         

@@ -26,4 +26,8 @@ export class ProductService {
     return this.http.get('api/products/prices')
       .map(res => res.json());
   }
+  getEshops() {
+    return this.http.get('api/eshop')
+      .map(res => res.json());
+  }
 }

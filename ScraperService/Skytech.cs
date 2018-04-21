@@ -61,11 +61,11 @@ namespace PriceAdvisor.ScraperService
         public async Task gautiDuomenisIsSkytech(HtmlDocument page)
         {
             var FindEShop = context.Eshops.FirstOrDefault(shop=> shop.Name == EshopName);
-            var pricesNodes = page.DocumentNode.SelectNodes("//tr[contains(@class,'productListing')]//td[@class='name']//parent::tr//strong");
+            var pricesNodes = page.DocumentNode.SelectNodes("//tr[contains(@class,'productListing')]//td[@class='name']//parent::tr//td[5]");
             var codesNodes = page.DocumentNode.SelectNodes("//tr[contains(@class,'productListing')]//td[@class='model ']//div");
 
             var codes = codesNodes.Select(node => node.FirstChild.InnerText.Replace(" ", "").Replace("\n", "").Replace("\t", "").Replace("\r", "")/*.Replace("MODELIS:", "")*/);
-            var prices = pricesNodes.Select(node => node.InnerText.Replace("€", "").Replace(" ", ""));
+            var prices = pricesNodes.Select(node => node.InnerText.Replace("€", "").Replace(" ", "").Replace("\r", "").Replace("\n", ""));
 
             List<Data> sets = codes
                 .Zip(prices, (code, price) => new Data() { Code = code, Price = price }).ToList();

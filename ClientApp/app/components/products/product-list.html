@@ -19,10 +19,10 @@
       
       <td>{{ p.code }}</td>
       <td >{{ p.name }}</td> 
-    <ng-container *ngFor="let pr of p.prices">
+    <ng-container *ngFor="let pr of p.prices; let i = index">
       <td *ngIf=" pr.eshopId==1" >{{ pr.value }}</td>
-      <td *ngIf=" pr.eshopId==2" >{{ pr.value }}  <span class='glyphicon glyphicon-arrow-up'></span></td>
-     
+      <td *ngIf=" pr.eshopId==2" [ngClass]="{'RedClass':(((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents|number)}">{{pr.value}} <span [ngClass]="{'glyphicon glyphicon-arrow-up': (((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents|number)}"></span></td>
+      
       <td *ngIf=" pr.eshopId==3" >{{ pr.value }}</td>
       <td *ngIf=" pr.eshopId==4" >{{ pr.value }}</td>
       <td *ngIf=" pr.eshopId==5" >{{ pr.value }}</td>

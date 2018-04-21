@@ -22,7 +22,7 @@ namespace PriceAdvisor.Persistence
 
         public async Task<IEnumerable<Product>> GetProducts()
         {
-            return await context.Products.Include(v => v.Prices).Skip(84243).Take(100).ToListAsync();
+            return await context.Products.Include(v => v.Prices).ThenInclude(e=>e.EShop).Skip(84243).Take(100).ToListAsync();
         }
 
         public async Task<IEnumerable<Price>> GetPrices()
