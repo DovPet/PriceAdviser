@@ -7,10 +7,11 @@ using PriceAdvisor.Core;
 using PriceAdvisor.Core.Models;
 using PriceAdvisor.Persistence;
 using Microsoft.EntityFrameworkCore;
+using OpenQA.Selenium;
 
 namespace PriceAdvisor.ScraperService
 {
-    public class Skytech
+    public class Skytech : IEshop
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly PriceAdvisorDbContext context;
@@ -23,12 +24,12 @@ namespace PriceAdvisor.ScraperService
             this.context = context;
         }
          
-        public async Task PrepareSkytech(int nuo, int iki)
+        public async Task PrepareEshop(int from, int to)
         {
                       
             HtmlWeb web = new HtmlWeb();
             //1656
-            for (int i = nuo; i < iki; i++)
+            for (int i = from; i < to; i++)
             {
                 var uri = "http://www.skytech.lt/bevielio-rysio-antenos-priedai-antenos-c-" + i +
                                   ".html?pagesize=500&pav=0";
@@ -42,7 +43,7 @@ namespace PriceAdvisor.ScraperService
                 {
                     if (page.DocumentNode.SelectNodes("//td[@class='pagenav']//div[@class='page']") == null)
                     {
-                       await gautiDuomenisIsSkytech(page);
+                       await GetDataFromEshop(null,page);
                     }
                     else
                     {
@@ -51,14 +52,14 @@ namespace PriceAdvisor.ScraperService
                             uri = "http://www.skytech.lt/bevielio-rysio-antenos-priedai-antenos-c-" + i + ".html?pagesize=500&page=" + j + "&pav=0";
                             Console.WriteLine(uri);
                             page = web.Load(uri);
-                            await gautiDuomenisIsSkytech(page);
+                            await GetDataFromEshop(null,page);
                         }
                     }
                 }
             
            }
         }
-        public async Task gautiDuomenisIsSkytech(HtmlDocument page)
+        public async Task GetDataFromEshop(IWebDriver driver, HtmlDocument page)
         {
             var FindEShop = context.Eshops.FirstOrDefault(shop=> shop.Name == EshopName);
             var pricesNodes = page.DocumentNode.SelectNodes("//tr[contains(@class,'productListing')]//td[@class='name']//parent::tr//td[5]");
@@ -93,5 +94,17 @@ namespace PriceAdvisor.ScraperService
         }
 
         }
+
+        public Task PrepareEshop(List<string> category, int from, int to)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public Task PrepareEshop(IWebDriver driver, HtmlDocument page, List<int> categoryID)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

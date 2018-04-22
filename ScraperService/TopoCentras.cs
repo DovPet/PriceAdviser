@@ -14,7 +14,7 @@ using PriceAdvisor.Persistence;
 
 namespace PriceAdvisor.ScraperService
 {
-    public class TopoCentras
+    public class TopoCentras : IEshop
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly PriceAdvisorDbContext context;
@@ -29,7 +29,7 @@ namespace PriceAdvisor.ScraperService
             this.context = context;
             sw.Start();
         }
-        public async Task PrepareTopoCentras(List<string> category,int nuo, int iki)
+        public async Task PrepareEshop(List<string> category,int nuo, int iki)
         { 
             HtmlWeb web = new HtmlWeb();
             inTheList.Clear();
@@ -42,7 +42,7 @@ namespace PriceAdvisor.ScraperService
                Console.WriteLine(url);   
                 //await file.WriteLineAsync(page.DocumentNode.OuterHtml); 
                 //await file.FlushAsync();
-               await GetDataFromTopoCentras(page);  
+               await GetDataFromEshop(null,page);  
 
                pageNumber++;
                url = category[i]+"?limit=80&p="+pageNumber;
@@ -57,7 +57,7 @@ namespace PriceAdvisor.ScraperService
                page = web.Load(url); 
                Console.WriteLine(url);
 
-                    await GetDataFromTopoCentras(page);
+                    await GetDataFromEshop(null,page);
                     pageNumber++;
                url = category[i]+"?limit=80&p="+pageNumber;
                page = web.Load(url); 
@@ -69,9 +69,8 @@ namespace PriceAdvisor.ScraperService
             }  
         }
 
-         public async Task GetDataFromTopoCentras(HtmlDocument page)
+         public async Task GetDataFromEshop(IWebDriver driver, HtmlDocument page)
         { 
-            //StreamWriter file = new StreamWriter(Environment.CurrentDirectory+@"\Links\html.txt");
             var FindEShop = context.Eshops.FirstOrDefault(shop=> shop.Name == EshopName);
             var pricesNodes = page.DocumentNode.SelectNodes("//div[@class='additional-info']//span[contains(@class,'price-wrapper')]");
             var pricesNodes2 = page.DocumentNode.SelectNodes("//div[@class='additional-info']//span[contains(@class,'price-wrapper')]");
@@ -154,66 +153,10 @@ namespace PriceAdvisor.ScraperService
                 }//if(searchingProd.Count()==1)
                 //break;
             if(searchingProd.Count()>0)
-            Console.WriteLine(searchingProd[0].Code);
-            /*List<Product> FindProduct = new List<Product>();
-            int cnt = 1000000;
-            int idx = 0;
-            for (int i = 0; i < parts.Count(); i++)
             {
-               FindProduct = context.Products.Where(prod=> prod.Name.Contains(parts[i]) && prod.Name.Contains(parts[i+1])&& prod.Name.Contains(parts[i+1])).ToList();    
-
-                if(FindProduct.Count() > 1 && FindProduct.Count()<cnt)
-                {
-                    cnt =FindProduct.Count();
-                    idx = i;
-                }
+            Console.WriteLine(searchingProd[0].Code);
+            return searchingProd[0].Code;        
             }
-                FindProduct = context.Products.Where(prod=> prod.Name.Contains(parts[idx])).ToList();    
-                   var ListToRecogn = FindProduct;
-                   int correct = 0;
-                   int countas = 0;
-                   int prodId = 0;
-                   for (int j = 0; j < FindProduct.Count(); j++)
-                   {
-                       var parts2 = FindProduct[j].Name.ToString().Split(new[] { ' ','-','/' });
-                       for (int k = 0; k < parts.Count(); k++)
-                       { 
-                           for (int l = 0; l < parts2.Count(); l++)
-                           {
-                              if(parts[k].Equals(parts2[l]))
-                            {
-                                correct++;
-                            } 
-                           }
-                       }
-                        if(correct>countas)
-                        {
-                            countas = correct;
-                            prodId = j;
-                            
-                        } 
-                        correct = 0;   
-                       
-                   }
-                var FindProductOne = FindProduct[prodId];
-                Console.WriteLine(FindProductOne.Code);*/
-
-                   /* for (int j = i+1; j < parts.Count(); j++)
-                    {
-                        for (int k = 0; k < ListToRecogn.Count(); k++)
-                        {  
-                            if(!ListToRecogn[k].Name.Contains(parts[j].Replace("GB","")))
-                            {
-                                ListToRecogn.Remove(ListToRecogn[k]);
-                            }
-                        }
-                         if(ListToRecogn.Count==1)
-                         {
-                            return ListToRecogn[0].Code;        
-                         }
-                    }*/
-               
-            
          return null;            
         }
 
@@ -237,6 +180,16 @@ namespace PriceAdvisor.ScraperService
             }
             await file.FlushAsync();
         
+        }
+
+        public Task PrepareEshop(int from, int to)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task PrepareEshop(IWebDriver driver, HtmlDocument page, List<int> categoryID)
+        {
+            throw new NotImplementedException();
         }
     }
 }

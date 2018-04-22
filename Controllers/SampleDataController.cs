@@ -29,23 +29,19 @@ namespace PriceAdvisor.Controllers
         private string Kilobaitas = "Kilobaitas";
         private string Fortakas = "Fortakas";
         private string TopoCentras = "TopoCentras";
-        Skytech skytechInstance;
-        Kilobaitas kilobaitasInstance;
-        Fortakas fortakasInstance;
-        TopoCentras topocentrasInstance;
         Atea ateaInstance;
-
+        IEshop kilobaitas, skytech, fortakas, topocentras; 
         ChromeOptions option = new ChromeOptions();
         HtmlDocument doc = new HtmlDocument();
         
-        public SampleDataController(IUnitOfWork unitOfWork,PriceAdvisorDbContext context)
+        public SampleDataController(IUnitOfWork unitOfWork,PriceAdvisorDbContext context )
         {
                 this.context = context;
                 this.unitOfWork = unitOfWork;
-                skytechInstance = new Skytech(unitOfWork,context);
-                kilobaitasInstance = new Kilobaitas(unitOfWork,context);
-                fortakasInstance = new Fortakas(unitOfWork,context);
-                topocentrasInstance = new TopoCentras(unitOfWork,context);
+                skytech = new Skytech(unitOfWork,context);
+                kilobaitas = new Kilobaitas(unitOfWork,context);
+                fortakas = new Fortakas(unitOfWork,context);
+                topocentras = new TopoCentras(unitOfWork,context);
                 ateaInstance = new Atea(unitOfWork,context);
         }
         private static string[] Summaries = new[]
@@ -56,30 +52,25 @@ namespace PriceAdvisor.Controllers
         [HttpGet("[action]")]
         public IEnumerable<WeatherForecast> WeatherForecasts()
         {
-                            var sw = new Stopwatch();
-                
            var NeedSkytech = context.Eshops.FirstOrDefault(shop=> shop.Name == Skytech);
            var NeedKilobaitas = context.Eshops.FirstOrDefault(shop=> shop.Name == Kilobaitas);
            var NeedFortakas = context.Eshops.FirstOrDefault(shop=> shop.Name == Fortakas);
            var NeedTopoCentras = context.Eshops.FirstOrDefault(shop=> shop.Name == TopoCentras);
            //need to set to 1 if you want to get data
-           if(NeedSkytech.AdministrationId == 1)
+           if(NeedSkytech.AdministrationId == 2)
             {
-                Console.WriteLine("Nothing to do eshop '{0}' is not scrapable",Skytech);
-                }else{
-                int[] nuoList = new int[10] { 81, 170,340, 510, 680, 850,1020, 1190, 1360, 1530 };
-                int[] ikiList = new int[10] { 82, 340,510, 680, 850, 1020, 1190, 1360, 1530, 1656};
+                int[] nuoList = new int[10] { 1, 170,340, 510, 680, 850,1020, 1190, 1360, 1530 };
+                int[] ikiList = new int[10] { 170, 340,510, 680, 850, 1020, 1190, 1360, 1530, 1656};
              
-                    for (int i = 0; i < 1; i++)
-                    {
-                     BackgroundJob.Enqueue(() => skytechInstance.PrepareSkytech(nuoList[i], ikiList[i]));
-                    }
+                for (int i = 0; i < 1; i++)
+                {
+                     BackgroundJob.Enqueue(() => skytech.PrepareEshop(nuoList[i], ikiList[i]));
                 }
+                }else{
+                    Console.WriteLine("Nothing to do eshop '{0}' is not scrapable",Skytech);
+            }
            if(NeedKilobaitas.AdministrationId == 2)
             {
-                 Console.WriteLine("Nothing to do eshop '{0}' is not scrapable",Kilobaitas);
-                }else{
-                
                 option.AddArgument("--headless");
                 option.AddArgument("--start-maximized");         
                 option.AddArgument("--disable-gpu"); 
@@ -89,48 +80,8 @@ namespace PriceAdvisor.Controllers
                 option.AddArgument("--disable-extensions"); 
                 option.AddArgument("--disable-infobars");
                 option.AddArgument("--ignore-certificate-errors");
-                 
-                //IWebDriver driver = new ChromeDriver(@"F:\Duomenys\Bakalauro darbas\PriceAdvisor",option);
-                
-                //00:24:47.9380459
-                //sw.Start();
+
                 List<List<int>> CategoryList = new List<List<int>>();
-
-                /*CategoryList.Add( new List<int>{391, 392});
-                CategoryList.Add( new List<int>{486, 485});
-                CategoryList.Add( new List<int>{401, 626});
-                CategoryList.Add( new List<int>{489, 402});
-                CategoryList.Add( new List<int>{550, 420});
-                CategoryList.Add( new List<int>{393, 394});
-                CategoryList.Add( new List<int>{577, 663});
-                CategoryList.Add( new List<int>{612, 484});
-                CategoryList.Add( new List<int>{483, 600});
-                CategoryList.Add( new List<int>{403, 660});
-                CategoryList.Add( new List<int>{419, 739});
-                CategoryList.Add( new List<int>{435, 407});
-                CategoryList.Add( new List<int>{438, 408});
-                CategoryList.Add( new List<int>{476, 570});
-                CategoryList.Add( new List<int>{442, 409});
-                CategoryList.Add( new List<int>{510, 576});
-                CategoryList.Add( new List<int>{627, 737});
-                CategoryList.Add( new List<int>{638, 487});
-                CategoryList.Add( new List<int>{557, 770});
-                CategoryList.Add( new List<int>{652, 488});*/
-
-                /*CategoryList.Add( new List<int>{391, 392, 488});
-                CategoryList.Add( new List<int>{486, 485, 652});
-                CategoryList.Add( new List<int>{401, 626, 770});
-                CategoryList.Add( new List<int>{489, 402, 557});
-                CategoryList.Add( new List<int>{550, 420, 487});
-                CategoryList.Add( new List<int>{393, 394, 638});
-                CategoryList.Add( new List<int>{577, 663, 737});
-                CategoryList.Add( new List<int>{612, 484, 627});
-                CategoryList.Add( new List<int>{483, 600, 576});
-                CategoryList.Add( new List<int>{403, 660, 510});
-                CategoryList.Add( new List<int>{419, 739, 409});
-                CategoryList.Add( new List<int>{435, 407, 442});
-                CategoryList.Add( new List<int>{438, 408});
-                CategoryList.Add( new List<int>{476, 570});*/
 
                 CategoryList.Add( new List<int>{391, 392, 488, 468});
                 CategoryList.Add( new List<int>{486, 485, 652, 463});
@@ -153,49 +104,50 @@ namespace PriceAdvisor.Controllers
                // 406,435,438,638,476,570,442,562,510 };
                 Thread[] threads = new Thread[CategoryList.Count];
 
-                 //IWebDriver driver = new RemoteWebDriver(DesiredCapabilities.HtmlUnitWithJavaScript());
-                 sw.Start();
-                Parallel.For(0, CategoryList.Count, i =>
+                Parallel.For(0, 1, i =>
             {
-                //IWebDriver driver = new ChromeDriver(@"C:\selenium",option);
                 IWebDriver driver = new ChromeDriver(Environment.CurrentDirectory,option);
                 HtmlDocument doc = new HtmlDocument();
                
-                //IWebDriver driver = new RemoteWebDriver(DesiredCapabilities.HtmlUnit());
-                
-               // driver.Manage().Window.Maximize();
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(0);
                 IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
-                Thread pirma = new Thread(async()=>await kilobaitasInstance.PrepareKilobaitas(driver, doc,CategoryList[i]));
+                Thread pirma = new Thread(async()=>await kilobaitas.PrepareEshop(driver,doc,CategoryList[i]));
                 threads[i] = pirma;
                 threads[i].Start();
                 pirma.Join();
-                //Thread.Sleep(200);
             });
                 
+            }else{
+                Console.WriteLine("Nothing to do eshop '{0}' is not scrapable",Kilobaitas);
              }
-             if(NeedFortakas.AdministrationId == 2){
-                Console.WriteLine("Nothing to do eshop '{0}' is not scrapable",Fortakas);
-             }else{                 
-                int[] nuoList = new int[10] { 0, 24, 48, 72, 96, 120, 144, 168, 192, 216};
-                int[] ikiList = new int[10] { 1, 48, 72, 96, 120, 144, 168, 192, 216, 234};
+             if(NeedFortakas.AdministrationId == 2)
+             {             
+                int[] fromList = new int[10] { 0, 24, 48, 72, 96, 120, 144, 168, 192, 216};
+                int[] toList = new int[10] { 1, 48, 72, 96, 120, 144, 168, 192, 216, 234};
                 List<string> fortakasCategories = System.IO.File.ReadAllLines(Environment.CurrentDirectory+@"\Links\FortakasLinks.txt").ToList();
-                //fortakasInstance.PrepareFortakas(categories,0,categories.Count);
                 for (int i = 0; i < 1; i++)
                 {
-                BackgroundJob.Enqueue(() => fortakasInstance.PrepareFortakas(fortakasCategories,nuoList[i], ikiList[i]));
-                }
+                BackgroundJob.Enqueue(() => fortakas.PrepareEshop(fortakasCategories,fromList[i], toList[i]));
+                }   
+             }else{
+                 Console.WriteLine("Nothing to do eshop '{0}' is not scrapable",Fortakas);
              }
               
               if(NeedTopoCentras.AdministrationId == 2){
-                Console.WriteLine("Nothing to do eshop '{0}' is not scrapable",TopoCentras);
-             }else{
+                int[] fromList = new int[] { 0, 4, 8, 12, 16, 20, 24, 28, 32, 36,40,44,48,52,56,60,64,68,72,76,80,84};
+                int[] toList = new int[] { 4, 8, 12, 16, 20, 24, 28, 32, 36, 40,44,48,52,56,60,64,68,72,76,80,84,87};
+               
                 List<string> topoCentrasCategories = System.IO.File.ReadAllLines(Environment.CurrentDirectory+@"\Links\TopoCentrasLinks.txt").ToList();
-                topocentrasInstance.PrepareTopoCentras(topoCentrasCategories,9,10);
-             }
+                for (int i = 0; i < 1; i++)
+                {
+                BackgroundJob.Enqueue(() => topocentras.PrepareEshop(topoCentrasCategories,fromList[i], toList[i]));
+                }
+                
+             
+             }else{
+                 Console.WriteLine("Nothing to do eshop '{0}' is not scrapable",TopoCentras);
+                }
               //ateaInstance.LoadPricesFromExcel();
-             sw.Stop();
-             Console.WriteLine("===============TIIIIIIIIME HERE=========="+sw.Elapsed);
             var rng = new Random();
             
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast

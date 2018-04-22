@@ -67,17 +67,4 @@ import 'rxjs/add/Observable/forkJoin';
               this.router.navigate(['/eshops'])
             });
           }
-          submitPercents() {      
-            var result$ = this.eshopService.update(this.eshop); 
-            result$.subscribe(eshops => {
-              this.toastyService.success({
-                title: 'Success', 
-                msg: 'Data was sucessfully saved.',
-                theme: 'bootstrap',
-                showClose: true,
-                timeout: 5000
-              });
-              this.router.navigate(['/eshops'])
-            });
-          }
 }

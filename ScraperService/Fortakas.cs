@@ -13,7 +13,7 @@ using PriceAdvisor.Persistence;
 
 namespace PriceAdvisor.ScraperService
 {
-    public class Fortakas
+    public class Fortakas : IEshop
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly PriceAdvisorDbContext context;
@@ -26,17 +26,17 @@ namespace PriceAdvisor.ScraperService
             this.unitOfWork = unitOfWork;
             this.context = context;
         }
-        public async Task PrepareFortakas(List<string> category,int nuo, int iki)
+        public async Task PrepareEshop(List<string> category, int from, int to)
         {  
             HtmlWeb web = new HtmlWeb();
 
-            for (int i = nuo; i < iki; i++)
+            for (int i = from; i < to; i++)
             {
                int pageNumber = 1;
                var url = category[i]+"?n=100&p="+pageNumber;
                var page = web.Load(url);
                Console.WriteLine(url);    
-               await GetDataFromFortakas(page);          
+               await GetDataFromEshop(null,page);          
                 while (page.DocumentNode.SelectNodes("(//a[@class='product-next'])[1]") != null)
                 {
                   
@@ -46,14 +46,14 @@ namespace PriceAdvisor.ScraperService
                     Console.WriteLine(url);
                       if(page.DocumentNode.SelectNodes("//div[@class='no_prods_found clear']") == null)
                     {
-                        await GetDataFromFortakas(page);
+                        await GetDataFromEshop(null,page);
                     }
                    
                 }
             }
         }
 
-        public async Task GetDataFromFortakas(HtmlDocument page)
+        public async Task GetDataFromEshop(IWebDriver driver, HtmlDocument page)
         { 
             var FindEShop = context.Eshops.FirstOrDefault(shop=> shop.Name == EshopName);
             var pricesNodes = page.DocumentNode.SelectNodes("//tr[contains(@class,'ajax_block_product')]//td[@class='ekaina']//strong");
@@ -88,23 +88,14 @@ namespace PriceAdvisor.ScraperService
             }
         }
 
-        public async Task GetLinksFromFortakas()
+        public Task PrepareEshop(int from, int to)
         {
-            StreamWriter file = new StreamWriter(Environment.CurrentDirectory+@"\Links\FortakasLinks.txt");
-            HtmlWeb web = new HtmlWeb();
-            var url = "https://fortakas.lt/medis";
-            var page = web.Load(url);
+            throw new NotImplementedException();
+        }
 
-            
-            var linkNodesInTheShop = page.DocumentNode.SelectNodes("//a[contains(@href,'https://fortakas.lt/')]");
-            var links = linkNodesInTheShop.Select(node => node.Attributes["href"]);
-            
-            foreach (var link in links)
-            {
-                await file.WriteLineAsync(link.Value);
-                Console.WriteLine(link.Value);
-            }
-            await file.FlushAsync();
+        public Task PrepareEshop(IWebDriver driver, HtmlDocument page, List<int> categoryID)
+        {
+            throw new NotImplementedException();
         }
     }
 }

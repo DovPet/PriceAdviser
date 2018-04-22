@@ -28,25 +28,18 @@ namespace PriceAdvisor.ScraperService
 
         public async Task LoadProductsFromExcel()
         {
-            StreamWriter filez = new StreamWriter( @"F:\Duomenys\Bakalauro darbas\PriceAdvisor\Links\dump.txt");
-            var file = @"F:\Duomenys\Bakalauro darbas\PriceAdvisor\Links\productsToImport.csv";
+            
+           var file = @"F:\Duomenys\Bakalauro darbas\PriceAdvisor\Links\productsToImport.csv";
            foreach (string line in File.ReadLines(file))
             {
-                    
                     var data = line.Split(new[] { ';' });
                     var product = new Product() { Name = data[1], Code = data[0]};       
                     context.Products.Add(product);
-                    Console.WriteLine(data[0]+"   "+ data[1]);
-                    
-                    //await filez.WriteLineAsync(data[0]+"   "+ data[1]);
-                    
+                    Console.WriteLine(data[0]+"   "+ data[1]);       
             }
-                    // await filez.FlushAsync();
                 await unitOfWork.CompleteAsync();
         }
-            
         
-
         public async Task LoadPricesFromExcel()
         {
             var file = @"F:\Duomenys\Bakalauro darbas\PriceAdvisor\Links\productsToImportIDS.csv";
@@ -55,17 +48,12 @@ namespace PriceAdvisor.ScraperService
             {
                     var data = line.Split(new[] { ';' });
                 
-                    //var FindProduct = context.Products.First(prod=> prod.Code == data[0]);
-
-                    //if(FindProduct!=null){
                     var price = new Price() { EshopId = 1, Value = data[3], UpdatedAt = date, ProductId = Int32.Parse(data[6])  };
        
                     context.Prices.Add(price);
                     Console.WriteLine(data[0]+"   "+ data[1]);
-                   // }
             }
             await unitOfWork.CompleteAsync();
         }
-        
     }
 }

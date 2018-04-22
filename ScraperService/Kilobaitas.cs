@@ -12,32 +12,27 @@ using PriceAdvisor.Persistence;
 
 namespace PriceAdvisor.ScraperService
 {
-    public class Kilobaitas
+    public class Kilobaitas : IEshop
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly PriceAdvisorDbContext context;
         private string EshopName = "Kilobaitas";
-        DateTime DateNow = DateTime.Now;
-        private Stopwatch sw = new Stopwatch();
-        
+        DateTime DateNow = DateTime.Now;        
         public Kilobaitas(IUnitOfWork unitOfWork, PriceAdvisorDbContext context)
         {          
             this.unitOfWork = unitOfWork;
             this.context = context;
-            sw.Start();
         }
-        public async Task PrepareKilobaitas(IWebDriver driver, HtmlDocument doc,List<int> kategorijuID)
+        public async Task PrepareEshop(IWebDriver driver, HtmlDocument page, List<int> categoryID)
         {
-            //390-781
-            //await Task.Delay(500);
-            for (int kategorijosNr = 0; kategorijosNr < kategorijuID.Count; kategorijosNr++)
+             for (int categoryNo = 0; categoryNo < categoryID.Count; categoryNo++)
            {
                 driver.Navigate()
                     .GoToUrl(
                         "http://www.kilobaitas.lt/Kompiuteriai/Plansetiniai_(Tablet)/CatalogStore.aspx?CatID=PL_" +
-                        kategorijuID[kategorijosNr] + "");
+                        categoryID[categoryNo] + "");
                         Console.WriteLine("http://www.kilobaitas.lt/Kompiuteriai/Plansetiniai_(Tablet)/CatalogStore.aspx?CatID=PL_" +
-                        kategorijuID[kategorijosNr]);
+                        categoryID[categoryNo]);
                 if (driver.FindElements(By.XPath("//img[@src='/Images/design/notify_information.gif']")).Count > 0 ||
                         driver.FindElements(By.XPath("//td[@class='hdMain']//a[contains(text(),'Buitinė technika')]")).Count > 0)
                 {
@@ -52,23 +47,22 @@ namespace PriceAdvisor.ScraperService
                                .Count > 0)
                     {
 
-                        await gautiDuomenisIsKilobaito(driver, doc);
+                        await GetDataFromEshop(driver, page);
                     }
-                    await gautiDuomenisIsKilobaito(driver, doc);
+                    await GetDataFromEshop(driver, page);
                 }
-                Console.WriteLine("=========Me Doneeeeeeee=========="+kategorijuID[kategorijosNr]+"===========================");
+                Console.WriteLine("=========Me Doneeeeeeee=========="+categoryID[categoryNo]+"===========================");
             }
-            Console.WriteLine(sw.Elapsed);
             driver.Close();
         }
 
-        public async Task gautiDuomenisIsKilobaito(IWebDriver driver, HtmlDocument doc)
+        public async Task GetDataFromEshop(IWebDriver driver, HtmlDocument page)
         {
             var optionsBuilder = new DbContextOptionsBuilder<PriceAdvisorDbContext>();
             optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=PriceAdvisor;Trusted_Connection=True;MultipleActiveResultSets=True;");
             
-using(var db = new PriceAdvisorDbContext(optionsBuilder.Options))
-{
+            using(var db = new PriceAdvisorDbContext(optionsBuilder.Options))
+            {
             var FindEShop = db.Eshops.FirstOrDefault(shop=> shop.Name == EshopName);
             int psl = 1;
             IWebElement ie;
@@ -76,14 +70,14 @@ using(var db = new PriceAdvisorDbContext(optionsBuilder.Options))
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
             ie = driver.FindElement(By.XPath("//html"));
             string innerHtml = ie.GetAttribute("innerHTML");
-            doc.LoadHtml(innerHtml);
+            page.LoadHtml(innerHtml);
             
             var codesNodes =
-                doc.DocumentNode.SelectNodes(
+                page.DocumentNode.SelectNodes(
                     "//td[@class='mainContent']//div[@class='itemNormal']//div[@class='itemCode']");
-            var pricesNodes = doc.DocumentNode.SelectNodes(
+            var pricesNodes = page.DocumentNode.SelectNodes(
                 "//td[@class='mainContent']//div[@class='itemNormal']//div[@class='itemCode']//parent::div//div[@class='itemBoxPrice']//div[2]");
-            var datosNodes = doc.DocumentNode.SelectNodes("//span[@class='DeliveryDate']");
+            var datosNodes = page.DocumentNode.SelectNodes("//span[@class='DeliveryDate']");
             if (datosNodes != null)
             {
                 foreach (HtmlNode node in datosNodes)
@@ -134,6 +128,21 @@ using(var db = new PriceAdvisorDbContext(optionsBuilder.Options))
             await db.SaveChangesAsync();
         
       }
-    }
+        }
+
+        public Task PrepareEshop()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task PrepareEshop(int from, int to)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task PrepareEshop(List<string> category, int from, int to)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
