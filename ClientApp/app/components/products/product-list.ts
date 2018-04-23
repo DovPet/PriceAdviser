@@ -15,15 +15,24 @@ import { Eshop } from '../../models/eshop';
   export class ProductListComponent implements OnInit {
     
         product: Product[];
+        allProducts: Product[];
         prices: Price[];
         eshops: Eshop[];
-
+        filter: any = {};
         constructor(private productService: ProductService) { }
     
         ngOnInit() {
-            this.productService.getProducts().subscribe(product => this.product = product);
+            this.productService.getProducts().subscribe(product => this.product = this.allProducts = product);
             this.productService.getPrices().subscribe(prices => this.prices = prices);
             this.productService.getEshops().subscribe(eshops => this.eshops = eshops);
            
+        }
+
+        onFilterChange(){
+            var products = this.allProducts;
+             if (this.filter.code)
+                products = products.filter(p=> p.code.startsWith(this.filter.code))
+            
+            this.product = products;
         }
       }

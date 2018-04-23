@@ -9,5 +9,6 @@ namespace PriceAdvisor.Core
         Task<Product> GetProduct(int id); 
         Task<IEnumerable<Product>> GetProducts();
         Task<IEnumerable<Price>> GetPrices();
+        Task<Price> GetPrice(int id); 
     }
 }

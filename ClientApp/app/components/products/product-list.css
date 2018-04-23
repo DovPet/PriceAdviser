@@ -1,3 +1,6 @@
 .RedClass{
     color: red;
 }
+table th{
+    max-width: 100px;
+}

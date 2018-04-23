@@ -22,7 +22,6 @@ namespace PriceAdvisor.ScraperService
         DateTime DateNow = DateTime.Now;
         private Stopwatch sw = new Stopwatch();
         List<string> inTheList = new List<string>();
-        StreamReader reader;
         public TopoCentras(IUnitOfWork unitOfWork, PriceAdvisorDbContext context)
         {          
             this.unitOfWork = unitOfWork;
@@ -158,28 +157,6 @@ namespace PriceAdvisor.ScraperService
             return searchingProd[0].Code;        
             }
          return null;            
-        }
-
-        public async Task GetLinksFromTopoCentras()
-        { 
-            StreamWriter file = new StreamWriter(Environment.CurrentDirectory+@"\Links\TopoCentrasLinks.txt");
-            HtmlWeb web = new HtmlWeb();
-            var url = "https://www.topocentras.lt";
-            var page = web.Load(url);
-
-            var linkNodesInTheShop = page.DocumentNode.SelectNodes("//a[contains(@href,'https://www.topocentras.lt')]");
-            var links = linkNodesInTheShop.Select(node => node.Attributes["href"]);
-            
-            foreach (var link in links)
-            {
-               if(link.Value.Contains("sveikata")  ||  link.Value.Contains("buitine"))
-               {}else{
-                await file.WriteLineAsync(link.Value);
-                Console.WriteLine(link.Value);
-               }
-            }
-            await file.FlushAsync();
-        
         }
 
         public Task PrepareEshop(int from, int to)

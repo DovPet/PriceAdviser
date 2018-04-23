@@ -4,3 +4,9 @@ export interface Price {
     updatedAt: Date; 
     eshopId: number;  
   }
+
+  export interface SavePrice {
+    id: number; 
+    value: number;
+    updatedAt: Date;  
+  }

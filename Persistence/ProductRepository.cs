@@ -29,5 +29,10 @@ namespace PriceAdvisor.Persistence
         {
             return await context.Prices.ToListAsync();
         }
+
+         public async Task<Price> GetPrice(int id)
+        {
+           return await context.Prices.FindAsync(id);
+        }
     }
 }

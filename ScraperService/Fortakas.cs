@@ -20,7 +20,6 @@ namespace PriceAdvisor.ScraperService
         private string EshopName = "Fortakas";
         DateTime DateNow = DateTime.Now;
         private Stopwatch sw = new Stopwatch();
-        StreamReader reader;
         public Fortakas(IUnitOfWork unitOfWork, PriceAdvisorDbContext context)
         {          
             this.unitOfWork = unitOfWork;

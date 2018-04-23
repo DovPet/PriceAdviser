@@ -1,24 +1,15 @@
-<h1>Weather forecast</h1>
+<h1>Duomenų gavimas</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+<p>Pasirinkite iš kokios parduotuvės norite atnaujinti kainų duomenis.</p>
 
-<p *ngIf="!forecasts"><em>Loading...</em></p>
 
-<table class='table' *ngIf="forecasts">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let forecast of forecasts">
-            <td>{{ forecast.dateFormatted }}</td>
-            <td>{{ forecast.temperatureC }}</td>
-            <td>{{ forecast.temperatureF }}</td>
-            <td>{{ forecast.summary }}</td>
-        </tr>
-    </tbody>
-</table>
+<button  class="btn btn-primary" (click)="skytech();" [disabled]="!isValidForm()">Skytech</button>
+<ng2-toasty></ng2-toasty>
+<a  class="btn btn-primary" (click)="kilobaitas();">Kilobaitas</a>
+<ng2-toasty></ng2-toasty>
+<a  class="btn btn-primary" (click)="fortakas();">Fortakas</a>
+<ng2-toasty></ng2-toasty>
+<a  class="btn btn-primary" (click)="topocentras();">Topo Centras</a>
+<ng2-toasty></ng2-toasty>
+<a  class="btn btn-primary" (click)="all();">Gauti iš visų</a>
+<ng2-toasty></ng2-toasty>

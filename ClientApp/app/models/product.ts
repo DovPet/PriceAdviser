@@ -1,5 +1,6 @@
 import { Price } from './price';
 import { Eshop } from './eshop';
+
 export interface Product {
     id: number; 
     name: string;
@@ -7,4 +8,9 @@ export interface Product {
     edited: boolean;   
     prices: Price;
     eshops: Eshop;
+  }
+
+  export interface SaveProduct {
+    id: number; 
+    edited: boolean;   
   }

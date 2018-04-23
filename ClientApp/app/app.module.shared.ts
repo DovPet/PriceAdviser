@@ -1,3 +1,4 @@
+import { ScraperService } from './services/scraper.service';
 
 import { ProductService } from './services/product.service';
 import { NgModule } from '@angular/core';
@@ -42,6 +43,7 @@ import { ToastyModule } from 'ng2-toasty';
 
             { path: 'eshop/edit/:id', component: EshopFormComponent},
             { path: 'eshops', component: EshopListComponent },
+           // { path: 'api/SampleData/skytech', component: FetchDataComponent },
             
             //{ path: 'product/edit/:id', component: ProductsFormComponent},
             { path: 'products', component: ProductListComponent },
@@ -54,7 +56,8 @@ import { ToastyModule } from 'ng2-toasty';
     ],
     providers: [
     EshopService,
-    ProductService
+    ProductService,
+    ScraperService
     ]
 })
 export class AppModuleShared {

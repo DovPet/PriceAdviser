@@ -1,5 +1,5 @@
 <div class='main-nav'>
-    <div class='navbar navbar-inverse'>
+    <div class='navbar navbar'>
         <div class='navbar-header'>
             <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse'>
                 <span class='sr-only'>Toggle navigation</span>
@@ -7,7 +7,12 @@
                 <span class='icon-bar'></span>
                 <span class='icon-bar'></span>
             </button>
-            <a class='navbar-brand' [routerLink]="['/home']">PriceAdvisor</a>
+            <p>
+               <a href="https://www.atea.lt/eshop/"> <img src="F:\Duomenys\Bakalauro darbas\PriceAdvisor\Atea.png" alt="AteaLogo">
+               </a>
+            </p>
+            
+            <a class='navbar-brand' [routerLink]="['/home']">Kainų patarėjas </a>
         </div>
         <div class='clearfix'></div>
         <div class='navbar-collapse collapse'>
@@ -30,10 +35,14 @@
                         <span class='glyphicon glyphicon-shopping-cart'></span> Produktai
                     </a>
                 </li>
-
                 <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/fetch-data']">
                         <span class='glyphicon glyphicon-th-list'></span> Gauti duomenis
+                    </a>
+                </li>
+                <li [routerLinkActive]="['link-active']">
+                    <a href="/hangfire/jobs/processing">
+                        <span class='glyphicon glyphicon-time'></span> Procesai
                     </a>
                 </li>
             </ul>
