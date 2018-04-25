@@ -2,8 +2,8 @@
 
  <form #f="ngForm" (ngSubmit)="submit()" validate>
 
-   <div  >
-       <p> {{price.id}}</p>
+   <div *ngFor="let v of product.prices" >
+       <p> {{v.id}}</p>
    </div>
      <button class="btn btn-primary">Išsaugoti</button>
    

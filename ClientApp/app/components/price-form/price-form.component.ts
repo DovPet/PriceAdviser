@@ -1,5 +1,5 @@
 import { SaveProduct, Product } from './../../models/product';
-import { SavePrice } from './../../models/price';
+import { SavePrice, Price } from './../../models/price';
 import * as _ from 'underscore'; 
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,7 +18,7 @@ import { DatePipe } from '@angular/common/src/pipes';
 
   export class ProductFormComponent implements OnInit {
     
-    prices: SavePrice [];
+    prices: Price [];
 
      product: SaveProduct = {
        id: 0, 
@@ -29,9 +29,9 @@ import { DatePipe } from '@angular/common/src/pipes';
     price: SavePrice = {
         id: 0, 
         value: 0,
-        updatedAt: 0,
+        updatedAt: Date.now(),
         productId: 0,
-        eshopId: 0
+        eshopId: 1
      };
  
         constructor(  
@@ -67,6 +67,7 @@ import { DatePipe } from '@angular/common/src/pipes';
               private setPrice(p: SavePrice) {
                 this.price.id = p.id;
                 this.price.value = p.value; 
+                this.price.productId = p.productId;
                 this.price.updatedAt = p.updatedAt;
               }
               submit() {

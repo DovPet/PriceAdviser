@@ -29,7 +29,7 @@ namespace PriceAdvisor.ScraperService
         public async Task LoadProductsFromExcel()
         {
             
-           var file = @"F:\Duomenys\Bakalauro darbas\PriceAdvisor\Links\productsToImport.csv";
+           var file = @"C:\Users\Dovydas.Petrutis\Documents\PriceAdvisor\Links\productsToImport.csv";
            foreach (string line in File.ReadLines(file))
             {
                     var data = line.Split(new[] { ';' });
@@ -42,7 +42,7 @@ namespace PriceAdvisor.ScraperService
         
         public async Task LoadPricesFromExcel()
         {
-            var file = @"F:\Duomenys\Bakalauro darbas\PriceAdvisor\Links\productsToImportIDS.csv";
+            var file = @"C:\Users\Dovydas.Petrutis\Documents\PriceAdvisor\Links\productsToImportIDS.csv";
             var date = DateNow.AddTicks( - (DateNow.Ticks % TimeSpan.TicksPerSecond));
             foreach (string line in File.ReadLines(file))
             {

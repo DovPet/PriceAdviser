@@ -42,6 +42,7 @@ namespace PriceAdvisor.Controllers
                 kilobaitas = new Kilobaitas(unitOfWork,context);
                 fortakas = new Fortakas(unitOfWork,context);
                 topocentras = new TopoCentras(unitOfWork,context);
+                ateaInstance = new Atea(unitOfWork,context);
                 for (int i = 0; i < 1000; i++)
             {
 //                BackgroundJob.Delete(i.ToString());
@@ -57,11 +58,12 @@ namespace PriceAdvisor.Controllers
            var NeedFortakas = context.Eshops.FirstOrDefault(shop=> shop.Name == Fortakas);
            var NeedTopoCentras = context.Eshops.FirstOrDefault(shop=> shop.Name == TopoCentras);
            //need to set to 1 if you want to get data
+
            if(NeedSkytech.AdministrationId == 2)
             {
                
                 int[] nuoList = new int[10] { 1, 170,340, 510, 680, 850,1020, 1190, 1360, 1530 };
-                int[] ikiList = new int[10] { 3, 340,510, 680, 850, 1020, 1190, 1360, 1530, 1656};
+                int[] ikiList = new int[10] { 170, 340,510, 680, 850, 1020, 1190, 1360, 1530, 1656};
              
                 for (int i = 0; i < 1; i++)
                 {
@@ -159,7 +161,7 @@ namespace PriceAdvisor.Controllers
            if(NeedSkytech.AdministrationId == 2)
             {
                 int[] nuoList = new int[10] { 1, 170,340, 510, 680, 850,1020, 1190, 1360, 1530 };
-                int[] ikiList = new int[10] { 20, 340,510, 680, 850, 1020, 1190, 1360, 1530, 1656};
+                int[] ikiList = new int[10] { 170, 340,510, 680, 850, 1020, 1190, 1360, 1530, 1656};
              
                 for (int i = 0; i < 1; i++)
                 {
