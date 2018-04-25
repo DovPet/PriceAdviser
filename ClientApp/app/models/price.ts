@@ -8,5 +8,7 @@ export interface Price {
   export interface SavePrice {
     id: number; 
     value: number;
-    updatedAt: Date;  
+    productId: number;
+    eshopId: number; 
+    updatedAt: number;  
   }

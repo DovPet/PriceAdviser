@@ -7,7 +7,7 @@
 <table class="table">
         <thead>
                 <tr>
-                  
+                  <th item-width="50px"></th>
                   <th>Kodas</th>
                   <th>Pavadinimas</th>
                   <th item-width="50px">Atea</th>
@@ -15,12 +15,14 @@
                   <th item-width="50px">Kilobaitas</th>
                   <th item-width="50px">Fortakas</th>
                   <th item-width="50px">Topo Centras</th>
-                  <th></th>
+                 
                 </tr>
             </thead>
     <tbody>
     <tr *ngFor="let p of product" >
-      
+      <td>
+        <a  class="btn glyphicon glyphicon-edit" [routerLink]="['/products/edit/',p.id]"></a>
+      </td>
       <td>{{ p.code }}</td>
       <td >{{ p.name }}</td> 
     <ng-container *ngFor="let pr of p.prices; let i = index">
@@ -30,6 +32,7 @@
       <td *ngIf=" pr.eshopId==4" [ngClass]="{'RedClass':(((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents|number)}">{{ pr.value }} Atnaujinta: {{ pr.updatedAt | date: 'dd/MM/yyyy, HH:mm:ss'}} <span [ngClass]="{'glyphicon glyphicon-arrow-up': (((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents|number)}"></span></td>
       <td *ngIf=" pr.eshopId==5" [ngClass]="{'RedClass':(((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents|number)}">{{ pr.value }} Atnaujinta: {{ pr.updatedAt | date: 'dd/MM/yyyy, HH:mm:ss'}} <span [ngClass]="{'glyphicon glyphicon-arrow-up': (((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents|number)}"></span></td>
       </ng-container>
+     
     </tr>
 
   </tbody>

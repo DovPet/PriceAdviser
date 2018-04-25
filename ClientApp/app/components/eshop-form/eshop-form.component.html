@@ -13,7 +13,7 @@
             <div class="alert alert-danger" *ngIf="state.touched && !state.valid">Reikia pasirinkti vieną iš variantų</div>
           </div>
       
-          <div class="form-group">
+          <div *ngIf=" eshop.id==1" class="form-group">
             <label for="percents">Procentas</label>
             <input id="percents" type="number" class="form-control" [(ngModel)]="eshop.percents" name="percents" required #name="ngModel">
           </div>

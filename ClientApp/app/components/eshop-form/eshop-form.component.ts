@@ -43,7 +43,7 @@ import 'rxjs/add/Observable/forkJoin';
                   if (err.status == 404)
                     this.router.navigate(['/eshops']);
                 };
-        }
+           }
        
         }
 

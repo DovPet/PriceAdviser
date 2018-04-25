@@ -1,5 +1,5 @@
 import { SavePrice } from './../models/price';
-import { Product } from './../models/product';
+import { Product, SaveProduct } from './../models/product';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http'; 
 import 'rxjs/add/operator/map';
@@ -19,7 +19,7 @@ export class ProductService {
     return this.http.get(this.productsEndpoint)
       .map(res => res.json());
   }
-  update(product: Product) {
+   update(product: SaveProduct) {
     return this.http.put(this.productsEndpoint + '/' + product.id, product)
       .map(res => res.json());
   }

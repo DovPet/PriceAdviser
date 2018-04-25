@@ -17,7 +17,7 @@ namespace PriceAdvisor.Persistence
     }
         public async Task<Product> GetProduct(int id)
         {
-           return await context.Products.Include(v => v.Prices).SingleOrDefaultAsync(v => v.Id == id);
+           return await context.Products.Include(v => v.Prices).ThenInclude(e=>e.EShop).SingleOrDefaultAsync(v => v.Id == id);
         }
 
         public async Task<IEnumerable<Product>> GetProducts()

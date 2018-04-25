@@ -17,6 +17,7 @@ import { EshopListComponent } from './components/eshop/eshop-list';
 import { ProductListComponent } from './components/products/product-list';
 import { EshopService } from './services/eshop.service';
 import { ToastyModule } from 'ng2-toasty';
+import { ProductFormComponent } from './components/price-form/price-form.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { ToastyModule } from 'ng2-toasty';
         HomeComponent,
         EshopFormComponent,
         EshopListComponent,
-        ProductListComponent
+        ProductListComponent,
+        ProductFormComponent
     ],
     imports: [
         CommonModule,
@@ -45,12 +47,10 @@ import { ToastyModule } from 'ng2-toasty';
             { path: 'eshops', component: EshopListComponent },
            // { path: 'api/SampleData/skytech', component: FetchDataComponent },
             
-            //{ path: 'product/edit/:id', component: ProductsFormComponent},
+            { path: 'products/edit/:id', component: ProductFormComponent},
             { path: 'products', component: ProductListComponent },
 
             { path: '**', redirectTo: 'home' }
-
-           
 
         ])
     ],
