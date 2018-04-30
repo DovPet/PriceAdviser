@@ -9,6 +9,7 @@ namespace PriceAdvisor.Core.Models
         public DateTime UpdatedAt { get; set; }
         public int EshopId { get; set; }
         public EShop EShop {get;set;}
+        public bool Edited {get;set;}
         public int ProductId { get; set; }
         public Product Product {get;set;}
     }

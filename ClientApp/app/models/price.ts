@@ -1,14 +1,24 @@
 export interface Price {
     id: number; 
     value: number;
-    updatedAt: Date; 
+    updatedAt: string | null;
     eshopId: number;  
   }
 
   export interface SavePrice {
     id: number; 
-    value: number;
-    productId: number;
+    value: number;   
     eshopId: number; 
-    updatedAt: number;  
+    updatedAt: string | null;
+    productId: number;   
+    edited: boolean;
+  }
+
+    export interface SavePrice {
+    id: number; 
+    value: number;   
+    eshopId: number; 
+    updatedAt: string | null;
+    productId: number;   
+    edited: boolean;
   }

@@ -103,13 +103,26 @@ namespace PriceAdvisor.ScraperService
             foreach(var set in sets)
             {
             inTheList.Add(set.Code);
-
-
-            var line = String.Format("{0,-40} {1}", set.Code, set.Price);
-            
             var Coding = ProductRecognitionTopoCentras(set.Code);
-            Console.WriteLine(Coding);
+            
+            var FindProduct = await context.Products.FirstOrDefaultAsync(product=> product.Code == Coding);
+                    if(FindProduct==null)
+                    {
 
+                    }else{
+                        var FindPriceExists = await context.Prices.FirstOrDefaultAsync(price=> price.ProductId == FindProduct.Id && price.EshopId == FindEShop.Id);
+                        if(FindPriceExists != null && FindPriceExists.EshopId==FindEShop.Id)
+                        {
+                            FindPriceExists.Value = set.Price;
+                            FindPriceExists.UpdatedAt = DateNow.AddTicks( - (DateNow.Ticks % TimeSpan.TicksPerSecond));
+                        }else{
+                            var Price = new Price {Value = set.Price, UpdatedAt = DateNow.AddTicks( - (DateNow.Ticks % TimeSpan.TicksPerSecond)), EshopId = FindEShop.Id, ProductId = FindProduct.Id};
+                            context.Prices.Add(Price);
+                        }
+                    var line = String.Format("{0,-40} {1}", Coding, set.Price);
+                    Console.WriteLine(line); 
+            }
+            await unitOfWork.CompleteAsync();
             }
 
         }

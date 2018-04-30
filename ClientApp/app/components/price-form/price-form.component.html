@@ -1,10 +1,13 @@
-<h2>Prekės "{{product.code}}" redagavimas</h2>
+<h2>Prekės {{price.code}} redagavimas</h2>
+<h3>Paskutinį kartą atnaujinta: {{price.updatedAt}}</h3>
 
- <form #f="ngForm" (ngSubmit)="submit()" validate>
-
-   <div *ngFor="let v of product.prices" >
-       <p> {{v.id}}</p>
-   </div>
+ <form #f="ngForm" (ngSubmit)="submit()">
+   
+    <div class="form-group">
+      <label for="value">Kaina</label>
+      <input id="value" type="text" class="form-control" [(ngModel)]="price.value" name="value">
+      <input value="true" id="edited" type="hidden" class="form-control" [(ngModel)]="!price.edited" name="edited">
+    </div>
      <button class="btn btn-primary">Išsaugoti</button>
    
    </form>

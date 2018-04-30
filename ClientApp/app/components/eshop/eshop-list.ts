@@ -6,7 +6,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 
 @Component({
-    templateUrl: 'eshop-list.html'
+    templateUrl: 'eshop-list.html',
+    styleUrls: ['eshop-list.css']
   })
 
   export class EshopListComponent implements OnInit {

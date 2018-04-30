@@ -1,0 +1,28 @@
+<h2>Redaguotų produktų sąrašas</h2>
+
+<div class="form-group well">
+  <a class="btn btn-primary" (click)="export();" >Ekportuoti</a>
+  <ng2-toasty></ng2-toasty>
+  
+</div>
+<table class="table">
+        <thead>
+                <tr>
+                  <th>Kodas</th>
+                  <th item-width="50px">Kaina</th>
+                  <th item-width="50px">Redaguoti</th>
+                  
+                </tr>
+            </thead>
+    <tbody>
+    <tr *ngFor="let p of prices" >
+      <td>{{ p.code }}</td>
+      <td >{{ p.value }} </td>
+  <td><a  class="btn glyphicon glyphicon-edit" [routerLink]="['/products/prices/edit/',p.id]"></a></td>
+  <td><a class="btn btn-primary" (click)="selectExport(p.id);" [routerLink]="">Atrinkti</a>
+    <ng2-toasty></ng2-toasty></td>    
+    </tr>
+
+  </tbody>
+</table>
+

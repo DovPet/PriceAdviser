@@ -20,18 +20,20 @@
             </thead>
     <tbody>
     <tr *ngFor="let p of product" >
-      <td>
-        <a  class="btn glyphicon glyphicon-edit" [routerLink]="['/products/edit/',p.id]"></a>
+        <ng-container *ngFor="let pri of p.prices">
+      <td *ngIf=" pri.eshopId==1">
+        <a  class="btn glyphicon glyphicon-edit" [routerLink]="['/products/prices/edit/',pri.id]"></a>
       </td>
+    </ng-container>
       <td>{{ p.code }}</td>
-      <td >{{ p.name }}</td> 
+      <td >{{ p.name }} </td> 
     <ng-container *ngFor="let pr of p.prices; let i = index">
       <td *ngIf=" pr.eshopId==1" >{{ pr.value }} </td>
       <td *ngIf=" pr.eshopId==2" [ngClass]="{'RedClass':(((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents|number)}">{{ pr.value }} Atnaujinta: {{ pr.updatedAt | date: 'dd/MM/yyyy, HH:mm:ss'}} <span [ngClass]="{'glyphicon glyphicon-arrow-up': (((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents|number)}"></span></td>
       <td *ngIf=" pr.eshopId==3" [ngClass]="{'RedClass':(((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents|number)}">{{ pr.value }} Atnaujinta: {{ pr.updatedAt | date: 'dd/MM/yyyy, HH:mm:ss'}} <span [ngClass]="{'glyphicon glyphicon-arrow-up': (((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents|number)}"></span></td>
       <td *ngIf=" pr.eshopId==4" [ngClass]="{'RedClass':(((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents|number)}">{{ pr.value }} Atnaujinta: {{ pr.updatedAt | date: 'dd/MM/yyyy, HH:mm:ss'}} <span [ngClass]="{'glyphicon glyphicon-arrow-up': (((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents|number)}"></span></td>
       <td *ngIf=" pr.eshopId==5" [ngClass]="{'RedClass':(((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents|number)}">{{ pr.value }} Atnaujinta: {{ pr.updatedAt | date: 'dd/MM/yyyy, HH:mm:ss'}} <span [ngClass]="{'glyphicon glyphicon-arrow-up': (((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents|number)}"></span></td>
-      </ng-container>
+    </ng-container>
      
     </tr>
 

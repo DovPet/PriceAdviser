@@ -11,9 +11,10 @@ using System;
 namespace PriceAdvisor.Migrations
 {
     [DbContext(typeof(PriceAdvisorDbContext))]
-    partial class PriceAdvisorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180425192144_EditedToPrice")]
+    partial class EditedToPrice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

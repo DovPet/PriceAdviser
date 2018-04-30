@@ -45,7 +45,7 @@ namespace PriceAdvisor.Controllers
       return Ok(productResource);
     }
    [Route("prices")]
-    [HttpGet] 
+   [HttpGet] 
     public async Task<IEnumerable<PriceResource>> GetPrices()
     {
         var prices = await repository.GetPrices();
@@ -53,7 +53,7 @@ namespace PriceAdvisor.Controllers
         return mapper.Map<IEnumerable<Price>,IEnumerable<PriceResource>>(prices);
     }
      
-     [HttpGet("prices/{id}")]
+    [HttpGet("prices/{id}")]
     public async Task<IActionResult> GetPrice(int id)
     {
       var price = await repository.GetPrice(id);
@@ -64,6 +64,23 @@ namespace PriceAdvisor.Controllers
       var priceSaveResource = mapper.Map<Price,PriceSaveResource>(price);
 
       return Ok(priceSaveResource);
+    }
+
+    [HttpPut("prices/{id}")]
+    public async Task<IActionResult> UpdatePrices(int id, [FromBody] PriceSaveResource saveResource)
+    {
+     var price = await repository.GetPrice(id);
+
+      if (price == null)
+        return NotFound();
+
+      mapper.Map<PriceSaveResource, Price>(saveResource, price);
+      await unitOfWork.CompleteAsync();
+
+      price = await repository.GetPrice(price.Id);
+      var result = mapper.Map<Price, PriceSaveResource>(price);
+
+      return Ok(result);
     }
     }
 }

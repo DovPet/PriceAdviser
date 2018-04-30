@@ -6,7 +6,8 @@ import { ToastyService } from 'ng2-toasty';
 
 @Component({
     selector: 'fetchdata',
-    templateUrl: './fetchdata.component.html'
+    templateUrl: './fetchdata.component.html',
+    styleUrls: ['fetchdata.css']
 })
 export class FetchDataComponent {
     

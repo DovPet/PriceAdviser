@@ -40,6 +40,13 @@
                         <span class='glyphicon glyphicon-th-list'></span> Gauti duomenis
                     </a>
                 </li>
+
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/export']">
+                        <span class='glyphicon glyphicon-export'></span> Eksportuoti
+                    </a>
+                </li>
+
                 <li [routerLinkActive]="['link-active']">
                     <a href="/hangfire/jobs/processing">
                         <span class='glyphicon glyphicon-time'></span> Procesai

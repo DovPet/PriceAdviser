@@ -27,12 +27,12 @@ namespace PriceAdvisor.Persistence
 
         public async Task<IEnumerable<Price>> GetPrices()
         {
-            return await context.Prices.ToListAsync();
+            return await context.Prices.Include(v => v.Product).ToListAsync();
         }
 
          public async Task<Price> GetPrice(int id)
         {
-           return await context.Prices.FindAsync(id);
+           return await context.Prices.Include(pr=> pr.Product).SingleOrDefaultAsync(v => v.Id == id);
         }
     }
 }

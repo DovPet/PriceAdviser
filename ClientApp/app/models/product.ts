@@ -12,6 +12,5 @@ export interface Product {
 
   export interface SaveProduct {
     id: number; 
-    edited: boolean;   
-    prices: SavePrice[];
+    code: string;   
   }

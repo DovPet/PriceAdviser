@@ -1,3 +1,13 @@
+.RedClass{
+    color: red;
+}
+table th{
+    max-width: 100px;
+}
+
+.glyphicon-edit{
+    color: #6CAC20;
+}
 
 .btn-primary {
     color: #fff;
