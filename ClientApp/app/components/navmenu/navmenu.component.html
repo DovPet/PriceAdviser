@@ -24,8 +24,8 @@
                 </li>
                 
 
-                <li [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/eshops']">
+                <li [routerLinkActive]="['link-active']" >
+                    <a [routerLink]="['/eshops']" *ngIf="auth.isAuthenticated()">
                         <span class='glyphicon glyphicon-off'></span> Parduotuvės
                     </a>
                 </li>
@@ -36,22 +36,30 @@
                     </a>
                 </li>
                 <li [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/fetch-data']">
+                    <a [routerLink]="['/fetch-data']" *ngIf="auth.isAuthenticated()">
                         <span class='glyphicon glyphicon-th-list'></span> Gauti duomenis
                     </a>
                 </li>
 
                 <li [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/export']">
+                    <a [routerLink]="['/export']" >
                         <span class='glyphicon glyphicon-export'></span> Eksportuoti
                     </a>
                 </li>
 
                 <li [routerLinkActive]="['link-active']">
-                    <a href="/hangfire/jobs/processing">
+                    <a href="/hangfire/jobs/processing" *ngIf="auth.isAuthenticated()">
                         <span class='glyphicon glyphicon-time'></span> Procesai
                     </a>
                 </li>
+                <li [routerLinkActive]="['link-active']">
+                        <a (click)="auth.login()" *ngIf="!auth.isAuthenticated()">
+                            <span class='glyphicon glyphicon-user'></span> Prisijungti
+                        </a>
+                        <a (click)="auth.logout()" *ngIf="auth.isAuthenticated()">
+                            <span class='glyphicon glyphicon-user'></span> Atsijungti
+                        </a>
+                    </li>
             </ul>
         </div>
     </div>

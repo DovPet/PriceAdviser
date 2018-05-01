@@ -12,8 +12,12 @@ const treeShakableModules = [
     '@angular/platform-browser',
     '@angular/platform-browser-dynamic',
     '@angular/router',
+    'angular2-jwt',
+    'auth0-lock', 
     'ng2-toasty',
     'underscore',
+    'rxjs',
+    'rxjs/operators',
     'ng2-toasty/bundles/style-bootstrap.css',
     'zone.js',
 ];

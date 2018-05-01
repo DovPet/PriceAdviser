@@ -40,4 +40,12 @@ export class ProductService {
     return this.http.get('api/eshop')
       .map(res => res.json());
   }
+  createProduct(product) {
+    return this.http.post(this.productsEndpoint, product)
+      .map(res => res.json());
+  }
+  createPrice(price) {
+    return this.http.post(this.pricesEndpoint, price)
+      .map(res => res.json());
+  }
 }

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PriceAdvisor.Controllers.Resources;
@@ -29,6 +30,7 @@ namespace PriceAdvisor.Controllers
         }
         [Route("prices")]
         [HttpGet] 
+        
         public async Task<IEnumerable<PriceResource>> GetPrices()
         {
         var prices = await repository.GetPricesAsync();

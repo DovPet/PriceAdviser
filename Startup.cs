@@ -14,6 +14,7 @@ using Hangfire;
 using AutoMapper;
 using PriceAdvisor.Core;
 using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace PriceAdvisor
 {
@@ -34,6 +35,17 @@ namespace PriceAdvisor
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = "https://price-adviser.eu.auth0.com/";
+                options.Audience = "https://api.price-adviser.com";
+             });
             services.AddSwaggerGen(c =>
             {
             c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
@@ -80,7 +92,7 @@ namespace PriceAdvisor
                 app.UseExceptionHandler("/error");
             }
 
-               
+            app.UseAuthentication();    
                 
             app.UseMvc(routes =>
             {

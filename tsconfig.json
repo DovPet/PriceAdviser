@@ -6,6 +6,7 @@
     "sourceMap": true,
     "noImplicitAny": false,
     "strictPropertyInitialization": false,
+    "strictNullChecks": false,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "skipDefaultLibCheck": true,

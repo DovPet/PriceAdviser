@@ -9,6 +9,7 @@ namespace PriceAdvisor.Controllers.Resources
         public DateTime UpdatedAt { get; set; }
         public int ProductId { get; set; }
         public string Code { get; set; }
+        public int EshopId { get; set; }
         public bool Edited {get;set;}
 
     }

@@ -12,5 +12,6 @@ export interface Product {
 
   export interface SaveProduct {
     id: number; 
-    code: string;   
+    code: string;
+    name: string;   
   }

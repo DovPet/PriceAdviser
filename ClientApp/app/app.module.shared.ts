@@ -20,6 +20,8 @@ import { ToastyModule } from 'ng2-toasty';
 import { ProductFormComponent } from './components/price-form/price-form.component';
 import { ExportService } from './services/export.service';
 import { ExportComponent } from './components/export/export';
+import { CreateProductComponent } from './components/create-product/create-product';
+import { AuthService } from './services/auth.service';
 
 
 @NgModule({
@@ -33,7 +35,8 @@ import { ExportComponent } from './components/export/export';
         EshopListComponent,
         ProductListComponent,
         ProductFormComponent,
-        ExportComponent
+        ExportComponent,
+        CreateProductComponent
     ],
     imports: [
         CommonModule,
@@ -49,7 +52,7 @@ import { ExportComponent } from './components/export/export';
             { path: 'eshop/edit/:id', component: EshopFormComponent},
             { path: 'eshops', component: EshopListComponent },
            // { path: 'api/SampleData/skytech', component: FetchDataComponent },
-            
+            { path: 'products/new', component: CreateProductComponent },
             { path: 'products/prices/edit/:id', component: ProductFormComponent},
             { path: 'products', component: ProductListComponent },
 
@@ -61,6 +64,7 @@ import { ExportComponent } from './components/export/export';
         ])
     ],
     providers: [
+    AuthService,
     EshopService,
     ProductService,
     ExportService,
@@ -68,4 +72,7 @@ import { ExportComponent } from './components/export/export';
     ]
 })
 export class AppModuleShared {
+    constructor(public auth: AuthService) {
+        auth.handleAuthentication();
+      }
 }

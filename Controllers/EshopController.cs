@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PriceAdvisor.Controllers.Resources;
 using PriceAdvisor.Core;
@@ -24,7 +25,8 @@ namespace PriceAdvisor.Controllers
             this.repository = repository;
         }
 
-        [HttpPut("{id}")]
+    [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> CreateEshop(int id, [FromBody] EShopResource EshopResource)
     {
      var eshop = await repository.GetEshop(id);
@@ -41,6 +43,7 @@ namespace PriceAdvisor.Controllers
       return Ok(result);
     }
     [HttpGet]
+    [Authorize]
     public async Task<IEnumerable<EShopResource>> GetEshops()
     {
         var eshops = await repository.GetEshops();
@@ -49,6 +52,7 @@ namespace PriceAdvisor.Controllers
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<IActionResult> GetEshop(int id)
     {
       var eshop = await repository.GetEshop(id);

@@ -27,7 +27,7 @@ namespace PriceAdvisor.Mapping
             .ForMember(vr => vr.Code, opt => opt.MapFrom(v => v.Product.Code)).ForMember(vr => vr.Percents, opt => opt.MapFrom(v => v.EShop.Percents));;
             CreateMap<Price, PriceSaveResource>().ForMember(vr => vr.ProductId, opt => opt.MapFrom(v => v.ProductId))
             .ForMember(vr => vr.Code, opt => opt.MapFrom(v => v.Product.Code));;
-            CreateMap<PriceResource, Price>();
+            CreateMap<PriceResource, Price>().ForMember(v => v.EShop, opt => opt.Ignore()).ForMember(v => v.Product, opt => opt.Ignore());
             CreateMap<PriceSaveResource, Price>();
         }
         

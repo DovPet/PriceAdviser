@@ -34,6 +34,7 @@ import 'rxjs/add/Observable/forkJoin';
      product: SaveProduct ={
       id: this.price.productId , 
       code: '', 
+      name: ''
     } 
         constructor(  
             private route: ActivatedRoute,
@@ -61,17 +62,17 @@ import 'rxjs/add/Observable/forkJoin';
                 var day = date.getDate();       // yields date
                 var month = date.getMonth() + 1;    // yields month (add one as '.getMonth()' is zero indexed)
               var year = date.getFullYear();  // yields year
-var hour = date.getHours();     // yields hours 
-var minute = date.getMinutes(); // yields minutes
-var second = date.getSeconds();          
-var time = year + "-" + month + "-" + day + "T" + hour + ':' + minute + ':' + second;   
+              var hour = date.getHours();     // yields hours 
+              var minute = date.getMinutes(); // yields minutes
+              var second = date.getSeconds();          
+              var time = year + "-" + month + "-" + day + "T" + hour + ':' + minute + ':' + second;   
                 this.price.updatedAt =  time;
                 this.price.edited = true;
                 var result$ =  this.productService.updatePrice(this.price);
                 result$.subscribe(price => {
                   this.toastyService.success({
                     title: 'Success', 
-                    msg: 'Duomenys išsaugoti sėkmingai.',
+                    msg: 'Kaina išsaugota sėkmingai.',
                     theme: 'bootstrap',
                     showClose: true,
                     timeout: 5000

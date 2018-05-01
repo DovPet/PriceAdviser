@@ -82,5 +82,33 @@ namespace PriceAdvisor.Controllers
 
       return Ok(result);
     }
+    [HttpPost]
+    public async Task<IActionResult> CreateProduct([FromBody] ProductResource productResource)
+    {
+      var product = mapper.Map<ProductResource, Product>(productResource);
+
+      repository.AddProduct(product);
+      await unitOfWork.CompleteAsync();
+
+      product = await repository.GetProduct(product.Id);
+
+      var result = mapper.Map<Product,ProductResource>(product);
+
+      return Ok(result);
+    }
+    [HttpPost("prices")]
+    public async Task<IActionResult> CreatePrice([FromBody] PriceSaveResource priceResource)
+    {
+      var price = mapper.Map<PriceSaveResource, Price>(priceResource);
+
+      repository.AddPrice(price);
+      await unitOfWork.CompleteAsync();
+
+      price = await repository.GetPrice(price.Id);
+
+      var result = mapper.Map<Price,PriceSaveResource>(price);
+
+      return Ok(result);
+    }
     }
 }
