@@ -12,7 +12,7 @@ export class AuthService {
     responseType: 'token id_token',
     audience: 'https://api.price-adviser.com',
     redirectUri: 'http://localhost:63039/home',
-    scope: 'openid'
+    scope: 'openid profile'
   });
 
   constructor(public router: Router) {}
@@ -23,7 +23,7 @@ export class AuthService {
   public handleAuthentication(): void {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
-          
+        localStorage.setItem('token', authResult.accessToken);
         window.location.hash = '';
         this.setSession(authResult);
         this.router.navigate(['/home']);

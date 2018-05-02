@@ -23,7 +23,8 @@ import { ExportService } from './services/export.service';
 import { ExportComponent } from './components/export/export';
 import { CreateProductComponent } from './components/create-product/create-product';
 import { AuthService } from './services/auth.service';
-
+import { HttpClientModule } from '@angular/common/http';
+import { AUTH_PROVIDERS } from "angular2-jwt/angular2-jwt";
 
 @NgModule({
     declarations: [
@@ -42,17 +43,17 @@ import { AuthService } from './services/auth.service';
     imports: [
         CommonModule,
         HttpModule,
+        HttpClientModule,
         ToastyModule.forRoot(),
         FormsModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
-            { path: 'counter', component: CounterComponent },
-            { path: 'fetch-data', component: FetchDataComponent },
+            { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthGuardService]},
 
             { path: 'eshop/edit/:id', component: EshopFormComponent, canActivate: [AuthGuardService]},
-            { path: 'eshops', component: EshopListComponent },
-           // { path: 'api/SampleData/skytech', component: FetchDataComponent },
+            { path: 'eshops', component: EshopListComponent, canActivate: [AuthGuardService] },
+            
             { path: 'products/new', component: CreateProductComponent },
             { path: 'products/prices/edit/:id', component: ProductFormComponent},
             { path: 'products', component: ProductListComponent },
@@ -66,11 +67,14 @@ import { AuthService } from './services/auth.service';
     ],
     providers: [
     AuthService,
+    AUTH_PROVIDERS,
+    AuthGuardService,
+
     EshopService,
     ProductService,
     ExportService,
-    ScraperService,
-    AuthGuardService
+    ScraperService
+    
     ]
 })
 export class AppModuleShared {

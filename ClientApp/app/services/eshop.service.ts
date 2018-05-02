@@ -1,6 +1,7 @@
 import { SaveEshop } from './../models/eshop';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http'; 
+import { AuthHttp } from "angular2-jwt/angular2-jwt";
 import 'rxjs/add/operator/map';
 
 
@@ -8,9 +9,9 @@ import 'rxjs/add/operator/map';
 export class EshopService {
   private readonly eshopEndpoint = '/api/eshop';
 
-  constructor(private http: Http) { }
+  constructor(private http: Http,private authHttp: AuthHttp) { }
   getScrapable(id) {
-    return this.http.get(this.eshopEndpoint + '/' + id)
+    return this.authHttp.get(this.eshopEndpoint + '/' + id)
       .map(res => res.json());
   }
   getScrapables() {
@@ -18,7 +19,7 @@ export class EshopService {
       .map(res => res.json());
   }
   update(eshop: SaveEshop) {
-    return this.http.put(this.eshopEndpoint + '/' + eshop.id, eshop)
+    return this.authHttp.put(this.eshopEndpoint + '/' + eshop.id, eshop)
       .map(res => res.json());
   }
 }

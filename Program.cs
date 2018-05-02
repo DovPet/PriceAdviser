@@ -19,6 +19,7 @@ namespace PriceAdvisor
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
+                 .UseUrls("http://localhost:63039")
                 .Build();
 
             host.Run();
