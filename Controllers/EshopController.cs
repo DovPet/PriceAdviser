@@ -43,7 +43,6 @@ namespace PriceAdvisor.Controllers
       return Ok(result);
     }
     [HttpGet]
-    [Authorize]
     public async Task<IEnumerable<EShopResource>> GetEshops()
     {
         var eshops = await repository.GetEshops();

@@ -10,7 +10,7 @@ export class AuthService {
     clientID: 'JD6ygoLTbs8YG0bAk5rprVRiFguAblcg',
     domain: 'price-adviser.eu.auth0.com',
     responseType: 'token id_token',
-    audience: 'https://price-adviser.eu.auth0.com/userinfo',
+    audience: 'https://api.price-adviser.com',
     redirectUri: 'http://localhost:63039/home',
     scope: 'openid'
   });
@@ -23,6 +23,7 @@ export class AuthService {
   public handleAuthentication(): void {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
+          
         window.location.hash = '';
         this.setSession(authResult);
         this.router.navigate(['/home']);

@@ -1,3 +1,4 @@
+import { AuthGuardService } from './services/auth-guard.service';
 import { ScraperService } from './services/scraper.service';
 
 import { ProductService } from './services/product.service';
@@ -49,7 +50,7 @@ import { AuthService } from './services/auth.service';
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
 
-            { path: 'eshop/edit/:id', component: EshopFormComponent},
+            { path: 'eshop/edit/:id', component: EshopFormComponent, canActivate: [AuthGuardService]},
             { path: 'eshops', component: EshopListComponent },
            // { path: 'api/SampleData/skytech', component: FetchDataComponent },
             { path: 'products/new', component: CreateProductComponent },
@@ -68,7 +69,8 @@ import { AuthService } from './services/auth.service';
     EshopService,
     ProductService,
     ExportService,
-    ScraperService
+    ScraperService,
+    AuthGuardService
     ]
 })
 export class AppModuleShared {
