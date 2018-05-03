@@ -71,7 +71,7 @@ export class FetchDataComponent {
         });
     });
   }
-  all() {
+  fetchAll() {
     var result$ =  this.scraperService.all(); 
       this.router.navigate(['/fetch-data'])
       result$.subscribe(all => {

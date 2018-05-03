@@ -10,11 +10,11 @@ export class EshopService {
   private readonly eshopEndpoint = '/api/eshop';
 
   constructor(private http: Http,private authHttp: AuthHttp) { }
-  getScrapable(id) {
+  getEshop(id) {
     return this.authHttp.get(this.eshopEndpoint + '/' + id)
       .map(res => res.json());
   }
-  getScrapables() {
+  getEshops() {
     return this.http.get(this.eshopEndpoint)
       .map(res => res.json());
   }

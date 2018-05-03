@@ -38,7 +38,7 @@ import 'rxjs/add/Observable/forkJoin';
         ngOnInit() {
                        
             if (this.eshop.id) {
-                this.eshopService.getScrapable(this.eshop.id).subscribe(p=>{this.eshop = p;});
+                this.eshopService.getEshop(this.eshop.id).subscribe(p=>{this.eshop = p;});
                 err => {
                   if (err.status == 404)
                     this.router.navigate(['/eshops']);

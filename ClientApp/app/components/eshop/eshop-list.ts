@@ -17,7 +17,7 @@ import { Router, ActivatedRoute } from '@angular/router';
     constructor(private eshopService: EshopService) { }
 
     ngOnInit() {
-        this.eshopService.getScrapables().subscribe(eshop => this.eshop = eshop)
+        this.eshopService.getEshops().subscribe(eshop => this.eshop = eshop)
     }
     
   

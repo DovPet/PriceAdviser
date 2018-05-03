@@ -27,7 +27,7 @@ namespace PriceAdvisor.Controllers
 
     [HttpPut("{id}")]
     [Authorize]
-    public async Task<IActionResult> CreateEshop(int id, [FromBody] EShopResource EshopResource)
+    public async Task<IActionResult> UpdateEshop(int id, [FromBody] EShopResource EshopResource)
     {
      var eshop = await repository.GetEshop(id);
 
