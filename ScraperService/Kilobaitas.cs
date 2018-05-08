@@ -92,7 +92,7 @@ namespace PriceAdvisor.ScraperService
             var prices = pricesNodes.Select(node =>
                 node.InnerText.Replace(" ", "").Replace("&nbsp;€", "").Replace("\n", "").Replace("\t", "")
                     .Replace("\r", "").Replace(",", "."));
-
+            var line = "";
             List<Data> sets =
                 codes.Zip(prices, (code, price) => new Data() { Code = code, Price = price }).ToList();
 
@@ -111,11 +111,13 @@ namespace PriceAdvisor.ScraperService
                         }else{
                             var Price = new Price {Value = set.Price, UpdatedAt = DateNow, EshopId = FindEShop.Id, ProductId = FindProduct.Id};
                             db.Prices.Add(Price);
+                            
                         }                  
                      
             }
-            var line = String.Format("{0,-40} {1}", set.Code, set.Price);
+            line = String.Format("{0,-40} {1}", set.Price, set.Code);
             Console.WriteLine(line);
+            db.SaveChanges();
         }
          if (driver.FindElements(By.XPath("(//input[contains(@onmouseover,'NextOverBottom')])[1]")).Count != 0)
             {
@@ -125,10 +127,10 @@ namespace PriceAdvisor.ScraperService
                 psl++;
                  Console.WriteLine("========================="+psl+"===========================");
             }
-            await db.SaveChangesAsync();
+           
         
       }
-        }
+    }
 
         public Task PrepareEshop()
         {

@@ -1,10 +1,21 @@
 .container {
     position: relative;
-    text-align: center;
     color: white;
-    width:110%;
+    width:102%;
+    right: 10px;
     height: 400px;
-
+    margin-top: 20px;
+    
+}
+.container img {
+    position: absolute;
+    width:102%;
+    right: 10px;
+    height: 400px;
+    margin-top: 20px;
+    
+    filter: contrast(200%) blur(2px) brightness(40%);
+   
 }
 
 /* Bottom left text */

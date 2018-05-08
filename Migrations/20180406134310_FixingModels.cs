@@ -32,13 +32,13 @@ namespace PriceAdvisor.Migrations
                 name: "Code",
                 table: "Products",
                 type: "nvarchar(max)",
-                nullable: true);
+                nullable: false);
 
             migrationBuilder.AddColumn<string>(
                 name: "Name",
                 table: "Products",
                 type: "nvarchar(max)",
-                nullable: true);
+                nullable: false);
 
             migrationBuilder.AddColumn<DateTime>(
                 name: "UpdatedAt",

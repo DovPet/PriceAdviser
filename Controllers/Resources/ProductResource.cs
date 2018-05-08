@@ -8,7 +8,6 @@ namespace PriceAdvisor.Controllers.Resources
         public int Id { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
-        public bool Edited {get;set;}
         public ICollection<PriceResource> Prices { get; set; }
 
         public ProductResource()

@@ -9,7 +9,7 @@ using System.Text;
 using PriceAdvisor.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-
+using System.Globalization;
 namespace PriceAdvisor.ScraperService
 {
     public class Atea
@@ -29,7 +29,7 @@ namespace PriceAdvisor.ScraperService
         public async Task LoadProductsFromExcel()
         {
             
-           var file = @"C:\Users\Dovydas.Petrutis\Documents\PriceAdvisor\Links\productsToImport.csv";
+           var file = @"F:\Duomenys\Bakalauro darbas\PriceAdvisor\Links\products(1).csv";
            foreach (string line in File.ReadLines(file))
             {
                     var data = line.Split(new[] { ';' });
@@ -42,16 +42,21 @@ namespace PriceAdvisor.ScraperService
         
         public async Task LoadPricesFromExcel()
         {
-            var file = @"C:\Users\Dovydas.Petrutis\Documents\PriceAdvisor\Links\productsToImportIDS.csv";
+            var file = @"F:\Duomenys\Bakalauro darbas\PriceAdvisor\Links\products(1).csv";
             var date = DateNow.AddTicks( - (DateNow.Ticks % TimeSpan.TicksPerSecond));
             foreach (string line in File.ReadLines(file))
             {
                     var data = line.Split(new[] { ';' });
-                
-                    var price = new Price() { EshopId = 1, Value = data[3], UpdatedAt = date, ProductId = Int32.Parse(data[6])  };
+        NumberFormatInfo nfi = new NumberFormatInfo();
+        nfi.NumberDecimalSeparator = ".";
+                    var valueTo = data[3].Replace(",",".");
+                    var price = new Price() { EshopId = 1, Value = data[3], UpdatedAt = date, ProductId = Int32.Parse(data[6]) };
        
                     context.Prices.Add(price);
-                    Console.WriteLine(data[0]+"   "+ data[1]);
+
+                    Console.WriteLine("Data "+data[3]);
+                    Console.WriteLine("Value "+price.Value);
+                    Console.WriteLine("Value "+price.ProductId);
             }
             await unitOfWork.CompleteAsync();
         }

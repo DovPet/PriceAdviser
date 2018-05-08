@@ -10,7 +10,6 @@ namespace PriceAdvisor.Core.Models
         public string Name { get; set; }
         public string Code { get; set; }
         [DefaultValue(false)]
-        public bool Edited {get;set;}
         public ICollection<Price> Prices { get; set; }
     }
 }

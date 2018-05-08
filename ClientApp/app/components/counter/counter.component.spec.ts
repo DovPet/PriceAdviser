@@ -5,7 +5,7 @@ import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 
 let fixture: ComponentFixture<CounterComponent>;
 
-describe('Counter component', () => {
+describe('Counter components', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({ declarations: [CounterComponent] });
         fixture = TestBed.createComponent(CounterComponent);

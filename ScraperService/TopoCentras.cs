@@ -22,6 +22,7 @@ namespace PriceAdvisor.ScraperService
         DateTime DateNow = DateTime.Now;
         private Stopwatch sw = new Stopwatch();
         List<string> inTheList = new List<string>();
+        List<string> exclude = System.IO.File.ReadAllLines(Environment.CurrentDirectory+@"\Links\TopoCentrasExclude.txt").ToList();
         public TopoCentras(IUnitOfWork unitOfWork, PriceAdvisorDbContext context)
         {          
             this.unitOfWork = unitOfWork;
@@ -32,15 +33,12 @@ namespace PriceAdvisor.ScraperService
         { 
             HtmlWeb web = new HtmlWeb();
             inTheList.Clear();
-            //StreamWriter file = new StreamWriter(Environment.CurrentDirectory+@"\Links\html.txt");
             for (int i = nuo; i < iki; i++)
             {
                int pageNumber = 1;
                var url = category[i]+"?limit=80&p="+pageNumber;
                var page = web.Load(url);
                Console.WriteLine(url);   
-                //await file.WriteLineAsync(page.DocumentNode.OuterHtml); 
-                //await file.FlushAsync();
                await GetDataFromEshop(null,page);  
 
                pageNumber++;
@@ -141,14 +139,13 @@ namespace PriceAdvisor.ScraperService
             
             for (int i = parts.Count()-2; i > 0; i--)
             {
-                /*if(!parts[i].ToLower().Contains("juod") || !parts[i].ToLower().Equals("su") ||!parts[i].ToLower().Equals("mikrofonu")
-                    || !parts[i].ToLower().Equals("belaidės") ||!parts[i].ToLower().Contains("balt")|| !parts[i].ToLower().Contains("raudo") ||!parts[i].ToLower().Contains("mėlyn")
-                    || !parts[i].ToLower().Equals("bevielės") ||!parts[i].ToLower().Equals("mikrofonu")||!parts[i].ToLower().Contains("žali") ||!parts[i].ToLower().Contains("sidabr"))
-                {*/
+                
+                if(!exclude.Contains(parts[i].ToLower()))
+                {
                 queryName = queryName+"AND [Name] LIKE '%"+parts[i].Replace("GB","").Replace("Ti","")
                                         .Replace("TB","").Replace("GTX","").Replace("+","").Replace("SSD","")+"%' ";
                 
-               // }
+                }
             }
             if(parts.Count()<4){
             for (int i = 1; i < parts.Count(); i++)

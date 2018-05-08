@@ -8,7 +8,7 @@ import { ProductService } from './../../services/product.service';
 import { Component, OnInit } from '@angular/core';
 import { ToastyService } from "ng2-toasty";
 import 'rxjs/add/Observable/forkJoin';
-
+import { Location } from '@angular/common';
 
 @Component({
     selector: 'app-price-form',
@@ -40,7 +40,8 @@ import 'rxjs/add/Observable/forkJoin';
             private route: ActivatedRoute,
             private router: Router,
             private productService: ProductService,
-            private toastyService: ToastyService
+            private toastyService: ToastyService,
+            private _location: Location
             ) {
         
               route.params.subscribe(p => {
@@ -61,11 +62,11 @@ import 'rxjs/add/Observable/forkJoin';
                 var date = new Date();  
                 var day = date.getDate();       // yields date
                 var month = date.getMonth() + 1;    // yields month (add one as '.getMonth()' is zero indexed)
-              var year = date.getFullYear();  // yields year
-              var hour = date.getHours();     // yields hours 
-              var minute = date.getMinutes(); // yields minutes
-              var second = date.getSeconds();          
-              var time = year + "-" + month + "-" + day + "T" + hour + ':' + minute + ':' + second;   
+                var year = date.getFullYear();  // yields year
+                var hour = date.getHours();     // yields hours 
+                var minute = date.getMinutes(); // yields minutes
+                var second = date.getSeconds();
+                var time = year + "-" + month + "-" + day+ "T" + hour + ':' + minute + ':' + second;   
                 this.price.updatedAt =  time;
                 this.price.edited = true;
                 var result$ =  this.productService.updatePrice(this.price);
@@ -77,7 +78,7 @@ import 'rxjs/add/Observable/forkJoin';
                     showClose: true,
                     timeout: 5000
                   });
-                  this.router.navigate(['/products'])
+                  this._location.back();
                 });
-              }    
+              }
     }

@@ -47,7 +47,9 @@ namespace PriceAdvisor.ScraperService
                     }
                     else
                     {
-                        for (int j = 1; j <= page.DocumentNode.SelectNodes("//td[@class='pagenav']//div[@class='page']").Count; j++)
+                        var pages = page.DocumentNode.SelectSingleNode("(//td[@class='pagenav']//div[@class='page'])[last()]");
+                        var pageCnt = pages.InnerText;
+                        for (int j = 1; j <= Int32.Parse(pageCnt); j++)
                         {
                             uri = "http://www.skytech.lt/bevielio-rysio-antenos-priedai-antenos-c-" + i + ".html?pagesize=500&page=" + j + "&pav=0";
                             Console.WriteLine(uri);

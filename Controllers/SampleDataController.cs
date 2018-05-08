@@ -63,27 +63,27 @@ namespace PriceAdvisor.Controllers
         }
         [HttpGet("[action]")]
         [Route("skytech")]
-        [Authorize]
+        //[Authorize]
         public async Task GetDataFromSkytech()
         {
-            
             var NeedSkytech = context.Eshops.FirstOrDefault(shop=> shop.Name == Skytech);
            if(NeedSkytech.AdministrationId == 2)
             {
-                int[] nuoList = new int[10] { 1, 170,340, 510, 680, 850,1020, 1190, 1360, 1530 };
-                int[] ikiList = new int[10] { 10, 340,510, 680, 850, 1020, 1190, 1360, 1530, 1656};
+                //268 1153
+                int[] nuoList = new int[10] { 268, 170,340, 510, 680, 850,1020, 1190, 1360, 1530 };
+                int[] ikiList = new int[10] { 269, 340,510, 680, 850, 1020, 1190, 1360, 1530, 1656};
              
                 for (int i = 0; i < 1; i++)
                 {
                      BackgroundJob.Enqueue(() => skytech.PrepareEshop(nuoList[i], ikiList[i]));
                 }
                 }else{
+                    //ateaInstance.LoadPricesFromExcel();
                     Console.WriteLine("Nothing to do eshop '{0}' is not scrapable",Skytech);
                 }
         }
         [HttpGet("[action]")]
         [Route("kilobaitas")]
-        [Authorize]
         public async Task GetDataFromKilobaitas()
         {
             var NeedKilobaitas = context.Eshops.FirstOrDefault(shop=> shop.Name == Kilobaitas);
@@ -100,7 +100,7 @@ namespace PriceAdvisor.Controllers
                 option.AddArgument("--ignore-certificate-errors");
 
                 List<List<int>> CategoryList = new List<List<int>>();
-
+                CategoryList.Add( new List<int>{436});
                 CategoryList.Add( new List<int>{391, 392, 488, 468});
                 CategoryList.Add( new List<int>{486, 485, 652, 463});
                 CategoryList.Add( new List<int>{401, 626, 770, 465});
@@ -142,7 +142,6 @@ namespace PriceAdvisor.Controllers
         }
         [Route("fortakas")]
         [HttpGet("[action]")]
-        [Authorize]
         public async Task GetDataFromFortakas()
         {
             var NeedFortakas = context.Eshops.FirstOrDefault(shop=> shop.Name == Fortakas);
@@ -161,7 +160,6 @@ namespace PriceAdvisor.Controllers
         }
         [Route("topocentras")]
         [HttpGet("[action]")]
-        [Authorize]
         public async Task GetDataFromTopoCentras()
         {
             var NeedTopoCentras = context.Eshops.FirstOrDefault(shop=> shop.Name == TopoCentras);

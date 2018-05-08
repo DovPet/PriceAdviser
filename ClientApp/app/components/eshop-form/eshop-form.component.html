@@ -15,7 +15,7 @@
       
           <div *ngIf=" eshop.id==1" class="form-group">
             <label for="percents">Procentas</label>
-            <input id="percents" type="number" class="form-control" [(ngModel)]="eshop.percents" name="percents" required #name="ngModel">
+            <input id="percents" type="number" min="1" pattern="[0-9]+" class="form-control" [(ngModel)]="eshop.percents" name="percents" required #name="ngModel">
           </div>
       <button class="btn btn-primary" [disabled]="!f.valid">Išsaugoti</button>
     

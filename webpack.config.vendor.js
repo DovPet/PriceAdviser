@@ -8,6 +8,7 @@ const treeShakableModules = [
     '@angular/compiler',
     '@angular/core',
     '@angular/forms',
+    '@angular/cli',
     '@angular/http',
     '@angular/platform-browser',
     '@angular/platform-browser-dynamic',
@@ -20,6 +21,18 @@ const treeShakableModules = [
     'rxjs/operators',
     'ng2-toasty/bundles/style-bootstrap.css',
     'zone.js',
+    'asmine-core',
+    'jasmine-spec-reporter',
+    'karma',
+    'karma-chrome-launcher',
+    'karma-cli',
+    'karma-chai',
+    'karma-jasmine',
+    'karma-remap-istanbul',
+    'protractor',
+    'ts-node',
+    'tslint',
+    'karma-webpack'
 ];
 const nonTreeShakableModules = [
     'bootstrap',

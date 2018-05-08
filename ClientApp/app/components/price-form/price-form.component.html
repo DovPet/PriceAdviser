@@ -5,7 +5,7 @@
    
     <div class="form-group">
       <label for="value">Kaina</label>
-      <input id="value" type="text" class="form-control" [(ngModel)]="price.value" name="value" required #name="ngModel">   
+      <input id="value" type="number" step="0.01" min="0.01" class="form-control" [(ngModel)]="price.value" name="value" required #name="ngModel">   
       <div class="alert alert-danger" *ngIf="price.value.touched && !price.value.valid">Privalote įvesti kainą.</div>
       <input value="true" id="edited" type="hidden" class="form-control" [(ngModel)]="!price.edited" name="edited">      
     </div>

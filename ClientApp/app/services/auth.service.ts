@@ -23,7 +23,7 @@ export class AuthService {
   public handleAuthentication(): void {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
-        localStorage.setItem('token', authResult.accessToken);
+        localStorage.setItem("token", authResult.accessToken);
         window.location.hash = '';
         this.setSession(authResult);
         this.router.navigate(['/home']);

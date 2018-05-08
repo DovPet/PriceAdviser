@@ -11,9 +11,10 @@ using System;
 namespace PriceAdvisor.Migrations
 {
     [DbContext(typeof(PriceAdvisorDbContext))]
-    partial class PriceAdvisorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180507125623_FixingModels2")]
+    partial class FixingModels2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,7 +78,7 @@ namespace PriceAdvisor.Migrations
 
                     b.Property<DateTime>("UpdatedAt");
 
-                    b.Property<string>("Value");
+                    b.Property<double>("Value");
 
                     b.HasKey("Id");
 
