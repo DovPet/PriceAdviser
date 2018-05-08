@@ -59,7 +59,7 @@ namespace PriceAdvisor.ScraperService
         public async Task GetDataFromEshop(IWebDriver driver, HtmlDocument page)
         {
             var optionsBuilder = new DbContextOptionsBuilder<PriceAdvisorDbContext>();
-            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=PriceAdvisor;Trusted_Connection=True;MultipleActiveResultSets=True;");
+            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=PriceAdviser;Trusted_Connection=True;MultipleActiveResultSets=True;");
             
             using(var db = new PriceAdvisorDbContext(optionsBuilder.Options))
             {
@@ -98,7 +98,7 @@ namespace PriceAdvisor.ScraperService
 
             foreach (var set in sets)
             {
-            var FindProduct = await db.Products.FirstOrDefaultAsync(product=> product.Code == set.Code);
+           var FindProduct = await db.Products.FirstOrDefaultAsync(product=> product.Code == set.Code);
                     if(FindProduct==null)
                     {
 
@@ -109,15 +109,15 @@ namespace PriceAdvisor.ScraperService
                             FindPriceExists.Value = set.Price;
                             FindPriceExists.UpdatedAt = DateNow.AddTicks( - (DateNow.Ticks % TimeSpan.TicksPerSecond));
                         }else{
-                            var Price = new Price {Value = set.Price, UpdatedAt = DateNow, EshopId = FindEShop.Id, ProductId = FindProduct.Id};
+                            var Price = new Price {Value = set.Price, UpdatedAt = DateNow.AddTicks( - (DateNow.Ticks % TimeSpan.TicksPerSecond)), EshopId = FindEShop.Id, ProductId = FindProduct.Id};
                             db.Prices.Add(Price);
-                            
-                        }                  
-                     
+                        }
+                    line = String.Format("{0,-40} {1}", set.Code, set.Price);
+                    Console.WriteLine(line); 
             }
-            line = String.Format("{0,-40} {1}", set.Price, set.Code);
-            Console.WriteLine(line);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
+        
+ 
         }
          if (driver.FindElements(By.XPath("(//input[contains(@onmouseover,'NextOverBottom')])[1]")).Count != 0)
             {
