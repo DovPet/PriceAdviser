@@ -147,8 +147,8 @@ namespace PriceAdvisor.Controllers
             var NeedFortakas = context.Eshops.FirstOrDefault(shop=> shop.Name == Fortakas);
             if(NeedFortakas.AdministrationId == 2)
              {        
-                int[] fromList = new int[10] { 0, 24, 48, 72, 96, 120, 144, 168, 192, 216};
-                int[] toList = new int[10] { 1, 48, 72, 96, 120, 144, 168, 192, 216, 234};
+                int[] fromList = new int[10] { 34, 24, 48, 72, 96, 120, 144, 168, 192, 216};
+                int[] toList = new int[10] { 35, 48, 72, 96, 120, 144, 168, 192, 216, 234};
                 List<string> fortakasCategories = System.IO.File.ReadAllLines(Environment.CurrentDirectory+@"\Links\FortakasLinks.txt").ToList();
                 for (int i = 0; i < 1; i++)
                 {
@@ -164,8 +164,8 @@ namespace PriceAdvisor.Controllers
         {
             var NeedTopoCentras = context.Eshops.FirstOrDefault(shop=> shop.Name == TopoCentras);
             if(NeedTopoCentras.AdministrationId == 2){
-                int[] fromList = new int[] { 0, 4, 8, 12, 16, 20, 24, 28, 32, 36,40,44,48,52,56,60,64,68,72,76,80,84};
-                int[] toList = new int[] { 4, 8, 12, 16, 20, 24, 28, 32, 36, 40,44,48,52,56,60,64,68,72,76,80,84,87};
+                int[] fromList = new int[] { 9, 4, 8, 12, 16, 20, 24, 28, 32, 36,40,44,48,52,56,60,64,68,72,76,80,84};
+                int[] toList = new int[] { 10, 8, 12, 16, 20, 24, 28, 32, 36, 40,44,48,52,56,60,64,68,72,76,80,84,87};
                
                 List<string> topoCentrasCategories = System.IO.File.ReadAllLines(Environment.CurrentDirectory+@"\Links\TopoCentrasLinks.txt").ToList();
                 for (int i = 0; i < 1; i++)

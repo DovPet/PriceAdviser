@@ -17,37 +17,37 @@
         <div class='clearfix'></div>
         <div class='navbar-collapse collapse'>
             <ul class='nav navbar-nav'>
-                <li [routerLinkActive]="['link-active']">
+                <li id="main" [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/home']">
                         <span class='glyphicon glyphicon-home'></span> Pagrindinis
                     </a>
                 </li>
                 
 
-                <li [routerLinkActive]="['link-active']" >
+                <li id="eshops" [routerLinkActive]="['link-active']" >
                     <a [routerLink]="['/eshops']" *ngIf="auth.isAuthenticated()">
                         <span class='glyphicon glyphicon-off'></span> Parduotuvės
                     </a>
                 </li>
 
-                <li [routerLinkActive]="['link-active']">
+                <li id="products" [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/products']">
                         <span class='glyphicon glyphicon-shopping-cart'></span> Produktai
                     </a>
                 </li>
-                <li [routerLinkActive]="['link-active']">
+                <li id="fetch-data" [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/fetch-data']" *ngIf="auth.isAuthenticated()">
                         <span class='glyphicon glyphicon-th-list'></span> Gauti duomenis
                     </a>
                 </li>
 
-                <li [routerLinkActive]="['link-active']">
+                <li id="export" [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/export']" >
                         <span class='glyphicon glyphicon-export'></span> Eksportuoti
                     </a>
                 </li>
 
-                <li [routerLinkActive]="['link-active']">
+                <li id="processes" [routerLinkActive]="['link-active']">
                     <a href="/hangfire/jobs/processing" *ngIf="auth.isAuthenticated()">
                         <span class='glyphicon glyphicon-time'></span> Procesai
                     </a>
@@ -61,6 +61,11 @@
                         </a>
                     </li>
             </ul>
+            <div class="footer">
+                <hr />
+                <p class="bg-info text-right text-muted">Dovydas Petrutis 2018</p>
+            </div>
         </div>
     </div>
+    
 </div>

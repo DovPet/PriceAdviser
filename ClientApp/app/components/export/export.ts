@@ -59,7 +59,7 @@ import { ExportService } from '../../services/export.service';
 
         export() {
             if (confirm("Ar tikrai norite ekportuoti žemiau pateiktus produktus \n"
-                            +"Failą galėsite rasti /Links direktorijoje")) 
+                            +"Failą galėsite rasti /Exports direktorijoje")) 
             {
                 var result$ =  this.exportService.export();
                 result$.subscribe(msg => {
@@ -72,7 +72,7 @@ import { ExportService } from '../../services/export.service';
                   });
                   window.location.reload()
                 });
-
+                
             }
         }
       }

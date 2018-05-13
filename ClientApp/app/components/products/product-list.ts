@@ -19,12 +19,17 @@ import { ChangeDetectorRef } from '@angular/core';
         prices: Price[];
         eshops: Eshop[];
         filter: any = {};
-        constructor(private productService: ProductService, private cd: ChangeDetectorRef) { }
+        curPage : number;
+        pageSize : number;
+        pages: number;
+        constructor(private productService: ProductService, private cd: ChangeDetectorRef) { 
+            this.curPage = 1;
+            this.pageSize = 10; 
+
+        }
     
         ngOnInit() {
             this.productService.getProducts().subscribe(product => this.product = this.allProducts = product);
-            this.productService.getPrices().subscribe(prices => this.prices = prices);
-            this.productService.getEshops().subscribe(eshops => this.eshops = eshops);
             this.cd.markForCheck();
         }
 
@@ -34,5 +39,17 @@ import { ChangeDetectorRef } from '@angular/core';
                 products = products.filter(p=> p.code.startsWith(this.filter.code))
                 this.cd.markForCheck();
             this.product = products;
+            this.curPage = 1;
+            this.pages = Math.ceil(products.length / this.pageSize);
         }
+
+        onFilterClear(){
+            this.product = this.allProducts;
+        }
+
+
+        numberOfPages(){
+            this.pages = Math.ceil(this.product.length / this.pageSize);
+            return this.pages;
+          };
       }

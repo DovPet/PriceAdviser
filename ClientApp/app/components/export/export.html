@@ -1,7 +1,11 @@
 <h2>Redaguotų produktų sąrašas</h2>
 
 <div class="form-group well">
-  <a class="btn btn-primary" (click)="export();" >Ekportuoti</a>
+  <a id="export" class="btn btn-primary" (click)="export();" >Ekportuoti</a>
+  <div class="help-tip">
+      <p>Šiuo mygtuku galite eksportuoti žemiau esančias prekių kainas į failą, kurį vėliau galėsite importuoti į 
+        el parduotuvę. <br>Failą rasite įmonės failų saugykloje "Exports" aplankale pavadinimu: "PriceImports.csv"  .</p>
+  </div>
   <ng2-toasty></ng2-toasty>
   
 </div>
@@ -19,7 +23,7 @@
       <td>{{ p.code }}</td>
       <td >{{ p.value }} </td>
   <td><a  class="btn glyphicon glyphicon-edit" [routerLink]="['/products/prices/edit/',p.id]"></a></td>
-  <td><a class="btn btn-primary" (click)="selectExport(p.id);" [routerLink]="">Atrinkti</a>
+  <td><a id="select" class="btn btn-primary" (click)="selectExport(p.id);" [routerLink]="">Atrinkti</a>
     <ng2-toasty></ng2-toasty></td>    
     </tr>
 

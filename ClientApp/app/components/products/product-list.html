@@ -2,9 +2,11 @@
 
 <div class="form-group well">
   <label for="code">Paieška pagal kodą</label>
-  <input class="form-control" type="text" [(ngModel)]="filter.code" (change)="onFilterChange()">
+  <input id="search" placeholder="Įveskite kodą" class="form-control" type="text" [(ngModel)]="filter.code">
+  <button id="searchBtn" class="btn btn-primary" (click)="onFilterChange()">Ieškoti</button>
+  <button id="clearBtn" class="btn btn-primary" (click)="onFilterClear()">Valyti</button>
 </div>
-<a [routerLink]="['/products/new']" class="btn btn-primary">Naujas produktas</a>
+<a id="newProductBtn" [routerLink]="['/products/new']" class="btn btn-primary">Naujas produktas</a>
 <table class="table">
         <thead>
                 <tr>
@@ -20,7 +22,7 @@
                 </tr>
             </thead>
     <tbody>
-    <tr *ngFor="let p of product" >
+    <tr *ngFor="let p of product | slice: (curPage * pageSize) - pageSize :curPage * pageSize" >
         <ng-container *ngFor="let pri of p.prices">
       <td *ngIf=" pri.eshopId==1">
         <a  class="btn glyphicon glyphicon-edit" [routerLink]="['/products/prices/edit/',pri.id]"></a>
@@ -28,47 +30,61 @@
     </ng-container>
       <td>{{ p.code }}</td>
       <td >{{ p.name }} </td> 
+      <td>
     <ng-container *ngFor="let pr of p.prices; let i = index">
       
-        <td *ngIf=" pr.eshopId==1" >
-            <a target="_blank" href="https://www.atea.lt/eshop/products/?filters=S_{{p.code}}">{{ pr.value }}</a>
-           </td>
+       
+            <a *ngIf=" pr.eshopId==1" target="_blank" href="https://www.atea.lt/eshop/products/?filters=S_{{p.code}}">{{ pr.value }}</a>
+        
       
 
     </ng-container>
-
+  </td>
+    <td>
     <ng-container *ngFor="let pr of p.prices; let i = index">
-      
-        <td *ngIf=" pr.eshopId==2" [ngClass]="{'RedClass':(((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents)}">
-        
-          <a target="_blank" href="http://www.skytech.lt/search.php?keywords={{p.code}}">{{ pr.value }} Atnaujinta: {{ pr.updatedAt | date: 'dd/MM/yyyy, HH:mm:ss'}}</a> 
-          <span [ngClass]="{'glyphicon glyphicon-arrow-up': (((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents|number)}"></span>
-        {{p.prices[0].value}}
-        </td>
-        
-  
+
+          <a *ngIf=" pr.eshopId==2" [ngClass]="{'RedClass':(((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents)}" target="_blank" href="http://www.skytech.lt/search.php?keywords={{p.code}}">{{ pr.value }} Atnaujinta: {{ pr.updatedAt | date: 'dd/MM/yyyy, HH:mm:ss'}}</a> 
+          <span *ngIf=" pr.eshopId==2" [ngClass]="{'glyphicon glyphicon-arrow-up': (((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents|number)}"></span>
+         
       </ng-container>
+    </td>
+    <td>
       <ng-container *ngFor="let pr of p.prices; let i = index">
       
-          <td *ngIf="pr.eshopId==3">{{pr.eshopId}}</td>
+          <a *ngIf=" pr.eshopId==3" [ngClass]="{'RedClass':(((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents)}" target="_blank" href="https://www.kilobaitas.lt/Ieskoti/CatalogStore.aspx?criteria={{p.code}}">{{ pr.value }} Atnaujinta: {{ pr.updatedAt | date: 'dd/MM/yyyy, HH:mm:ss'}}</a> 
+          <span *ngIf=" pr.eshopId==3" [ngClass]="{'glyphicon glyphicon-arrow-up': (((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents|number)}"></span>
+         
           
     
         </ng-container>
+      </td>
+      <td>
         <ng-container *ngFor="let pr of p.prices; let i = index">
       
-            <td *ngIf="pr.eshopId==4">{{pr.eshopId}}</td>
+            <a *ngIf=" pr.eshopId==4" [ngClass]="{'RedClass':(((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents)}" target="_blank" href="https://fortakas.lt/search?controller=search&orderby=position&orderway=desc&search_query={{p.code}}">{{ pr.value }} Atnaujinta: {{ pr.updatedAt | date: 'dd/MM/yyyy, HH:mm:ss'}}</a> 
+          <span *ngIf=" pr.eshopId==4" [ngClass]="{'glyphicon glyphicon-arrow-up': (((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents|number)}"></span>
+         
             
       
           </ng-container>
+        </td>
+        <td>
           <ng-container *ngFor="let pr of p.prices; let i = index">
       
-              <td *ngIf="pr.eshopId==5">{{pr.eshopId}}</td>
+              <a *ngIf=" pr.eshopId==5" [ngClass]="{'RedClass':(((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents)}" target="_blank" href="https://www.topocentras.lt/catalogsearch/result/?q={{p.name}}">{{ pr.value }} Atnaujinta: {{ pr.updatedAt | date: 'dd/MM/yyyy, HH:mm:ss'}}</a> 
+          <span *ngIf=" pr.eshopId==5" [ngClass]="{'glyphicon glyphicon-arrow-up': (((p.prices[0].value)-(pr.value))/(((pr.value)--(p.prices[0].value))/2)*100|number) > (p.prices[0].percents|number)}"></span>
+         
               
         
             </ng-container>
-     
+          </td>
     </tr>
 
   </tbody>
 </table>
-
+<p class="pagination">
+    <button class="btn btn-link" [disabled] ="curPage == 1" (click)="curPage = curPage - 1">Ankstesnis</button>
+      <span>Page {{curPage}} of {{ numberOfPages() }}</span>
+    <button class="btn btn-link" [disabled] = "curPage >= pages" 
+             (click) ="curPage = curPage + 1">Kitas</button>
+</p>

@@ -18,7 +18,23 @@ li.link-active a:focus {
     right: 0;
     z-index: 1;
 }
-
+.footer{
+    position: fixed;
+    bottom: 0;
+    height: 100px;
+    font-family: 'Open Sans', sans-serif;
+    width: 182px;
+    padding: 10px;
+  }
+  
+  .footer p{
+    margin-left: 5px;
+  }
+  
+  .footer hr{
+    
+    width: 90%;
+  }
 @media (min-width: 768px) {
     /* On small screens, convert the nav menu to a vertical sidebar */
     .main-nav {

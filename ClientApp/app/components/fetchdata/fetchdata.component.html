@@ -2,14 +2,32 @@
 
 <p>Pasirinkite iš kokios parduotuvės norite atnaujinti kainų duomenis.</p>
 
+<div>
+    <hr align="left">
+    <h3>Atskiros parduotuvės</h3>
+<button id="skytech" class="btn btn-primary" (click)="skytech();" [disabled]="!isValidForm()">Skytech</button>
+<ng2-toasty></ng2-toasty>
 
-<button  class="btn btn-primary" (click)="skytech();" [disabled]="!isValidForm()">Skytech</button>
+<button id="kilobaitas" class="btn btn-primary" (click)="kilobaitas();">Kilobaitas</button>
 <ng2-toasty></ng2-toasty>
-<a  class="btn btn-primary" (click)="kilobaitas();">Kilobaitas</a>
+
+<button id="fortakas" class="btn btn-primary" (click)="fortakas();">Fortakas</button>
 <ng2-toasty></ng2-toasty>
-<a  class="btn btn-primary" (click)="fortakas();">Fortakas</a>
+<button id="topocentras" class="btn btn-primary" (click)="topocentras();">Topo Centras</button>
 <ng2-toasty></ng2-toasty>
-<a  class="btn btn-primary" (click)="topocentras();">Topo Centras</a>
+<hr align="left">
+</div>
+<div>
+    <h3>Visos esančios parduotuvės</h3>
+        <div class="help-tip">
+                <p>Paspaudę žemiau esantį mygtuką, pradėsite kainų gavimą iš visų turimų el. pardutuvių.
+                    <br> 
+                    <br>
+                    Toks kainų gavimas gali užtukti daug laiko!
+                    
+                </p>
+            </div>
+<button id="fetchAll" class="btn btn-primary" (click)="fetchAll();">Gauti iš visų</button>
 <ng2-toasty></ng2-toasty>
-<a  class="btn btn-primary" (click)="fetchAll();">Gauti iš visų</a>
-<ng2-toasty></ng2-toasty>
+<hr align="left">
+</div>

@@ -60,12 +60,27 @@ import { Location } from '@angular/common';
 
               submit() {
                 var date = new Date();  
-                var day = date.getDate();       // yields date
-                var month = date.getMonth() + 1;    // yields month (add one as '.getMonth()' is zero indexed)
+                var day = date.getDate().toString();       // yields date
+                var month = (date.getMonth() + 1).toString();    // yields month (add one as '.getMonth()' is zero indexed)
                 var year = date.getFullYear();  // yields year
-                var hour = date.getHours();     // yields hours 
-                var minute = date.getMinutes(); // yields minutes
-                var second = date.getSeconds();
+                var hour = date.getHours().toString();     // yields hours 
+                var minute = date.getMinutes().toString(); // yields minutes
+                var second = date.getSeconds().toString();
+                if(+day<=9){
+                  day="0"+day
+                }
+                if(+month<=9){
+                  month="0"+month;
+                }
+                if(+minute<=9){
+                  minute="0"+minute;
+                }
+                if(+hour<=9){
+                  hour="0"+hour;
+                }
+                if(+second<=9){
+                  second="0"+second;
+                }
                 var time = year + "-" + month + "-" + day+ "T" + hour + ':' + minute + ':' + second;   
                 this.price.updatedAt =  time;
                 this.price.edited = true;

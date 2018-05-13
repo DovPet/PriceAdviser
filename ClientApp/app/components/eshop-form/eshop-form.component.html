@@ -16,8 +16,13 @@
           <div *ngIf=" eshop.id==1" class="form-group">
             <label for="percents">Procentas</label>
             <input id="percents" type="number" min="1" pattern="[0-9]+" class="form-control" [(ngModel)]="eshop.percents" name="percents" required #name="ngModel">
+            <div class="help-tip">
+                <p>Procentas negali būti neigiamas ar trupmeninis skaičius, galimi tik sveiki skaičiai.
+                    Procentą įveskite patys, arba keiskite su lauke esančiomis rodyklėmis "▲" ir "▼".
+                </p>
+            </div>
           </div>
-      <button class="btn btn-primary" [disabled]="!f.valid">Išsaugoti</button>
+      <button id="save" class="btn btn-primary" [disabled]="!f.valid">Išsaugoti</button>
     
     </form>
     

@@ -11,6 +11,9 @@ using PriceAdvisor.Controllers.Resources;
 using PriceAdvisor.Core;
 using PriceAdvisor.Core.Models;
 using PriceAdvisor.Persistence;
+using Microsoft.Office.Interop;
+using Excel = Microsoft.Office.Interop.Excel;
+using System.Diagnostics;
 
 namespace PriceAdvisor.Controllers
 {
@@ -43,7 +46,7 @@ namespace PriceAdvisor.Controllers
         {
         var prices = await context.Prices.Where(p=>p.Edited==true).ToListAsync();
 
-        var path = Environment.CurrentDirectory+@"\Links\PriceImports.csv";
+        var path = Environment.CurrentDirectory+@"\Exports\PriceImports.csv";
         
 
         using(var w = new StreamWriter(path))
@@ -92,7 +95,12 @@ namespace PriceAdvisor.Controllers
             }
             await unitOfWork.CompleteAsync();
         }
-
+            var pr = new Process();
+            pr.StartInfo = new ProcessStartInfo(path)
+            { 
+                UseShellExecute = true 
+            };
+            pr.Start();
         }
     }
 }

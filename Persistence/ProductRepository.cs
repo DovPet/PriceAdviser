@@ -22,7 +22,10 @@ namespace PriceAdvisor.Persistence
 
         public async Task<IEnumerable<Product>> GetProducts()
         {
-            return await context.Products.Include(v => v.Prices).ThenInclude(e=>e.EShop).OrderByDescending(v => v.Id).Take(100).ToListAsync();
+            context.Prices.OrderBy(pr=>pr.EshopId);
+            var list = await context.Products.Include(pr=>pr.Prices).ThenInclude(e=>e.EShop).OrderByDescending(p=>p.Id).ToListAsync();
+            list.ForEach(m=>m.Prices = m.Prices.OrderBy(o=>o.EshopId).ToList());
+            return list;
         }
 
         public async Task<IEnumerable<Price>> GetPrices()
