@@ -6,7 +6,7 @@
     <div class="form-group">
       <label for="value">Kaina</label>
       <input id="value" type="number" step="0.01" min="0.01" class="form-control" [(ngModel)]="price.value" name="value" required #name="ngModel">   
-      <div class="alert alert-danger" *ngIf="value.touched && !value.valid || value==''">Produktas privalo turėti kodą</div>
+      <div class="alert alert-danger" *ngIf="value==''">Produktas privalo turėti kodą</div>
       <div class="help-tip">
           <p>Kainos formatas: "123.56". Vietoje kablelio naudokite taško simbolį.</p>
       </div>

@@ -1,2 +1,2 @@
 PriceListName;ManufacturerPartNo;Category;PriceCategory;Manufacturer;Bid/Normal (B, N or BN for both);Startdate (dd-MM-yyyy);Enddate (dd-MM-yyyy);C, U or D (for create, update or delete);ProductActive;Value type 1 M, FM, FP (margin, fixed markup, fixed price);Interval-1 (start1-end1);Value 1;Value type 2;Interval-2 (start2-end2);Value 2
-Global_OpenWeb;testas;;;;BN;11-05-2018;11-05-2020;U;1;FP;0.0-;0;;;;
+Global_OpenWeb;testas;;;;BN;16-05-2018;16-05-2020;U;1;FP;0.0-;0;;;;
