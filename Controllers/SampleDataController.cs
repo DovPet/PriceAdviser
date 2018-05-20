@@ -30,7 +30,6 @@ namespace PriceAdvisor.Controllers
         private string Kilobaitas = "Kilobaitas";
         private string Fortakas = "Fortakas";
         private string TopoCentras = "TopoCentras";
-        Atea ateaInstance;
         IEshop kilobaitas, skytech, fortakas, topocentras; 
         ChromeOptions option = new ChromeOptions();
         HtmlDocument doc = new HtmlDocument();
@@ -43,7 +42,6 @@ namespace PriceAdvisor.Controllers
                 kilobaitas = new Kilobaitas(unitOfWork,context);
                 fortakas = new Fortakas(unitOfWork,context);
                 topocentras = new TopoCentras(unitOfWork,context);
-                ateaInstance = new Atea(unitOfWork,context);
                 for (int i = 0; i < 1000; i++)
             {
                 BackgroundJob.Delete(i.ToString());
@@ -78,7 +76,6 @@ namespace PriceAdvisor.Controllers
                      BackgroundJob.Enqueue(() => skytech.PrepareEshop(nuoList[i], ikiList[i]));
                 }
                 }else{
-                    //ateaInstance.LoadPricesFromExcel();
                     Console.WriteLine("Nothing to do eshop '{0}' is not scrapable",Skytech);
                 }
         }

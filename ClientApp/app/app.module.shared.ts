@@ -12,7 +12,6 @@ import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
-import { CounterComponent } from './components/counter/counter.component';
 import { EshopFormComponent } from './components/eshop-form/eshop-form.component';
 import { EshopListComponent } from './components/eshop/eshop-list';
 import { ProductListComponent } from './components/products/product-list';
@@ -30,7 +29,6 @@ import { AUTH_PROVIDERS } from "angular2-jwt/angular2-jwt";
     declarations: [
         AppComponent,
         NavMenuComponent,
-        CounterComponent,
         FetchDataComponent,
         HomeComponent,
         EshopFormComponent,

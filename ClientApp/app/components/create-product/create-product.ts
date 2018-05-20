@@ -79,16 +79,10 @@ import { SavePrice } from '../../models/price';
           this.price.productId = product.id;
           var result2$ = this.productService.createPrice(this.price);
         result2$.subscribe(price => {
-            this.toastyService.success({
-              title: 'Success', 
-              msg: 'Produktas sukurtas sėkmingai, galite nustatyti jam kainą',
-              theme: 'bootstrap',
-              showClose: true,
-              timeout: 5000
-            });
           });
         });
-        this.router.navigate(['/products'])        
+        setTimeout(() => this.router.navigate(['/products']), 2000);
+        
       }
       
 }

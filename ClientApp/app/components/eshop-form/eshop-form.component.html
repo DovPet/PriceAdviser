@@ -3,7 +3,7 @@
   <form #f="ngForm" (ngSubmit)="submit()" validate>
 
   
-        <div class="form-group">
+        <div *ngIf=" eshop.id!=1"class="form-group">
             <label for="state">Ar reikia gauti informaciją</label>
             <select id="state" class="form-control" [(ngModel)]="eshop.administrationId" name="administrationId" required #state="ngModel">
               <option value=""></option>
