@@ -1,3 +1,3 @@
-# Bakalaurinis darbas Price Adviser
 
-Čia talpinamas bakalauro baigiamojo projekto kodas ir papildomi dokumentai
+
+Čia talpinamas projekto kodas ir papildomi dokumentai
